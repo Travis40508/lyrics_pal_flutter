@@ -23,6 +23,7 @@ dependencies:
   sqflite: ^0.13.0
   path_provider: ^0.4.1
   rxdart: ^0.20.0
+  transparent_image: ^0.1.0
 
 dev_dependencies:
   flutter_test:

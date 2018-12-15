@@ -31,14 +31,14 @@ class TrackMatches {
 class Track {
   final String name;
   final String artist;
-  final List<Image> images;
+  final List<ArtistImage> images;
 
 
   Track({this.name, this.artist, this.images});
 
   factory Track.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['image'] as List;
-    List<Image> imageList = list.map((i) => Image.fromJson(i)).toList();
+    List<ArtistImage> imageList = list.map((i) => ArtistImage.fromJson(i)).toList();
     return Track(
         name: parsedJson['name'],
         artist: parsedJson['artist'],
@@ -47,11 +47,11 @@ class Track {
   }
 }
 
-class Image {
+class ArtistImage {
   final imageUrl;
 
-  Image({this.imageUrl});
+  ArtistImage({this.imageUrl});
 
-  Image.fromJson(Map<String, dynamic> parsedJson)
+  ArtistImage.fromJson(Map<String, dynamic> parsedJson)
   : imageUrl = parsedJson['#text'];
 }
