@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/screens/add_song.dart';
+import 'package:lyrics_pal/screens/confirm_screen.dart';
 import 'screens/home.dart';
 import 'blocs/song_bloc_provider.dart';
 
@@ -13,7 +14,8 @@ class App extends StatelessWidget {
         home: Home(),
         initialRoute: '/',
         routes: {
-          '/search': (context) => AddSong()
+          '/search': (context) => AddSong(),
+          '/confirm' : (context) => ConfirmScreen()
         },
       ),
     );

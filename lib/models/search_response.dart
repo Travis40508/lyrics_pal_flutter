@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-class SearchResults {
+class SearchResponse {
   Results results;
 
-  SearchResults.fromJson(Map<String, dynamic> parsedJson)
+  SearchResponse.fromJson(Map<String, dynamic> parsedJson)
   : results = Results.fromJson(parsedJson['results']);
 }
 

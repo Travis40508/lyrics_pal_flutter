@@ -1,6 +1,6 @@
 
-import 'package:lyrics_pal/models/search_results.dart';
+import 'package:lyrics_pal/models/search_response.dart';
 
 abstract class SearchSource {
-  Future<SearchResults> fetchSongs(String query);
+  Future<SearchResponse> fetchSongs(String query);
 }

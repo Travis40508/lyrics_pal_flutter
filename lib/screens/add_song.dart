@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lyrics_pal/models/search_results.dart';
+import 'package:lyrics_pal/models/search_response.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc_provider.dart';
 
