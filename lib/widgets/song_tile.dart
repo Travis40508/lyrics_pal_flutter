@@ -13,26 +13,30 @@ class SongTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 80.0),
-      child: ListTile(
-        onTap: onPressed,
-        leading: Container(
-            width: 120.0,
-            height: 120.0,
-            child: ClipOval(
-                child: Hero(
-                    tag: '${song.getSongTitle()} - ${song.getArtist()}',
-                    child: CachedNetworkImage(
-                      imageUrl: song.getSongImage(),
-                    )),
-              )
-            ),
-        title: Text(
-          '${song.getSongTitle()}',
-          style: TextStyle(color: Colors.white, fontSize: 24.0),
-        ),
-        subtitle: Text(
-          '${song.getArtist()}',
-          style: TextStyle(color: Colors.white),
+      child: Card(
+        elevation: 8.0,
+        color: Colors.black87,
+        child: ListTile(
+          onTap: onPressed,
+          leading: Container(
+              width: 120.0,
+              height: 120.0,
+              child: ClipOval(
+                  child: Hero(
+                      tag: '${song.getSongTitle()} - ${song.getArtist()}',
+                      child: CachedNetworkImage(
+                        imageUrl: song.getSongImage(),
+                      )),
+                )
+              ),
+          title: Text(
+            '${song.getSongTitle()}',
+            style: TextStyle(color: Colors.white, fontSize: 24.0),
+          ),
+          subtitle: Text(
+            '${song.getArtist()}',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
