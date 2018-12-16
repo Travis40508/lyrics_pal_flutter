@@ -1,0 +1,44 @@
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:io';
+import 'dart:async';
+import '../models/song.dart';
+
+class LibraryDbProvider {
+  Database db;
+  final String table = "Library";
+
+  void init() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, 'library.db');
+
+    db = await openDatabase(path, version: 1,
+        onCreate: (Database newDb, int version) {
+          newDb.execute("""
+          CREATE TABLE $table
+          (
+            id INTEGER PRIMARY KEY,
+            artist TEXT,
+            song TEXT,
+            image TEXT,
+            lyrics TEXT
+          )
+        """);
+        });
+  }
+
+  Future<int> saveSong(Song song) async {
+    int res = await db.insert(table, song.toMap());
+
+    return res;
+  }
+
+  Future<List<Song>> fetchAllSongs() async {
+    var result = await db.rawQuery("SELECT * FROM $table");
+    List<Song> songList = result.map((song) => Song.fromJson(song)).toList();
+
+    return songList;
+  }
+
+}
