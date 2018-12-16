@@ -1,3 +1,4 @@
+import 'package:lyrics_pal/models/library_store.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,7 +6,7 @@ import 'dart:io';
 import 'dart:async';
 import '../models/song.dart';
 
-class LibraryDbProvider {
+class LibraryDbProvider implements LibraryStore {
   Database db;
   final String table = "Library";
 
@@ -28,12 +29,14 @@ class LibraryDbProvider {
         });
   }
 
-  Future<int> saveSong(Song song) async {
+  @override
+  Future<int> saveTrackToLibrary(Song song) async {
     int res = await db.insert(table, song.toMap());
 
     return res;
   }
 
+  @override
   Future<List<Song>> fetchAllSongs() async {
     var result = await db.rawQuery("SELECT * FROM $table");
     List<Song> songList = result.map((song) => Song.fromJson(song)).toList();
@@ -42,3 +45,5 @@ class LibraryDbProvider {
   }
 
 }
+
+final libraryDb = LibraryDbProvider();

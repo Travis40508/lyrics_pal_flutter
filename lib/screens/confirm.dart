@@ -13,13 +13,13 @@ class Confirm extends StatelessWidget {
     bloc.fetchLyrics(track.artist, track.name);
 
     return Scaffold(
-      appBar: buildAppBar(),
+      appBar: buildAppBar(bloc),
       backgroundColor: Colors.black54,
       body: buildLyricsBody(bloc),
     );
   }
 
-  Widget buildAppBar() {
+  Widget buildAppBar(bloc) {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
@@ -28,15 +28,15 @@ class Confirm extends StatelessWidget {
       ),
       centerTitle: true,
       actions: <Widget>[
-        buildActionButton(),
+        buildActionButton(bloc),
       ],
     );
   }
 
-  Widget buildActionButton() {
+  Widget buildActionButton(SongBloc bloc) {
     return RaisedButton.icon(
         color: Colors.transparent,
-        onPressed: () => print("FUCK"),
+        onPressed: () => bloc.saveSongToLibrary(track, bloc.currentLyrics),
         icon: Icon(
           Icons.save,
           color: Colors.white,
