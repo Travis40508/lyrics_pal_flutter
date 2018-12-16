@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/screens/playlists.dart';
+import 'library.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -18,9 +19,6 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.black87,
       title: Text("Home", style: TextStyle(color: Colors.white),),
       centerTitle: true,
-      actions: <Widget>[
-        IconButton(icon: Icon(Icons.add_circle, color: Colors.white,), onPressed: () => Navigator.pushNamed(context, '/search'),)
-      ],
       bottom: TabBar(
         tabs: <Widget>[
           Tab(icon: Icon(Icons.queue_music), text: "Playlists",),
@@ -35,7 +33,7 @@ class Home extends StatelessWidget {
     return TabBarView(
       children: <Widget>[
         Playlists(),
-
+        Library(),
       ],
     );
   }

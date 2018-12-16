@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lyrics_pal/screens/add_song.dart';
-import 'package:lyrics_pal/screens/confirm_screen.dart';
+import 'package:lyrics_pal/screens/search.dart';
+import 'package:lyrics_pal/screens/confirm.dart';
 import 'screens/home.dart';
 import 'blocs/song_bloc_provider.dart';
 
@@ -9,13 +9,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return SongBlocProvider(
       child: MaterialApp(
+        theme: ThemeData(accentColor: Colors.white),
         debugShowCheckedModeBanner: false,
         title: "Lyrics Pal",
         home: Home(),
         initialRoute: '/',
         routes: {
-          '/search': (context) => AddSong(),
-          '/confirm' : (context) => ConfirmScreen()
+          '/search': (context) => Search(),
+          '/confirm' : (context) => Confirm()
         },
       ),
     );
