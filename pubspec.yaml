@@ -24,6 +24,7 @@ dependencies:
   path_provider: ^0.4.1
   rxdart: ^0.20.0
   transparent_image: ^0.1.0
+  cached_network_image: ^0.5.1
 
 dev_dependencies:
   flutter_test:

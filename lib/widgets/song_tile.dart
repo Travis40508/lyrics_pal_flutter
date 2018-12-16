@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SongTile extends StatelessWidget {
   final AbstractSong song;
@@ -24,8 +25,8 @@ class SongTile extends StatelessWidget {
             child: ClipOval(
                 child: Hero(
                     tag: '${song.getSongTitle()} - ${song.getArtist()}',
-                    child: Image.network(
-                      song.getSongImage(),
+                    child: CachedNetworkImage(
+                      imageUrl: song.getSongImage(),
                     )),
               )
             ),
