@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lyrics_pal/screens/add_playlist.dart';
 import 'package:lyrics_pal/screens/search.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
 import 'screens/home.dart';
@@ -16,7 +17,8 @@ class App extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/search': (context) => Search(),
-          '/confirm' : (context) => Confirm()
+          '/confirm' : (context) => Confirm(),
+          '/add_playlist' : (context) => AddPlaylist(),
         },
       ),
     );

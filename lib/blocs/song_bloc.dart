@@ -8,14 +8,19 @@ class SongBloc {
   final repository = Repository();
   final _searchSubject = PublishSubject<List<Track>>();
   final _lyricsSubject = BehaviorSubject<String>();
-  final _allSongsSubject = PublishSubject<List<Song>>();
+  final _allSongsSubject = BehaviorSubject<List<Song>>();
+  final _addedSongsSubject = BehaviorSubject<List<Song>>();
   final _canSaveSubject = PublishSubject<bool>();
+
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
   Observable<String> get lyricsStream => _lyricsSubject.stream;
   Observable<List<Song>> get libraryStream => _allSongsSubject.stream;
   Observable<bool> get canSaveStream => _canSaveSubject.stream;
+  Observable<List<Song>> get playListStream => _addedSongsSubject.stream;
   String get currentLyrics => _lyricsSubject.value;
+  List<Song> get currentSongs => _allSongsSubject.value;
+  List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -58,5 +63,25 @@ class SongBloc {
     _lyricsSubject.close();
     _allSongsSubject.close();
     _canSaveSubject.close();
+    _addedSongsSubject.close();
   }
+
+  void librarySongPressedInPlaylistCreation(Song song) {
+    List<Song> currentSongList = currentSongs;
+    List<Song> playListSongs = addedPlaylistSongs == null ? List() : addedPlaylistSongs;
+    currentSongList.remove(song);
+    playListSongs.add(song);
+    _allSongsSubject.sink.add(currentSongList);
+    _addedSongsSubject.sink.add(playListSongs);
+  }
+
+  void playListSongPressedInPlaylistCreation(Song song) {
+    List<Song> currentSongList = currentSongs;
+    List<Song> playListSongs = addedPlaylistSongs;
+    playListSongs.remove(song);
+    currentSongList.add(song);
+    _allSongsSubject.sink.add(currentSongList);
+    _addedSongsSubject.sink.add(playListSongs);
+  }
+
 }
