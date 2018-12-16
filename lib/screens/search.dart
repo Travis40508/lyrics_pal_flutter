@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/search_response.dart';
+import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc_provider.dart';
 
@@ -72,7 +73,12 @@ class Search extends StatelessWidget {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, int position) {
                     return SongTile(
-                      song: snapshot.data[position],
+                      song: snapshot.data[position], onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Confirm(
+                              song: snapshot.data[position],
+                            ))),
                     );
                   },
                 ),

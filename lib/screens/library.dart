@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc_provider.dart';
 
@@ -31,7 +32,12 @@ class Library extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return SongTile(song: snapshot.data[index],);
+              return SongTile(song: snapshot.data[index], onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Confirm(
+                        song: snapshot.data[index],
+                      ))),);
             },
           );
         } else {

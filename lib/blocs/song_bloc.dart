@@ -9,10 +9,12 @@ class SongBloc {
   final _searchSubject = PublishSubject<List<Track>>();
   final _lyricsSubject = BehaviorSubject<String>();
   final _allSongsSubject = PublishSubject<List<Song>>();
+  final _canSaveSubject = PublishSubject<bool>();
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
   Observable<String> get lyricsStream => _lyricsSubject.stream;
   Observable<List<Song>> get libraryStream => _allSongsSubject.stream;
+  Observable<bool> get canSaveStream => _canSaveSubject.stream;
   String get currentLyrics => _lyricsSubject.value;
 
   void searchTextChanged(String query) async {
@@ -25,8 +27,10 @@ class SongBloc {
   void fetchLyrics(AbstractSong song) {
     if (song.getSongLyrics() != null) {
       _lyricsSubject.sink.add(song.getSongLyrics());
+      _canSaveSubject.sink.add(false);
     } else {
       _lyricsSubject.sink.add(null);
+      _canSaveSubject.sink.add(true);
     Observable.fromFuture(repository.fetchLyrics(song.getArtist(), song.getSongTitle()))
         .listen((lyricsResponse) => _lyricsSubject.sink.add(lyricsResponse.lyrics), onError: (error) => print(error));
     }
@@ -53,5 +57,6 @@ class SongBloc {
     _searchSubject.close();
     _lyricsSubject.close();
     _allSongsSubject.close();
+    _canSaveSubject.close();
   }
 }

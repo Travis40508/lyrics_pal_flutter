@@ -35,17 +35,24 @@ class Confirm extends StatelessWidget {
   }
 
   Widget buildActionButton(SongBloc bloc, context) {
-    return RaisedButton.icon(
-        color: Colors.transparent,
-        onPressed: () => onSaveClicked(bloc, context),
-        icon: Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
-        label: Text(
-          'Save',
-          style: TextStyle(color: Colors.white),
-        ));
+    return StreamBuilder(
+      initialData: true,
+      stream: bloc.canSaveStream,
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        return RaisedButton.icon(
+            color: Colors.transparent,
+            onPressed: () => snapshot.data ? onSaveClicked(bloc, context) : onDeleteClicked(bloc, context),
+            icon: Icon(
+              snapshot.data ? Icons.save : Icons.delete,
+              color: Colors.white,
+            ),
+            label: Text(
+              snapshot.data ? 'Save' : 'Delete',
+              style: TextStyle(color: Colors.white),
+            ));
+      },
+    );
+
   }
 
   void onSaveClicked(SongBloc bloc, context) async {
@@ -56,6 +63,10 @@ class Confirm extends StatelessWidget {
     } else {
       print("Failed!");
     }
+  }
+
+  void onDeleteClicked(SongBloc bloc, context) async {
+    print("To be deleted");
   }
 
   Widget buildLyricsBody(SongBloc bloc) {

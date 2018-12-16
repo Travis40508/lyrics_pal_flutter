@@ -5,20 +5,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class SongTile extends StatelessWidget {
   final AbstractSong song;
+  final VoidCallback onPressed;
 
-  SongTile({this.song});
+  SongTile({this.song, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 80.0),
       child: ListTile(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Confirm(
-                      song: song,
-                    ))),
+        onTap: onPressed,
         leading: Container(
             width: 120.0,
             height: 120.0,
@@ -41,4 +37,5 @@ class SongTile extends StatelessWidget {
       ),
     );
   }
+
 }
