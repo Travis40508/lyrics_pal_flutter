@@ -9,7 +9,7 @@ class Search extends StatelessWidget {
     final bloc = SongBlocProvider.of(context);
 
     return Scaffold(
-      appBar: buildSearchBar(bloc),
+      appBar: buildAppBar(),
       body: buildScreenBody(bloc, context),
       backgroundColor: Colors.black54,
     );
@@ -18,28 +18,13 @@ class Search extends StatelessWidget {
   Widget buildScreenBody(SongBloc bloc, context) {
     return Column(
       children: <Widget>[
-        TextField(
-          onChanged: bloc.searchTextChanged,
-          style: TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            labelText: "Song Search",
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            hintText: "Ex. 'Another Brick in the Wall'",
-            hintStyle: TextStyle(color: Colors.white54),
-          ),
-        ),
+        buildSearchBar(bloc),
         showSearchResults(bloc, context),
       ],
     );
   }
 
-  buildSearchBar(SongBloc bloc) {
+  buildAppBar() {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
@@ -47,6 +32,25 @@ class Search extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
+    );
+  }
+
+  Widget buildSearchBar(bloc) {
+    return TextField(
+      onChanged: bloc.searchTextChanged,
+      style: TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.search,
+          color: Colors.white,
+        ),
+        labelText: "Song Search",
+        labelStyle:
+        TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        hintText: "Ex. 'Another Brick in the Wall'",
+        hintStyle: TextStyle(color: Colors.white54),
+      ),
     );
   }
 

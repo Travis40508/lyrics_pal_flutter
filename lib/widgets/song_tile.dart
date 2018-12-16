@@ -22,16 +22,14 @@ class SongTile extends StatelessWidget {
         leading: Container(
             width: 120.0,
             height: 120.0,
-            child: Stack(children: <Widget>[
-              Center(child: CircularProgressIndicator()),
-              ClipOval(
+            child: ClipOval(
                 child: Hero(
                     tag: '${track.name} - ${track.artist}',
                     child: Image.network(
                       track.images[2].imageUrl,
                     )),
               )
-            ])),
+            ),
         title: Text(
           '${track.name}',
           style: TextStyle(color: Colors.white),
