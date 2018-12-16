@@ -14,13 +14,13 @@ class Confirm extends StatelessWidget {
     bloc.fetchLyrics(song);
 
     return Scaffold(
-      appBar: buildAppBar(bloc),
+      appBar: buildAppBar(bloc, context),
       backgroundColor: Colors.black54,
       body: buildLyricsBody(bloc),
     );
   }
 
-  Widget buildAppBar(bloc) {
+  Widget buildAppBar(bloc, context) {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
@@ -29,15 +29,15 @@ class Confirm extends StatelessWidget {
       ),
       centerTitle: true,
       actions: <Widget>[
-        buildActionButton(bloc),
+        buildActionButton(bloc, context),
       ],
     );
   }
 
-  Widget buildActionButton(SongBloc bloc) {
+  Widget buildActionButton(SongBloc bloc, context) {
     return RaisedButton.icon(
         color: Colors.transparent,
-        onPressed: () => bloc.saveSongToLibrary(Track(artist: song.getArtist(), name: song.getSongTitle()), song.getSongImage(), bloc.currentLyrics),
+        onPressed: () => onSaveClicked(bloc, context),
         icon: Icon(
           Icons.save,
           color: Colors.white,
@@ -46,6 +46,16 @@ class Confirm extends StatelessWidget {
           'Save',
           style: TextStyle(color: Colors.white),
         ));
+  }
+
+  void onSaveClicked(SongBloc bloc, context) async {
+    bool success = await bloc.saveSongToLibrary(Track(artist: song.getArtist(), name: song.getSongTitle()), song.getSongImage(), bloc.currentLyrics);
+
+    if(success) {
+      Navigator.pop(context);
+    } else {
+      print("Failed!");
+    }
   }
 
   Widget buildLyricsBody(SongBloc bloc) {

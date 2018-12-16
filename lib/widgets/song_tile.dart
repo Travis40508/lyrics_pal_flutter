@@ -10,7 +10,7 @@ class SongTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, top: 80.0),
+      padding: const EdgeInsets.only(top: 80.0),
       child: ListTile(
         onTap: () => Navigator.push(
             context,
@@ -31,7 +31,7 @@ class SongTile extends StatelessWidget {
             ),
         title: Text(
           '${song.getSongTitle()}',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 24.0),
         ),
         subtitle: Text(
           '${song.getArtist()}',

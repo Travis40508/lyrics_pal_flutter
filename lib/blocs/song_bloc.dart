@@ -37,11 +37,16 @@ class SongBloc {
         .listen((songs) => _allSongsSubject.sink.add(songs), onError: (error) => print(error));
   }
 
-  void saveSongToLibrary(Track track, String imageUrl, String lyrics) async {
+  Future<bool> saveSongToLibrary(Track track, String imageUrl, String lyrics) async {
     Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
     int response = await repository.saveTrackToLibrary(song);
-    print(response);
+
+    if(response != 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void dispose() {
