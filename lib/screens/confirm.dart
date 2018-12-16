@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
 import '../blocs/song_bloc_provider.dart';
 
 class Confirm extends StatelessWidget {
-  final Track track;
+  final AbstractSong song;
 
-  Confirm({this.track});
+  Confirm({this.song});
 
   @override
   Widget build(BuildContext context) {
     final bloc = SongBlocProvider.of(context);
-    bloc.fetchLyrics(track.artist, track.name);
+    bloc.fetchLyrics(song);
 
     return Scaffold(
       appBar: buildAppBar(bloc),
@@ -23,7 +24,7 @@ class Confirm extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
-        '${track.name}',
+        '${song.getSongTitle()}',
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
@@ -36,7 +37,7 @@ class Confirm extends StatelessWidget {
   Widget buildActionButton(SongBloc bloc) {
     return RaisedButton.icon(
         color: Colors.transparent,
-        onPressed: () => bloc.saveSongToLibrary(track, bloc.currentLyrics),
+        onPressed: () => bloc.saveSongToLibrary(Track(artist: song.getArtist(), name: song.getSongTitle()), song.getSongImage(), bloc.currentLyrics),
         icon: Icon(
           Icons.save,
           color: Colors.white,
@@ -61,8 +62,8 @@ class Confirm extends StatelessWidget {
       height: 250,
       width: 250,
       child: Hero(
-        tag: '${track.name} - ${track.artist}',
-        child: Image.network(track.images[2].imageUrl),
+        tag: '${song.getSongTitle()} - ${song.getArtist()}',
+        child: Image.network(song.getSongImage()),
       ),
     );
   }

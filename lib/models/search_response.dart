@@ -1,3 +1,5 @@
+import 'package:lyrics_pal/models/abstract_song.dart';
+
 class SearchResponse {
   Results results;
 
@@ -26,7 +28,7 @@ class TrackMatches {
   }
 }
 
-class Track {
+class Track implements AbstractSong {
   final String name;
   final String artist;
   final List<ArtistImage> images;
@@ -42,6 +44,26 @@ class Track {
         artist: parsedJson['artist'],
         images: imageList
     );
+  }
+
+  @override
+  String getArtist() {
+    return artist;
+  }
+
+  @override
+  String getSongImage() {
+    return images[2].imageUrl;
+  }
+
+  @override
+  String getSongTitle() {
+    return name;
+  }
+
+  @override
+  String getSongLyrics() {
+    return null;
   }
 }
 

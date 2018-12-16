@@ -1,3 +1,4 @@
+import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,9 +22,14 @@ class SongBloc {
         .listen((tracks) => _searchSubject.sink.add(tracks), onError: (error) => print(error));
   }
 
-  void fetchLyrics(String artistName, String songTitle) {
-    Observable.fromFuture(repository.fetchLyrics(artistName, songTitle))
+  void fetchLyrics(AbstractSong song) {
+    if (song.getSongLyrics() != null) {
+      _lyricsSubject.sink.add(song.getSongLyrics());
+    } else {
+      _lyricsSubject.sink.add(null);
+    Observable.fromFuture(repository.fetchLyrics(song.getArtist(), song.getSongTitle()))
         .listen((lyricsResponse) => _lyricsSubject.sink.add(lyricsResponse.lyrics), onError: (error) => print(error));
+    }
   }
 
   void fetchAllSongs() {
@@ -31,8 +37,8 @@ class SongBloc {
         .listen((songs) => _allSongsSubject.sink.add(songs), onError: (error) => print(error));
   }
 
-  void saveSongToLibrary(Track track, String lyrics) async {
-    Song song = Song(track.artist, track.name, track.images[2].imageUrl, lyrics);
+  void saveSongToLibrary(Track track, String imageUrl, String lyrics) async {
+    Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
     int response = await repository.saveTrackToLibrary(song);
     print(response);

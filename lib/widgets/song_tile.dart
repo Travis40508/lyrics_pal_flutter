@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lyrics_pal/models/search_response.dart';
+import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class SongTile extends StatelessWidget {
-  final Track track;
+  final AbstractSong song;
 
-  SongTile({this.track});
+  SongTile({this.song});
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +16,25 @@ class SongTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => Confirm(
-                      track: track,
+                      song: song,
                     ))),
         leading: Container(
             width: 120.0,
             height: 120.0,
             child: ClipOval(
                 child: Hero(
-                    tag: '${track.name} - ${track.artist}',
+                    tag: '${song.getSongTitle()} - ${song.getArtist()}',
                     child: Image.network(
-                      track.images[2].imageUrl,
+                      song.getSongImage(),
                     )),
               )
             ),
         title: Text(
-          '${track.name}',
+          '${song.getSongTitle()}',
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Text(
-          '${track.artist}',
+          '${song.getArtist()}',
           style: TextStyle(color: Colors.white),
         ),
       ),

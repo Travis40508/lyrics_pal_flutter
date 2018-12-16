@@ -72,7 +72,7 @@ class Search extends StatelessWidget {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, int position) {
                     return SongTile(
-                      track: snapshot.data[position],
+                      song: snapshot.data[position],
                     );
                   },
                 ),
