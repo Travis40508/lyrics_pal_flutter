@@ -55,4 +55,10 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
   Future<int> savePlaylist(Playlist playlist) async {
     return playlistDb.savePlaylist(playlist);
   }
+
+  @override
+  Future<Song> fetchSongById(int id) async {
+    Song song = await libraryDb.fetchSongById(id);
+    return song;
+  }
 }
