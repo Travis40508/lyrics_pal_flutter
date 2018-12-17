@@ -27,7 +27,7 @@ class AddPlaylist extends StatelessWidget {
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
           label: Text('Save', style: TextStyle(color: Colors.white),),
-          onPressed: () => bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs),
+          onPressed: () => onSavePressed(bloc, context),
         )
       ],
     );
@@ -105,5 +105,10 @@ class AddPlaylist extends StatelessWidget {
         );
       },
     );
+  }
+
+  onSavePressed(SongBloc bloc, context) {
+    bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
+    Navigator.pop(context);
   }
 }
