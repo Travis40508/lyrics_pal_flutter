@@ -20,6 +20,7 @@ class PlaylistsDbProvider implements PlaylistStore {
           CREATE TABLE $table
           (
             id INTEGER PRIMARY KEY,
+            title TEXT,
             songs BLOB
           )
         """);

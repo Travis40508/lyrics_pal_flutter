@@ -8,6 +8,7 @@ import '../models/search_response.dart';
 class SongBloc {
   final repository = Repository();
   final _searchSubject = PublishSubject<List<Track>>();
+  final _playListTitleSubject = BehaviorSubject<String>();
   final _lyricsSubject = BehaviorSubject<String>();
   final _allSongsSubject = BehaviorSubject<List<Song>>();
   final _addedSongsSubject = BehaviorSubject<List<Song>>();
@@ -19,7 +20,10 @@ class SongBloc {
   Observable<List<Song>> get libraryStream => _allSongsSubject.stream;
   Observable<bool> get canSaveStream => _canSaveSubject.stream;
   Observable<List<Song>> get playListStream => _addedSongsSubject.stream;
+  Observable<String> get playListTitleStream => _playListTitleSubject.stream;
+
   String get currentLyrics => _lyricsSubject.value;
+  String get playListTitle => _playListTitleSubject.value;
   List<Song> get currentSongs => _allSongsSubject.value;
   List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
 
@@ -65,6 +69,7 @@ class SongBloc {
     _allSongsSubject.close();
     _canSaveSubject.close();
     _addedSongsSubject.close();
+    _playListTitleSubject.close();
   }
 
   void librarySongPressedInPlaylistCreation(Song song) {
@@ -90,8 +95,12 @@ class SongBloc {
     for(Song song in songs) {
       ids.add(song.getSongId());
     }
-    Playlist playlist = Playlist(ids);
+    Playlist playlist = Playlist(playListTitle, ids);
     int response = await repository.savePlaylist(playlist);
     print(response);
+  }
+
+  onPlaylistTitleChanged(String text) {
+    _playListTitleSubject.sink.add(text);
   }
 }

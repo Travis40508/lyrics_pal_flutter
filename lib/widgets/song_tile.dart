@@ -12,7 +12,7 @@ class SongTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 80.0),
+      padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
       child: Card(
         elevation: 8.0,
         color: Colors.black87,

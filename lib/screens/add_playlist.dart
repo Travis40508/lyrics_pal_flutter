@@ -33,13 +33,29 @@ class AddPlaylist extends StatelessWidget {
     );
   }
 
-  Widget buildScreenBody(bloc) {
+  Widget buildScreenBody(SongBloc bloc) {
     return ListView(
       children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          child: TextField(
+            style: TextStyle(color: Colors.white),
+            cursorColor: Colors.white,
+            onChanged: (text) => bloc.onPlaylistTitleChanged(text),
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.title, color: Colors.white,),
+              hintText: "Ex. 'My Playlist'",
+              hintStyle: TextStyle(color: Colors.white54),
+              labelText: 'Title',
+              labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+
+            ),
+          ),
+        ),
         Text('Added Songs', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
         showAddedSongs(bloc),
         Padding(
-          padding: const EdgeInsets.only(top: 80.0),
+          padding: const EdgeInsets.only(top: 80.0, bottom: 50.0),
           child: Divider(color: Colors.white, height: 1.0,),
         ),
         Text('Library', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
