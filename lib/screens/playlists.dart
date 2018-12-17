@@ -5,6 +5,7 @@ import 'package:lyrics_pal/widgets/play_list_tile.dart';
 import '../blocs/song_bloc_provider.dart';
 
 class Playlists extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 

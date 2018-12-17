@@ -7,13 +7,22 @@ import 'dart:async';
 import '../models/playlist.dart';
 
 class PlaylistsDbProvider implements PlaylistStore {
-  Database db;
+  Database _db;
   final String table = "Playlists";
 
-  void init() async {
+  Future<Database> get db async {
+    if (_db == null) {
+      _db = await init();
+    }
+
+    return _db;
+  }
+
+    Future<Database> init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'playlists.db');
 
+    var db;
     db = await openDatabase(path, version: 1,
         onCreate: (Database newDb, int version) {
           newDb.execute("""
@@ -25,18 +34,21 @@ class PlaylistsDbProvider implements PlaylistStore {
           )
         """);
         });
+
+    return db;
   }
 
   @override
   Future<int> savePlaylist(Playlist playlist) async {
-    int res = await db.insert(table, playlist.toMap());
+    int res = await _db.insert(table, playlist.toMap());
 
     return res;
   }
 
   @override
   Future<List<Playlist>> fetchAllPlaylists() async {
-    var result = await db.rawQuery("SELECT * FROM $table");
+    var dbClient = await db;
+    var result = await dbClient.rawQuery("SELECT * FROM $table");
     List<Playlist> playlists = result.map((playlist) => Playlist.fromJson(playlist)).toList();
 
     return playlists;

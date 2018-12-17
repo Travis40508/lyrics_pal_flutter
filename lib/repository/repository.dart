@@ -19,7 +19,6 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
 
   Repository() {
     libraryDb.init();
-    playlistDb.init();
   }
 
   @override

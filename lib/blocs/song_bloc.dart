@@ -55,6 +55,11 @@ class SongBloc {
         .listen((songs) => _allSongsSubject.sink.add(songs), onError: (error) => print(error));
   }
 
+  void fetchAllPlaylists() {
+    Observable.fromFuture(repository.fetchAllPlaylists())
+        .listen((playlists) => _allPlaylists.sink.add(playlists), onError: (error) => print('@@@ $error'));
+  }
+
   Future<bool> saveSongToLibrary(Track track, String imageUrl, String lyrics) async {
     Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
@@ -110,10 +115,6 @@ class SongBloc {
     _playListTitleSubject.sink.add(text);
   }
 
-  void fetchAllPlaylists() async {
-    Observable.fromFuture(repository.fetchAllPlaylists())
-        .listen((playlists) => _allPlaylists.sink.add(playlists), onError: (error) => print(error));
-  }
 
   void fetchAllPlaylistSongs(Playlist playlist) async {
     List<Song> playListSongs = List();
