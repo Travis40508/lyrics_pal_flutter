@@ -15,7 +15,7 @@ class Confirm extends StatelessWidget {
 
     return Scaffold(
       appBar: buildAppBar(bloc, context),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.black87,
       body: buildLyricsBody(bloc),
     );
   }

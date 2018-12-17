@@ -13,7 +13,7 @@ class AddPlaylist extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context, bloc),
       body: buildScreenBody(bloc),
-      backgroundColor: Colors.black87,
+      backgroundColor: Color(0xDD212121),
     );
   }
 

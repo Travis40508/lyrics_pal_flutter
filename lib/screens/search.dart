@@ -12,7 +12,7 @@ class Search extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildScreenBody(bloc, context),
-      backgroundColor: Colors.black54,
+      backgroundColor: Color(0xDD212121),
     );
   }
 
