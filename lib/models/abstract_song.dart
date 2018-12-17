@@ -4,4 +4,5 @@ abstract class AbstractSong {
   String getSongTitle();
   String getSongImage();
   String getSongLyrics();
+  int getSongId();
 }

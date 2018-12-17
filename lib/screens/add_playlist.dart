@@ -11,13 +11,13 @@ class AddPlaylist extends StatelessWidget {
     bloc.fetchAllSongs();
 
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, bloc),
       body: buildScreenBody(bloc),
       backgroundColor: Colors.black87,
     );
   }
 
-  Widget buildAppBar(context) {
+  Widget buildAppBar(context, SongBloc bloc) {
     return AppBar(
       backgroundColor: Colors.black87,
       centerTitle: true,
@@ -27,7 +27,7 @@ class AddPlaylist extends StatelessWidget {
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
           label: Text('Save', style: TextStyle(color: Colors.white),),
-          onPressed: () => print('To be saved'),
+          onPressed: () => bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs),
         )
       ],
     );

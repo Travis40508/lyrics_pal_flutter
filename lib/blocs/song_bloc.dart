@@ -1,4 +1,5 @@
 import 'package:lyrics_pal/models/abstract_song.dart';
+import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -84,4 +85,13 @@ class SongBloc {
     _addedSongsSubject.sink.add(playListSongs);
   }
 
+  void savePlaylistToDatabase(List<Song> songs) async {
+    List<int> ids = List();
+    for(Song song in songs) {
+      ids.add(song.getSongId());
+    }
+    Playlist playlist = Playlist(ids);
+    int response = await repository.savePlaylist(playlist);
+    print(response);
+  }
 }

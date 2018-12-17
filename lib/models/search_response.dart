@@ -65,6 +65,11 @@ class Track implements AbstractSong {
   String getSongLyrics() {
     return null;
   }
+
+  @override
+  int getSongId() {
+    return null;
+  }
 }
 
 class ArtistImage {

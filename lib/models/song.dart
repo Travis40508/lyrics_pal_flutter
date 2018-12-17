@@ -1,6 +1,7 @@
 import 'package:lyrics_pal/models/abstract_song.dart';
 
 class Song implements AbstractSong {
+  int id;
   final String artist;
   final String songTitle;
   final String imageUrl;
@@ -22,7 +23,8 @@ class Song implements AbstractSong {
       : artist = parsedJson['artist'],
         songTitle = parsedJson['song'],
         imageUrl = parsedJson['image'],
-        lyrics = parsedJson['lyrics'];
+        lyrics = parsedJson['lyrics'],
+        id = parsedJson['id'];
 
   @override
   String getArtist() {
@@ -42,5 +44,10 @@ class Song implements AbstractSong {
   @override
   String getSongLyrics() {
     return lyrics;
+  }
+
+  @override
+  int getSongId() {
+    return id;
   }
 }
