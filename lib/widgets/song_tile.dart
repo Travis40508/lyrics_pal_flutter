@@ -23,12 +23,10 @@ class SongTile extends StatelessWidget {
               height: 120.0,
               child: ClipOval(
                   child: Hero(
-                      tag: '${song.getSongTitle()} - ${song.getArtist()}',
-                      child: CachedNetworkImage(
-                        imageUrl: song.getSongImage(),
-                      )),
-                )
-              ),
+                tag: '${song.getSongTitle()} - ${song.getArtist()}',
+                child: Image(
+                    image: CachedNetworkImageProvider(song.getSongImage())),
+              ))),
           title: Text(
             '${song.getSongTitle()}',
             style: TextStyle(color: Colors.white, fontSize: 24.0),
@@ -41,5 +39,4 @@ class SongTile extends StatelessWidget {
       ),
     );
   }
-
 }
