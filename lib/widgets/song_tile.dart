@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
-import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class SongTile extends StatelessWidget {

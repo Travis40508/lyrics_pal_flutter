@@ -5,6 +5,8 @@ import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc_provider.dart';
 
 class Search extends StatelessWidget {
+  final TextEditingController _controller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final bloc = SongBlocProvider.of(context);
@@ -38,6 +40,7 @@ class Search extends StatelessWidget {
 
   Widget buildSearchBar(bloc) {
     return TextField(
+      controller: _controller,
       onChanged: bloc.searchTextChanged,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white,
@@ -47,8 +50,7 @@ class Search extends StatelessWidget {
           color: Colors.white,
         ),
         labelText: "Song Search",
-        labelStyle:
-        TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         hintText: "Ex. 'Another Brick in the Wall'",
         hintStyle: TextStyle(color: Colors.white54),
       ),
@@ -73,12 +75,9 @@ class Search extends StatelessWidget {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, int position) {
                     return SongTile(
-                      song: snapshot.data[position], onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Confirm(
-                              song: snapshot.data[position],
-                            ))),
+                      song: snapshot.data[position],
+                      onPressed: () =>
+                          onSongClicked(context, snapshot.data[position]),
                     );
                   },
                 ),
@@ -90,5 +89,15 @@ class Search extends StatelessWidget {
         }
       },
     );
+  }
+
+  void onSongClicked(context, track) {
+    _controller.clear();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Confirm(
+                  song: track,
+                )));
   }
 }
