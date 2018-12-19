@@ -30,6 +30,7 @@ class SongBloc {
   String get playListTitle => _playListTitleSubject.value;
   List<Song> get currentSongs => _allSongsSubject.value;
   List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
+  List<Song> get allSongs => _allSongsSubject.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -51,8 +52,11 @@ class SongBloc {
   }
 
   void fetchAllSongs() {
-    Observable.fromFuture(repository.fetchAllSongs())
-        .listen((songs) => _allSongsSubject.sink.add(songs), onError: (error) => print(error));
+    if(allSongs == null) {
+      Observable.fromFuture(repository.fetchAllSongs())
+          .listen((songs) => _allSongsSubject.sink.add(songs),
+          onError: (error) => print(error));
+    }
   }
 
   void fetchAllPlaylists() {
@@ -123,5 +127,10 @@ class SongBloc {
       playListSongs.add(song);
     }
     _playListSongs.sink.add(playListSongs);
+  }
+
+  void resetLists() {
+    _allSongsSubject.sink.add(null);
+    _addedSongsSubject.sink.add(null);
   }
 }

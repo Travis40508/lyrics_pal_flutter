@@ -3,11 +3,27 @@ import 'package:lyrics_pal/blocs/song_bloc_provider.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 
-class AddPlaylist extends StatelessWidget {
+class AddPlaylist extends StatefulWidget {
+  @override
+  AddPlaylistState createState() {
+    return new AddPlaylistState();
+  }
+}
+
+class AddPlaylistState extends State<AddPlaylist> {
+
+  SongBloc bloc;
+
+  @override
+  void dispose() {
+    bloc.resetLists();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final bloc = SongBlocProvider.of(context);
+    bloc = SongBlocProvider.of(context);
     bloc.fetchAllSongs();
 
     return Scaffold(
