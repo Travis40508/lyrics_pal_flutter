@@ -2,17 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/screens/lyrics.dart';
-import '../blocs/song_bloc_provider.dart';
+import '../blocs/song_bloc.dart';
 
-class PlaylistScreen extends StatelessWidget {
+class PlaylistScreen extends StatefulWidget {
   final Playlist playlist;
 
   PlaylistScreen({this.playlist});
 
   @override
+  PlaylistScreenState createState() {
+    return new PlaylistScreenState();
+  }
+}
+
+class PlaylistScreenState extends State<PlaylistScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.fetchAllPlaylistSongs(widget.playlist);
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = SongBlocProvider.of(context);
-    bloc.fetchAllPlaylistSongs(playlist);
 
     return StreamBuilder(
       stream: bloc.currentPlayListSongs,
@@ -29,20 +48,20 @@ class PlaylistScreen extends StatelessWidget {
         return DefaultTabController(
           length: snapshot.data.length,
           child: Scaffold(
-            appBar: buildAppBar(bloc, tabs),
+            appBar: buildAppBar(tabs),
             backgroundColor: Colors.black87,
-            body: buildTabs(bloc, snapshot.data),
+            body: buildTabs(snapshot.data),
           ),
         );
       },
     );
   }
 
-  Widget buildAppBar(SongBloc bloc, List<Widget> tabs) {
+  Widget buildAppBar(List<Widget> tabs) {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
-        playlist.title,
+        widget.playlist.title,
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
@@ -50,7 +69,7 @@ class PlaylistScreen extends StatelessWidget {
     );
   }
 
-  Widget buildTabs(SongBloc bloc, List<Song> songs) {
+  Widget buildTabs(List<Song> songs) {
     List<Widget> tabScreens = List();
     for (Song song in songs) {
       tabScreens.add(LyricsScreen(song: song,));

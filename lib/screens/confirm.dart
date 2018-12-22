@@ -1,47 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
-import '../blocs/song_bloc_provider.dart';
+import '../blocs/song_bloc.dart';
 
-class Confirm extends StatelessWidget {
+class Confirm extends StatefulWidget {
   final AbstractSong song;
 
   Confirm({this.song});
 
   @override
+  ConfirmState createState() {
+    return new ConfirmState();
+  }
+}
+
+class ConfirmState extends State<Confirm> {
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.fetchLyrics(widget.song);
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = SongBlocProvider.of(context);
-    bloc.fetchLyrics(song);
 
     return Scaffold(
-      appBar: buildAppBar(bloc, context),
+      appBar: buildAppBar(context),
       backgroundColor: Colors.black87,
-      body: buildLyricsBody(bloc),
+      body: buildLyricsBody(),
     );
   }
 
-  Widget buildAppBar(bloc, context) {
+  Widget buildAppBar(context) {
     return AppBar(
       backgroundColor: Colors.black87,
       title: Text(
-        '${song.getSongTitle()}',
+        '${widget.song.getSongTitle()}',
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
       actions: <Widget>[
-        buildActionButton(bloc, context),
+        buildActionButton(context),
       ],
     );
   }
 
-  Widget buildActionButton(SongBloc bloc, context) {
+  Widget buildActionButton(context) {
     return StreamBuilder(
       initialData: true,
       stream: bloc.canSaveStream,
       builder: (context, AsyncSnapshot<bool> snapshot) {
         return RaisedButton.icon(
             color: Colors.transparent,
-            onPressed: () => snapshot.data ? onSaveClicked(bloc, context) : onDeleteClicked(bloc, context),
+            onPressed: () => snapshot.data ? onSaveClicked(context) : onDeleteClicked(context),
             icon: Icon(
               snapshot.data ? Icons.save : Icons.delete,
               color: Colors.white,
@@ -55,8 +74,8 @@ class Confirm extends StatelessWidget {
 
   }
 
-  void onSaveClicked(SongBloc bloc, context) async {
-    bool success = await bloc.saveSongToLibrary(Track(artist: song.getArtist(), name: song.getSongTitle()), song.getSongImage(), bloc.currentLyrics);
+  void onSaveClicked(context) async {
+    bool success = await bloc.saveSongToLibrary(Track(artist: widget.song.getArtist(), name: widget.song.getSongTitle()), widget.song.getSongImage(), bloc.currentLyrics);
 
     if(success) {
       Navigator.pop(context);
@@ -65,15 +84,15 @@ class Confirm extends StatelessWidget {
     }
   }
 
-  void onDeleteClicked(SongBloc bloc, context) async {
+  void onDeleteClicked(context) async {
     print("To be deleted");
   }
 
-  Widget buildLyricsBody(SongBloc bloc) {
+  Widget buildLyricsBody() {
     return ListView(
       children: <Widget>[
         getHeader(),
-        getLyricsBody(bloc),
+        getLyricsBody(),
       ],
     );
   }
@@ -83,13 +102,13 @@ class Confirm extends StatelessWidget {
       height: 250,
       width: 250,
       child: Hero(
-        tag: '${song.getSongTitle()} - ${song.getArtist()}',
-        child: Image.network(song.getSongImage()),
+        tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
+        child: Image.network(widget.song.getSongImage()),
       ),
     );
   }
 
-  Widget getLyricsBody(bloc) {
+  Widget getLyricsBody() {
     return StreamBuilder(
         stream: bloc.lyricsStream,
         builder: (context, snapshot) {

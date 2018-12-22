@@ -52,11 +52,9 @@ class SongBloc {
   }
 
   void fetchAllSongs() {
-    if(allSongs == null) {
       Observable.fromFuture(repository.fetchAllSongs())
           .listen((songs) => _allSongsSubject.sink.add(songs),
           onError: (error) => print(error));
-    }
   }
 
   void fetchAllPlaylists() {
@@ -76,15 +74,31 @@ class SongBloc {
     }
   }
 
-  void dispose() {
+  void dispose() async {
+    await _searchSubject.drain();
     _searchSubject.close();
+
+    await _lyricsSubject.drain();
     _lyricsSubject.close();
+
+    await _allSongsSubject.drain();
     _allSongsSubject.close();
+
+    await _canSaveSubject.drain();
     _canSaveSubject.close();
+
+    await _addedSongsSubject.drain();
     _addedSongsSubject.close();
+
+    await _playListTitleSubject.drain();
     _playListTitleSubject.close();
+
+    await _allPlaylists.drain();
     _allPlaylists.close();
+
+    await _playListSongs.drain();
     _playListSongs.close();
+
   }
 
   void librarySongPressedInPlaylistCreation(Song song) {
@@ -134,3 +148,5 @@ class SongBloc {
     _addedSongsSubject.sink.add(null);
   }
 }
+
+final SongBloc bloc = SongBloc();

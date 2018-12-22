@@ -12,28 +12,30 @@ class AddPlaylist extends StatefulWidget {
 
 class AddPlaylistState extends State<AddPlaylist> {
 
-  SongBloc bloc;
+ @override
+  void initState() {
+    super.initState();
+    bloc.resetLists();
+    bloc.fetchAllSongs();
+  }
 
   @override
   void dispose() {
-    bloc.resetLists();
+    bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
-    bloc = SongBlocProvider.of(context);
-    bloc.fetchAllSongs();
-
-    return Scaffold(
-      appBar: buildAppBar(context, bloc),
-      body: buildScreenBody(bloc),
+   return Scaffold(
+      appBar: buildAppBar(context),
+      body: buildScreenBody(),
       backgroundColor: Color(0xDD212121),
     );
   }
 
-  Widget buildAppBar(context, SongBloc bloc) {
+  Widget buildAppBar(context) {
     return AppBar(
       backgroundColor: Colors.black87,
       centerTitle: true,
@@ -43,13 +45,13 @@ class AddPlaylistState extends State<AddPlaylist> {
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
           label: Text('Save', style: TextStyle(color: Colors.white),),
-          onPressed: () => onSavePressed(bloc, context),
+          onPressed: () => onSavePressed(context),
         )
       ],
     );
   }
 
-  Widget buildScreenBody(SongBloc bloc) {
+  Widget buildScreenBody() {
     return ListView(
       children: <Widget>[
         Padding(
@@ -69,18 +71,18 @@ class AddPlaylistState extends State<AddPlaylist> {
           ),
         ),
         Text('Added Songs', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
-        showAddedSongs(bloc),
+        showAddedSongs(),
         Padding(
           padding: const EdgeInsets.only(top: 80.0, bottom: 50.0),
           child: Divider(color: Colors.white, height: 1.0,),
         ),
         Text('Library', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
-        showLibrary(bloc)
+        showLibrary()
       ],
     );
   }
 
-  Widget showAddedSongs(SongBloc bloc) {
+  Widget showAddedSongs() {
     return StreamBuilder(
       stream: bloc.playListStream,
       builder: (context, AsyncSnapshot<List<Song>> snapshot) {
@@ -103,7 +105,7 @@ class AddPlaylistState extends State<AddPlaylist> {
     );
   }
 
-  Widget showLibrary(SongBloc bloc) {
+  Widget showLibrary() {
     return StreamBuilder(
       stream: bloc.libraryStream,
       builder: (context, AsyncSnapshot<List<Song>> snapshot) {
@@ -123,7 +125,7 @@ class AddPlaylistState extends State<AddPlaylist> {
     );
   }
 
-  onSavePressed(SongBloc bloc, context) {
+  onSavePressed(context) {
     bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
     Navigator.pop(context);
   }

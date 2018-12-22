@@ -2,18 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
-import '../blocs/song_bloc_provider.dart';
+import '../blocs/song_bloc.dart';
 
-class Library extends StatelessWidget {
+class Library extends StatefulWidget {
+  @override
+  LibraryState createState() {
+    return new LibraryState();
+  }
+
+}
+
+class LibraryState extends State<Library> {
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bloc = SongBlocProvider.of(context);
+
+    //This should be called every time this widget rebuilds, as the data could have changed. So initState isn't sufficient
     bloc.fetchAllSongs();
 
     return Scaffold(
       backgroundColor: Colors.black87,
       floatingActionButton: buildFloatingActionButton(context),
-      body: buildLibrary(bloc),
+      body: buildLibrary(),
     );
   }
 
@@ -24,7 +40,7 @@ class Library extends StatelessWidget {
     );
   }
 
-  Widget buildLibrary(SongBloc bloc) {
+  Widget buildLibrary() {
     return StreamBuilder(
       stream: bloc.libraryStream,
       builder: (context, AsyncSnapshot<List<Song>>snapshot) {
@@ -46,4 +62,5 @@ class Library extends StatelessWidget {
       },
     );
   }
+
 }

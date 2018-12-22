@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/song.dart';
 
@@ -28,7 +29,7 @@ class LyricsScreen extends StatelessWidget {
     return Container(
       height: 250,
       width: 250,
-      child: Image.network(song.getSongImage()),
+      child: Image(image: CachedNetworkImageProvider(song.getSongImage())),
     );
   }
 

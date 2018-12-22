@@ -2,27 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/search_response.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
-import '../blocs/song_bloc_provider.dart';
+import '../blocs/song_bloc.dart';
 
-class Search extends StatelessWidget {
+class Search extends StatefulWidget {
+  @override
+  SearchState createState() {
+    return new SearchState();
+  }
+}
+
+class SearchState extends State<Search> {
   final TextEditingController _controller = new TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = SongBlocProvider.of(context);
 
     return Scaffold(
       appBar: buildAppBar(),
-      body: buildScreenBody(bloc, context),
+      body: buildScreenBody(context),
       backgroundColor: Color(0xDD212121),
     );
   }
 
-  Widget buildScreenBody(SongBloc bloc, context) {
+  Widget buildScreenBody(context) {
     return Column(
       children: <Widget>[
-        buildSearchBar(bloc),
-        showSearchResults(bloc, context),
+        buildSearchBar(),
+        showSearchResults(context),
       ],
     );
   }
@@ -38,7 +55,7 @@ class Search extends StatelessWidget {
     );
   }
 
-  Widget buildSearchBar(bloc) {
+  Widget buildSearchBar() {
     return TextField(
       controller: _controller,
       onChanged: bloc.searchTextChanged,
@@ -57,7 +74,7 @@ class Search extends StatelessWidget {
     );
   }
 
-  Widget showSearchResults(SongBloc bloc, context) {
+  Widget showSearchResults(context) {
     return StreamBuilder(
       stream: bloc.searchStream,
       builder: (context, AsyncSnapshot<List<Track>> snapshot) {

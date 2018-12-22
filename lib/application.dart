@@ -8,19 +8,17 @@ import 'blocs/song_bloc_provider.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SongBlocProvider(
-      child: MaterialApp(
-        theme: ThemeData(accentColor: Colors.white),
-        debugShowCheckedModeBanner: false,
-        title: "Lyrics Pal",
-        home: Home(),
-        initialRoute: '/',
-        routes: {
-          '/search': (context) => Search(),
-          '/confirm' : (context) => Confirm(),
-          '/add_playlist' : (context) => AddPlaylist(),
-        },
-      ),
-    );
+    return (MaterialApp(
+      theme: ThemeData(accentColor: Colors.white),
+      debugShowCheckedModeBanner: false,
+      title: "Lyrics Pal",
+      home: Home(),
+      initialRoute: '/',
+      routes: {
+        '/search': (context) => Search(),
+        '/confirm': (context) => Confirm(),
+        '/add_playlist': (context) => AddPlaylist(),
+      },
+    ));
   }
 }
