@@ -16,9 +16,12 @@ class Confirm extends StatefulWidget {
 
 class ConfirmState extends State<Confirm> {
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
+    bloc.checkIfAdded(widget.song.getArtist(), widget.song.getSongTitle());
     bloc.fetchLyrics(widget.song);
   }
 
@@ -33,6 +36,7 @@ class ConfirmState extends State<Confirm> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: buildAppBar(context),
       backgroundColor: Colors.black87,
       body: buildLyricsBody(),
@@ -55,7 +59,7 @@ class ConfirmState extends State<Confirm> {
 
   Widget buildActionButton(context) {
     return StreamBuilder(
-      initialData: true,
+      initialData: false,
       stream: bloc.canSaveStream,
       builder: (context, AsyncSnapshot<bool> snapshot) {
         return RaisedButton.icon(
@@ -75,17 +79,40 @@ class ConfirmState extends State<Confirm> {
   }
 
   void onSaveClicked(context) async {
-    bool success = await bloc.saveSongToLibrary(Track(artist: widget.song.getArtist(), name: widget.song.getSongTitle()), widget.song.getSongImage(), bloc.currentLyrics);
+    var alert = AlertDialog(
+      title: Text('Save?'),
+      content: Text('Are you sure you wish to save this song from your library?'),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: onSaveConfirmed,
+          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+        ),
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+        )
+      ],
+    );
+    showDialog(context: context, child: alert, barrierDismissible: true);
 
-    if(success) {
-      Navigator.pop(context);
-    } else {
-      print("Failed!");
-    }
   }
 
   void onDeleteClicked(context) async {
-    print("To be deleted");
+    var alert = AlertDialog(
+      title: Text('Delete?'),
+      content: Text('Are you sure you wish to delete this song from your library?'),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: onDeleteConfirmed,
+          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+        ),
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+        )
+      ],
+    );
+    showDialog(context: context, child: alert, barrierDismissible: true);
   }
 
   Widget buildLyricsBody() {
@@ -133,5 +160,20 @@ class ConfirmState extends State<Confirm> {
             );
           }
         });
+  }
+
+  void onDeleteConfirmed() {
+    Navigator.pop(context);
+    bloc.deleteSongFromDatabase(widget.song.getArtist(), widget.song.getSongTitle());
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been deleted!')));
+  }
+
+  void onSaveConfirmed() async {
+    Navigator.pop(context);
+    bool success = await bloc.saveSongToLibrary(Track(artist: widget.song.getArtist(), name: widget.song.getSongTitle()), widget.song.getSongImage(), bloc.currentLyrics);
+
+    if (success) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been saved!')));
+    }
   }
 }

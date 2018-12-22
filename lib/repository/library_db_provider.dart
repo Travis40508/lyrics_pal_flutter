@@ -51,6 +51,23 @@ class LibraryDbProvider implements LibraryStore {
     return Song.fromJson(result.first);
   }
 
+  @override
+  Future<Song> fetchSongByArtistAndTitle(String artist, String title) async {
+  var result = await db.query(table, where: 'artist = ? AND song = ?', whereArgs: [artist, title]);
+
+    if (result.length > 0) {
+      return Song.fromJson(result.first);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<int> deleteSongById(int id) async {
+    var result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
 }
 
 final libraryDb = LibraryDbProvider();

@@ -12,7 +12,7 @@ class SongBloc {
   final _lyricsSubject = BehaviorSubject<String>();
   final _allSongsSubject = BehaviorSubject<List<Song>>();
   final _addedSongsSubject = BehaviorSubject<List<Song>>();
-  final _canSaveSubject = PublishSubject<bool>();
+  final _canSaveSubject = BehaviorSubject<bool>();
   final _allPlaylists = PublishSubject<List<Playlist>>();
   final _playListSongs = PublishSubject<List<Song>>();
 
@@ -31,6 +31,7 @@ class SongBloc {
   List<Song> get currentSongs => _allSongsSubject.value;
   List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
   List<Song> get allSongs => _allSongsSubject.value;
+  bool get canSaveValue => _canSaveSubject.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -68,6 +69,8 @@ class SongBloc {
     int response = await repository.saveTrackToLibrary(song);
 
     if(response != 0) {
+      _canSaveSubject.sink.add(!canSaveValue);
+
       return true;
     } else {
       return false;
@@ -126,6 +129,7 @@ class SongBloc {
     }
     Playlist playlist = Playlist(playListTitle, ids);
     int response = await repository.savePlaylist(playlist);
+
     print(response);
   }
 
@@ -146,6 +150,24 @@ class SongBloc {
   void resetLists() {
     _allSongsSubject.sink.add(null);
     _addedSongsSubject.sink.add(null);
+  }
+
+  void checkIfAdded(String artist, String title) async {
+    Song song = await repository.fetchSongByArtistAndTitle(artist, title);
+    if (song != null) {
+      _canSaveSubject.sink.add(false);
+    } else {
+      _canSaveSubject.sink.add(true);
+    }
+  }
+
+  deleteSongFromDatabase(String artist, String songTitle) async {
+    Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
+
+    if (song != null) {
+      repository.deleteSongById(song.getSongId());
+      _canSaveSubject.sink.add(!canSaveValue);
+    }
   }
 }
 
