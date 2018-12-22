@@ -29,7 +29,7 @@ class LyricsScreen extends StatelessWidget {
     return Container(
       height: 250,
       width: 250,
-      child: Image(image: CachedNetworkImageProvider(song.getSongImage())),
+      child: Image(image: CachedNetworkImageProvider(song != null ? song.getSongImage() : null)),
     );
   }
 

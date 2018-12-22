@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
@@ -130,7 +131,7 @@ class ConfirmState extends State<Confirm> {
       width: 250,
       child: Hero(
         tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
-        child: Image.network(widget.song.getSongImage()),
+        child: Image(image: CachedNetworkImageProvider(widget.song.getSongImage())),
       ),
     );
   }

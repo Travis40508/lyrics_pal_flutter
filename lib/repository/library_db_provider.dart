@@ -48,7 +48,9 @@ class LibraryDbProvider implements LibraryStore {
   Future<Song> fetchSongById(int id) async {
     var result = await db.query(table, where: 'id = ?', whereArgs: [id]);
 
-    return Song.fromJson(result.first);
+    if (result.length > 0) {
+      return Song.fromJson(result.first);
+    }
   }
 
   @override

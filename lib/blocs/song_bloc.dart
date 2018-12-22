@@ -165,8 +165,11 @@ class SongBloc {
     Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
 
     if (song != null) {
-      repository.deleteSongById(song.getSongId());
-      _canSaveSubject.sink.add(!canSaveValue);
+      final result = await repository.deleteSongById(song.getSongId());
+      if (result != 0) {
+        _canSaveSubject.sink.add(!canSaveValue);
+        fetchAllSongs();
+      }
     }
   }
 }

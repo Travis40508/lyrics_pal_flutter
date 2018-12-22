@@ -5,8 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 class SongTile extends StatelessWidget {
   final AbstractSong song;
   final VoidCallback onPressed;
+  final VoidCallback onLongPressed;
 
-  SongTile({this.song, this.onPressed});
+  SongTile({this.song, this.onPressed, this.onLongPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class SongTile extends StatelessWidget {
         color: Colors.black87,
         child: ListTile(
           onTap: onPressed,
+          onLongPress: onLongPressed,
           leading: Container(
               width: 120.0,
               height: 120.0,

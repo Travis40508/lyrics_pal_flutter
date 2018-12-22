@@ -14,6 +14,8 @@ class Library extends StatefulWidget {
 
 class LibraryState extends State<Library> {
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   void dispose() {
     bloc.dispose();
@@ -27,6 +29,7 @@ class LibraryState extends State<Library> {
     bloc.fetchAllSongs();
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.black87,
       floatingActionButton: buildFloatingActionButton(context),
       body: buildLibrary(),
@@ -48,12 +51,16 @@ class LibraryState extends State<Library> {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return SongTile(song: snapshot.data[index], onPressed: () => Navigator.push(
+              return SongTile(
+                song: snapshot.data[index],
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Confirm(
                         song: snapshot.data[index],
-                      ))),);
+                      ))),
+                onLongPressed: () => showConfirmationDialog(snapshot.data[index]),
+              );
             },
           );
         } else {
@@ -63,4 +70,27 @@ class LibraryState extends State<Library> {
     );
   }
 
+  void showConfirmationDialog(Song song) {
+    var alert = AlertDialog(
+      title: Text('Delete?'),
+      content: Text('Are you sure you wish to delete this song from your library?'),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => onDeleteConfirmed(song),
+          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+        ),
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+        )
+      ],
+    );
+    showDialog(context: context, child: alert, barrierDismissible: true);
+  }
+
+  void onDeleteConfirmed(Song song) {
+    Navigator.pop(context);
+    bloc.deleteSongFromDatabase(song.getArtist(), song.getSongTitle());
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${song.getSongTitle()} has been deleted!')));
+  }
 }

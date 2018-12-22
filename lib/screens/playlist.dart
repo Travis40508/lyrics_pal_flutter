@@ -42,7 +42,9 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
         List<Widget> tabs = List();
         for (Song song in snapshot.data) {
-          tabs.add(Tab(text: song.songTitle,));
+          if (song != null) {
+            tabs.add(Tab(text: song.songTitle,));
+          }
         }
 
         return DefaultTabController(
