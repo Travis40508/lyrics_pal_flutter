@@ -53,7 +53,7 @@ class PlaylistsDbProvider implements PlaylistStore {
 
     return playlists;
   }
-  
+
   //TODO get these to actually work
 
   @override

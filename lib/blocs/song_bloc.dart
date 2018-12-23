@@ -203,28 +203,29 @@ class SongBloc {
 
   void deleteSongFromPlaylists(Song song) async {
     print('Deleting song from playlists');
-//    List<Playlist> allPlaylists = await repository.fetchAllPlaylists();
-//
-//    if (allPlaylists != null && allPlaylists.length > 0) {
-//      for (Playlist playlist in allPlaylists) {
-//        if (playlist.songs.contains(song.getSongId())) {
-//          playlist.songs.remove(song.getSongId());
-//          var updateResult = await repository.updatePlaylist(playlist);
-//          print('Update Result - $updateResult');
-//          if (playlist.songs.length == 0) {
-//            var deleteResult = await repository.deletePlaylist(playlist.id);
-//            print('Delete Result - $deleteResult');
-//          }
-//        }
-//        allPlaylists = await repository.fetchAllPlaylists();
-//        _allPlaylists.sink.add(allPlaylists);
-//      }
-//    } else {
-//      print('null playlists');
-//    }
+    List<Playlist> allPlaylists = await repository.fetchAllPlaylists();
+
+    if (allPlaylists != null && allPlaylists.length > 0) {
+      for (Playlist playlist in allPlaylists) {
+        if (playlist.songs.contains(song.getSongId())) {
+          playlist.songs.remove(song.getSongId());
+          var updateResult = await repository.updatePlaylist(playlist);
+          print('Update Result - $updateResult');
+          if (playlist.songs.length == 0) {
+            var deleteResult = await repository.deletePlaylist(playlist.id);
+            print('Delete Result - $deleteResult');
+          }
+        }
+        allPlaylists = await repository.fetchAllPlaylists();
+        _allPlaylists.sink.add(allPlaylists);
+      }
+    } else {
+      print('null playlists');
+    }
   }
 
   deletePlaylist(Playlist playlist) async {
+    print('Deleting playing with id: ${playlist.id}');
     int result = await repository.deletePlaylist(playlist.id);
     print('Delete result - $result');
     fetchAllPlaylists();

@@ -17,5 +17,6 @@ class Playlist {
 
   Playlist.fromJson(Map<String, dynamic> parsedJson)
   :     title = parsedJson['title'],
-        songs = jsonDecode(parsedJson['songs']);
+        songs = jsonDecode(parsedJson['songs']),
+        id = parsedJson['id'];
 }

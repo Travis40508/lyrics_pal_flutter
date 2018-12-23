@@ -14,6 +14,8 @@ class Playlists extends StatefulWidget {
 
 class PlaylistsState extends State<Playlists> {
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   void dispose() {
     bloc.dispose();
@@ -27,6 +29,7 @@ class PlaylistsState extends State<Playlists> {
     bloc.fetchAllPlaylists();
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.black87,
       body: showPlayLists(),
       floatingActionButton: buildFloatingActionButton(context),
@@ -60,11 +63,35 @@ class PlaylistsState extends State<Playlists> {
                   )
               )
               ),
-              onLongPressed: () => bloc.deletePlaylist(snapshot.data[index]),
+              onLongPressed: () => showDeleteDialog(snapshot.data[index]),
             );
           },
         );
       },
     );
+  }
+
+  showDeleteDialog(Playlist playlist) {
+    var alert = AlertDialog(
+      title: Text('Delete?'),
+      content: Text('Are you sure you wish to delete ${playlist.title}?'),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () => onDeleteConfirmed(playlist),
+          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+        ),
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+        )
+      ],
+    );
+    showDialog(context: context, child: alert, barrierDismissible: true);
+  }
+
+  void onDeleteConfirmed(Playlist playlist) {
+    Navigator.pop(context);
+    bloc.deletePlaylist(playlist);
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${playlist.title} has been deleted!')));
   }
 }
