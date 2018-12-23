@@ -2,8 +2,8 @@ import 'dart:convert';
 
 class Playlist {
   int id;
-  final String title;
-  final List<dynamic> songs;
+  String title;
+  List<dynamic> songs;
 
 
   Playlist(this.title, this.songs);

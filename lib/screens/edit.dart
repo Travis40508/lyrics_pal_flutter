@@ -46,7 +46,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
       backgroundColor: Colors.black,
       actions: <Widget>[
         InkWell(
-          onTap: null,
+          onTap: savePressed,
           child: Center(
             child: Text(
               'Save',
@@ -56,6 +56,11 @@ class _EditPlaylistState extends State<EditPlaylist> {
         ),
       ],
     );
+  }
+
+  void savePressed() {
+    bloc.savePressedOnEditingScreen(widget.playlist, _controller.text);
+    Navigator.pop(context);
   }
 
   Widget buildBody() {

@@ -273,6 +273,17 @@ class SongBloc {
     _nonPlayListSongs.sink.add(nonPlayListSongs);
     _playListSongs.sink.add(playListSongs);
   }
+
+  savePressedOnEditingScreen(Playlist playlist, String title) async {
+    playlist.title = title;
+    List<int> playListIds = List();
+    for(Song song in playListSongs) {
+      playListIds.add(song.id);
+    }
+    playlist.songs = playListIds;
+    int result = await repository.updatePlaylist(playlist);
+    print('Update playlist result - $result');
+  }
 }
 
 final SongBloc bloc = SongBloc();
