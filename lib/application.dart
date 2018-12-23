@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (MaterialApp(
-      theme: ThemeData(accentColor: Colors.white),
+      theme: ThemeData(accentColor: Colors.white, fontFamily: 'OpenSans'),
       debugShowCheckedModeBanner: false,
       title: "Lyrics Pal",
       home: Home(),

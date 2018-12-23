@@ -39,7 +39,7 @@ class LyricsScreen extends StatelessWidget {
       child: Text(
         song.getSongLyrics(),
         style: TextStyle(
-            color: Colors.white, fontSize: 24.0, fontFamily: 'roboto'),
+            color: Colors.white, fontSize: 24.0),
         textAlign: TextAlign.center,
       ),
     );
