@@ -16,28 +16,40 @@ class SongBloc {
   final _allPlaylists = PublishSubject<List<Playlist>>();
   final _playListSongs = PublishSubject<List<Song>>();
 
-
   Observable<List<Track>> get searchStream => _searchSubject.stream;
+
   Observable<String> get lyricsStream => _lyricsSubject.stream;
+
   Observable<List<Song>> get libraryStream => _allSongsSubject.stream;
+
   Observable<bool> get canSaveStream => _canSaveSubject.stream;
+
   Observable<List<Song>> get playListStream => _addedSongsSubject.stream;
+
   Observable<String> get playListTitleStream => _playListTitleSubject.stream;
+
   Observable<List<Playlist>> get allPlayListsStream => _allPlaylists.stream;
+
   Observable<List<Song>> get currentPlayListSongs => _playListSongs.stream;
 
   String get currentLyrics => _lyricsSubject.value;
+
   String get playListTitle => _playListTitleSubject.value;
+
   List<Song> get currentSongs => _allSongsSubject.value;
+
   List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
+
   List<Song> get allSongs => _allSongsSubject.value;
+
   bool get canSaveValue => _canSaveSubject.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
         .debounce(Duration(milliseconds: 600))
         .map((searchResults) => searchResults.results.trackMatches.trackList)
-        .listen((tracks) => _searchSubject.sink.add(tracks), onError: (error) => print(error));
+        .listen((tracks) => _searchSubject.sink.add(tracks),
+            onError: (error) => print(error));
   }
 
   void fetchLyrics(AbstractSong song) {
@@ -47,28 +59,34 @@ class SongBloc {
     } else {
       _lyricsSubject.sink.add(null);
       _canSaveSubject.sink.add(true);
-    Observable.fromFuture(repository.fetchLyrics(song.getArtist(), song.getSongTitle()))
-        .listen((lyricsResponse) => _lyricsSubject.sink.add(lyricsResponse.lyrics), onError: (error) => print(error));
+      Observable.fromFuture(
+              repository.fetchLyrics(song.getArtist(), song.getSongTitle()))
+          .listen(
+              (lyricsResponse) =>
+                  _lyricsSubject.sink.add(lyricsResponse.lyrics),
+              onError: (error) => print(error));
     }
   }
 
   void fetchAllSongs() {
-      Observable.fromFuture(repository.fetchAllSongs())
-          .listen((songs) => _allSongsSubject.sink.add(songs),
-          onError: (error) => print(error));
+    Observable.fromFuture(repository.fetchAllSongs()).listen(
+        (songs) => _allSongsSubject.sink.add(songs),
+        onError: (error) => print(error));
   }
 
   void fetchAllPlaylists() {
-    Observable.fromFuture(repository.fetchAllPlaylists())
-        .listen((playlists) => _allPlaylists.sink.add(playlists), onError: (error) => print('@@@ $error'));
+    Observable.fromFuture(repository.fetchAllPlaylists()).listen(
+        (playlists) => _allPlaylists.sink.add(playlists),
+        onError: (error) => print('@@@ $error'));
   }
 
-  Future<bool> saveSongToLibrary(Track track, String imageUrl, String lyrics) async {
+  Future<bool> saveSongToLibrary(
+      Track track, String imageUrl, String lyrics) async {
     Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
     int response = await repository.saveTrackToLibrary(song);
 
-    if(response != 0) {
+    if (response != 0) {
       _canSaveSubject.sink.add(!canSaveValue);
 
       return true;
@@ -101,12 +119,12 @@ class SongBloc {
 
     await _playListSongs.drain();
     _playListSongs.close();
-
   }
 
   void librarySongPressedInPlaylistCreation(Song song) {
     List<Song> currentSongList = currentSongs;
-    List<Song> playListSongs = addedPlaylistSongs == null ? List() : addedPlaylistSongs;
+    List<Song> playListSongs =
+        addedPlaylistSongs == null ? List() : addedPlaylistSongs;
     currentSongList.remove(song);
     playListSongs.add(song);
     _allSongsSubject.sink.add(currentSongList);
@@ -124,7 +142,7 @@ class SongBloc {
 
   void savePlaylistToDatabase(List<Song> songs) async {
     List<int> ids = List();
-    for(Song song in songs) {
+    for (Song song in songs) {
       ids.add(song.getSongId());
     }
     Playlist playlist = Playlist(playListTitle, ids);
@@ -136,7 +154,6 @@ class SongBloc {
   void onPlaylistTitleChanged(String text) {
     _playListTitleSubject.sink.add(text);
   }
-
 
   void fetchAllPlaylistSongs(Playlist playlist) async {
     List<Song> playListSongs = List();
@@ -161,16 +178,56 @@ class SongBloc {
     }
   }
 
-  deleteSongFromDatabase(String artist, String songTitle) async {
+  deleteSongFromDatabaseFromConfirmScreen(String artist, String songTitle) async {
     Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
 
     if (song != null) {
       final result = await repository.deleteSongById(song.getSongId());
-      if (result != 0) {
-        _canSaveSubject.sink.add(!canSaveValue);
-        fetchAllSongs();
-      }
+      print ('Delete song from data base result - $result');
+      _canSaveSubject.sink.add(!canSaveValue);
+      fetchAllSongs();
+      deleteSongFromPlaylists(song);
     }
+  }
+
+  deleteSongFromDatabaseFromLibraryScreen(String artist, String songTitle) async {
+    Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
+
+    if (song != null) {
+      final result = await repository.deleteSongById(song.getSongId());
+      print ('Delete song from data base result - $result');
+      fetchAllSongs();
+      deleteSongFromPlaylists(song);
+    }
+  }
+
+  void deleteSongFromPlaylists(Song song) async {
+    print('Deleting song from playlists');
+//    List<Playlist> allPlaylists = await repository.fetchAllPlaylists();
+//
+//    if (allPlaylists != null && allPlaylists.length > 0) {
+//      for (Playlist playlist in allPlaylists) {
+//        if (playlist.songs.contains(song.getSongId())) {
+//          playlist.songs.remove(song.getSongId());
+//          var updateResult = await repository.updatePlaylist(playlist);
+//          print('Update Result - $updateResult');
+//          if (playlist.songs.length == 0) {
+//            var deleteResult = await repository.deletePlaylist(playlist.id);
+//            print('Delete Result - $deleteResult');
+//          }
+//        }
+//        allPlaylists = await repository.fetchAllPlaylists();
+//        _allPlaylists.sink.add(allPlaylists);
+//      }
+//    } else {
+//      print('null playlists');
+//    }
+  }
+
+  deletePlaylist(Playlist playlist) async {
+    int result = await repository.deletePlaylist(playlist.id);
+    print('Delete result - $result');
+    fetchAllPlaylists();
   }
 }
 

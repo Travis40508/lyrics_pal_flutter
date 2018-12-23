@@ -56,7 +56,11 @@ class PlaylistsState extends State<Playlists> {
               title: snapshot.data[index].title,
               index: index,
               onPressed: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PlaylistScreen(playlist: snapshot.data[index],))),
+                  builder: (context) => PlaylistScreen(playlist: snapshot.data[index],
+                  )
+              )
+              ),
+              onLongPressed: () => bloc.deletePlaylist(snapshot.data[index]),
             );
           },
         );

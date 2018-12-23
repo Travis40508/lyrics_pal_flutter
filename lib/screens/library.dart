@@ -90,7 +90,7 @@ class LibraryState extends State<Library> {
 
   void onDeleteConfirmed(Song song) {
     Navigator.pop(context);
-    bloc.deleteSongFromDatabase(song.getArtist(), song.getSongTitle());
+    bloc.deleteSongFromDatabaseFromLibraryScreen(song.getArtist(), song.getSongTitle());
     _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${song.getSongTitle()} has been deleted!')));
   }
 }

@@ -53,6 +53,24 @@ class PlaylistsDbProvider implements PlaylistStore {
 
     return playlists;
   }
+  
+  //TODO get these to actually work
+
+  @override
+  Future<int> updatePlaylist(Playlist playlist) async {
+    var dbClient = await db;
+
+    var result = await dbClient.update(table, playlist.toMap(), where: 'id = ?', whereArgs: [playlist.id]);
+    return result;
+  }
+
+  @override
+  Future<int> deletePlaylist(int playListId) async {
+    var dbClient = await db;
+
+    var result = await dbClient.delete(table, where: 'id = ?', whereArgs: [playListId]);
+    return result;
+  }
 
 
 }

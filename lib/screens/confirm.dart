@@ -165,7 +165,7 @@ class ConfirmState extends State<Confirm> {
 
   void onDeleteConfirmed() {
     Navigator.pop(context);
-    bloc.deleteSongFromDatabase(widget.song.getArtist(), widget.song.getSongTitle());
+    bloc.deleteSongFromDatabaseFromConfirmScreen(widget.song.getArtist(), widget.song.getSongTitle());
     _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been deleted!')));
   }
 

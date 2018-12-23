@@ -4,9 +4,10 @@ class PlayListTile extends StatelessWidget {
 
   final String title;
   final VoidCallback onPressed;
+  final VoidCallback onLongPressed;
   final int index;
 
-  PlayListTile({this.title, this.onPressed, this.index});
+  PlayListTile({this.title, this.onPressed, this.index, this.onLongPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class PlayListTile extends StatelessWidget {
           color: Colors.black87,
           child: ListTile(
             onTap: onPressed,
+            onLongPress: onLongPressed,
             leading: CircleAvatar(
               backgroundColor: Colors.white,
               child: Text('${index + 1}', style: TextStyle(color: Colors.black87, fontSize: 18.0),),

@@ -72,4 +72,17 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
     int success = await libraryDb.deleteSongById(id);
     return success;
   }
+
+  @override
+  Future<int> deletePlaylist(int playListId) async {
+    int result = await playlistDb.deletePlaylist(playListId);
+    return result;
+  }
+
+  @override
+  Future<int> updatePlaylist(Playlist playlist) async {
+    int result = await playlistDb.updatePlaylist(playlist);
+
+    return result;
+  }
 }
