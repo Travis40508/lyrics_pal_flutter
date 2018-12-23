@@ -16,6 +16,7 @@ class SongBloc {
   final _allPlaylists = PublishSubject<List<Playlist>>();
   final _playListSongs = BehaviorSubject<List<Song>>();
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
+  final String defaultImage = 'https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=174&w=174';
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
 
@@ -100,6 +101,15 @@ class SongBloc {
     } else {
       return false;
     }
+  }
+
+  saveCustomSongToLibrary(String title, String artist, String imageUrl, String lyrics) async {
+    imageUrl = imageUrl != null && imageUrl.length != 0 ? imageUrl : defaultImage;
+    Song song = Song(artist, title, imageUrl, lyrics);
+
+    int result = await repository.saveTrackToLibrary(song);
+
+    print('Save result - $result');
   }
 
   void dispose() async {

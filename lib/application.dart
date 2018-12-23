@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lyrics_pal/screens/add_custom_lyrics.dart';
 import 'package:lyrics_pal/screens/add_playlist.dart';
 import 'package:lyrics_pal/screens/lyrics_options.dart';
 import 'package:lyrics_pal/screens/search.dart';
@@ -20,6 +21,7 @@ class App extends StatelessWidget {
         '/confirm': (context) => Confirm(),
         '/add_playlist': (context) => AddPlaylist(),
         '/lyrics_options': (context) => LyricsOptions(),
+        '/custom_lyrics': (context) => AddCustomLyrics(),
       },
     ));
   }

@@ -36,7 +36,7 @@ class LyricsOptions extends StatelessWidget {
         Expanded(
           child: LyricsOptionTile(
             text: 'Custom Lyrics',
-            onPressed: null,
+            onPressed: () => Navigator.pushNamed(context, '/custom_lyrics'),
           ),
         )
       ],

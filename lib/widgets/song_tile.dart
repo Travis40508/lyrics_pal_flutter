@@ -26,7 +26,10 @@ class SongTile extends StatelessWidget {
                   child: Hero(
                 tag: '${song.getSongTitle()} - ${song.getArtist()}',
                 child: Image(
-                    image: CachedNetworkImageProvider(song.getSongImage())),
+                  width: 174.0,
+                    height: 174.0,
+                    image: CachedNetworkImageProvider(song.getSongImage()), fit: BoxFit.cover,
+                ),
               ))),
           title: Text(
             '${song.getSongTitle()}',
