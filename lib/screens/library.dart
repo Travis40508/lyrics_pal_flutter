@@ -39,7 +39,7 @@ class LibraryState extends State<Library> {
   Widget buildFloatingActionButton(context) {
     return FloatingActionButton(
       mini: true,
-      child: IconButton(icon: Icon(Icons.add, color: Colors.black87,), onPressed: () => Navigator.pushNamed(context, '/search')),
+      child: IconButton(icon: Icon(Icons.add, color: Colors.black87,), onPressed: () => Navigator.pushNamed(context, '/lyrics_options')),
     );
   }
 
