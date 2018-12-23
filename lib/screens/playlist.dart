@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/edit.dart';
 import 'package:lyrics_pal/screens/lyrics.dart';
 import '../blocs/song_bloc.dart';
 
@@ -16,7 +17,6 @@ class PlaylistScreen extends StatefulWidget {
 }
 
 class PlaylistScreenState extends State<PlaylistScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -29,10 +29,8 @@ class PlaylistScreenState extends State<PlaylistScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: bloc.currentPlayListSongs,
       builder: (context, AsyncSnapshot<List<Song>> snapshot) {
@@ -43,7 +41,9 @@ class PlaylistScreenState extends State<PlaylistScreen> {
         List<Widget> tabs = List();
         for (Song song in snapshot.data) {
           if (song != null) {
-            tabs.add(Tab(text: song.songTitle,));
+            tabs.add(Tab(
+              text: song.songTitle,
+            ));
           }
         }
 
@@ -67,6 +67,20 @@ class PlaylistScreenState extends State<PlaylistScreen> {
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
+      actions: <Widget>[
+        InkWell(
+          child: Center(
+            child: Text(
+              'Edit',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+          onTap: () => onEditTapped(),
+        )
+      ],
       bottom: TabBar(tabs: tabs),
     );
   }
@@ -74,10 +88,19 @@ class PlaylistScreenState extends State<PlaylistScreen> {
   Widget buildTabs(List<Song> songs) {
     List<Widget> tabScreens = List();
     for (Song song in songs) {
-      tabScreens.add(LyricsScreen(song: song,));
+      tabScreens.add(LyricsScreen(
+        song: song,
+      ));
     }
     return TabBarView(
       children: tabScreens,
     );
+  }
+
+  void onEditTapped() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => EditPlaylist(playlist: widget.playlist,)
+    )
+  );
   }
 }

@@ -14,7 +14,8 @@ class SongBloc {
   final _addedSongsSubject = BehaviorSubject<List<Song>>();
   final _canSaveSubject = BehaviorSubject<bool>();
   final _allPlaylists = PublishSubject<List<Playlist>>();
-  final _playListSongs = PublishSubject<List<Song>>();
+  final _playListSongs = BehaviorSubject<List<Song>>();
+  final _nonPlayListSongs = BehaviorSubject<List<Song>>();
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
 
@@ -32,6 +33,8 @@ class SongBloc {
 
   Observable<List<Song>> get currentPlayListSongs => _playListSongs.stream;
 
+  Observable<List<Song>> get nonPlayListSongs => _nonPlayListSongs.stream;
+
   String get currentLyrics => _lyricsSubject.value;
 
   String get playListTitle => _playListTitleSubject.value;
@@ -41,6 +44,10 @@ class SongBloc {
   List<Song> get addedPlaylistSongs => _addedSongsSubject.value;
 
   List<Song> get allSongs => _allSongsSubject.value;
+
+  List<Song> get playListSongs => _playListSongs.value;
+
+  List<Song> get nonPlayListSongsValue => _nonPlayListSongs.value;
 
   bool get canSaveValue => _canSaveSubject.value;
 
@@ -119,26 +126,11 @@ class SongBloc {
 
     await _playListSongs.drain();
     _playListSongs.close();
+
+    await _nonPlayListSongs.drain();
+    _nonPlayListSongs.close();
   }
 
-  void librarySongPressedInPlaylistCreation(Song song) {
-    List<Song> currentSongList = currentSongs;
-    List<Song> playListSongs =
-        addedPlaylistSongs == null ? List() : addedPlaylistSongs;
-    currentSongList.remove(song);
-    playListSongs.add(song);
-    _allSongsSubject.sink.add(currentSongList);
-    _addedSongsSubject.sink.add(playListSongs);
-  }
-
-  void playListSongPressedInPlaylistCreation(Song song) {
-    List<Song> currentSongList = currentSongs;
-    List<Song> playListSongs = addedPlaylistSongs;
-    playListSongs.remove(song);
-    currentSongList.add(song);
-    _allSongsSubject.sink.add(currentSongList);
-    _addedSongsSubject.sink.add(playListSongs);
-  }
 
   void savePlaylistToDatabase(List<Song> songs) async {
     List<int> ids = List();
@@ -229,6 +221,57 @@ class SongBloc {
     int result = await repository.deletePlaylist(playlist.id);
     print('Delete result - $result');
     fetchAllPlaylists();
+  }
+
+  void fetchNonPlayListSongs(Playlist playlist) async {
+    List<Song> allSongs = await repository.fetchAllSongs();
+    List<Song> playListSongs = List();
+
+    for (int songId in playlist.songs) {
+      Song song = await repository.fetchSongById(songId);
+      allSongs.remove(song);
+      allSongs.removeWhere((currentSong) => currentSong.getSongId() == song.getSongId());
+      playListSongs.add(song);
+    }
+    _playListSongs.sink.add(playListSongs);
+    _nonPlayListSongs.sink.add(allSongs);
+  }
+
+  void librarySongPressedInPlaylistCreation(Song song) {
+    List<Song> currentSongList = currentSongs;
+    List<Song> playListSongs =
+    addedPlaylistSongs == null ? List() : addedPlaylistSongs;
+    currentSongList.remove(song);
+    playListSongs.add(song);
+    _allSongsSubject.sink.add(currentSongList);
+    _addedSongsSubject.sink.add(playListSongs);
+  }
+
+  void playListSongPressedInPlaylistCreation(Song song) {
+    List<Song> currentSongList = currentSongs;
+    List<Song> playListSongs = addedPlaylistSongs;
+    playListSongs.remove(song);
+    currentSongList.add(song);
+    _allSongsSubject.sink.add(currentSongList);
+    _addedSongsSubject.sink.add(playListSongs);
+  }
+
+  playListSongPressedInPlaylistEditing(Song song) {
+    List<Song> nonPlayListSongs = nonPlayListSongsValue;
+    List<Song> playListSongs = this.playListSongs;
+    playListSongs.remove(song);
+    nonPlayListSongs.add(song);
+    _nonPlayListSongs.sink.add(nonPlayListSongs);
+    _playListSongs.sink.add(playListSongs);
+  }
+
+  librarySongPressedInPlaylistEditing(Song song) {
+    List<Song> nonPlayListSongs = nonPlayListSongsValue;
+    List<Song> playListSongs = this.playListSongs;
+    nonPlayListSongs.remove(song);
+    playListSongs.add(song);
+    _nonPlayListSongs.sink.add(nonPlayListSongs);
+    _playListSongs.sink.add(playListSongs);
   }
 }
 
