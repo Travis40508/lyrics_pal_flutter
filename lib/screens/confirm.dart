@@ -126,12 +126,17 @@ class ConfirmState extends State<Confirm> {
   }
 
   Widget getHeader() {
-    return Container(
-      height: 250,
-      width: 250,
-      child: Hero(
-        tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
-        child: Image(image: CachedNetworkImageProvider(widget.song.getSongImage())),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        
+        child: Hero(
+          tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
+          child: Image(
+            fit: BoxFit.cover,
+              image: CachedNetworkImageProvider(widget.song.getSongImage())
+          ),
+        ),
       ),
     );
   }
