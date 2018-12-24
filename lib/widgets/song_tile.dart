@@ -28,7 +28,7 @@ class SongTile extends StatelessWidget {
                 child: Image(
                   width: 174.0,
                     height: 174.0,
-                    image: CachedNetworkImageProvider(song.getSongImage()), fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(song.getSongImage()),
                 ),
               ))),
           title: Text(

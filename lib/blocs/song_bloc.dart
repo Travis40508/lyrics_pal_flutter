@@ -16,7 +16,7 @@ class SongBloc {
   final _allPlaylists = PublishSubject<List<Playlist>>();
   final _playListSongs = BehaviorSubject<List<Song>>();
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
-  final String defaultImage = 'https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=174&w=174';
+  final String defaultImage = 'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
 
