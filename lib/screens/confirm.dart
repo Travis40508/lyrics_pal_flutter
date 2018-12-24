@@ -132,8 +132,8 @@ class ConfirmState extends State<Confirm> {
         child: Hero(
           tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
           child: Image(
-              width: 174.0,
-              height: 174.0,
+              width: 250.0,
+              height: 250.0,
               image: CachedNetworkImageProvider(widget.song.getSongImage()),
           ),
         ),
