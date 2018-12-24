@@ -41,6 +41,7 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
   @override
   Future<List<Song>> fetchAllSongs() async {
     List<Song> allSongs = await libraryDb.fetchAllSongs();
+    allSongs.sort((a, b) => a.getSongTitle().toUpperCase().compareTo(b.getSongTitle().toUpperCase()));
     return allSongs;
   }
 
