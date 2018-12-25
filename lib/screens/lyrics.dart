@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/song.dart';
+import '../blocs/song_bloc.dart';
 
 class LyricsScreen extends StatelessWidget {
 
@@ -39,7 +40,7 @@ class LyricsScreen extends StatelessWidget {
       child: Text(
         song.getSongLyrics(),
         style: TextStyle(
-            color: Colors.white, fontSize: 24.0),
+            color: Colors.white, fontSize: bloc.fontSizeValue),
         textAlign: TextAlign.center,
       ),
     );

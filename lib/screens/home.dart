@@ -21,6 +21,14 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.black87,
       title: Text("Home", style: TextStyle(color: Colors.white),),
       centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.settings, color: Colors.white,
+          ),
+          onPressed: () => Navigator.pushNamed(context, '/settings'),
+        )
+      ],
       bottom: TabBar(
         tabs: <Widget>[
           Tab(icon: Icon(Icons.queue_music), text: "Playlists",),

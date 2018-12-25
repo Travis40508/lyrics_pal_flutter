@@ -16,6 +16,7 @@ class SongBloc {
   final _allPlaylists = PublishSubject<List<Playlist>>();
   final _playListSongs = BehaviorSubject<List<Song>>();
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
+  final _fontSize = BehaviorSubject<double>();
   final String defaultImage = 'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
@@ -36,6 +37,8 @@ class SongBloc {
 
   Observable<List<Song>> get nonPlayListSongs => _nonPlayListSongs.stream;
 
+  Observable<double> get fontSize => _fontSize.stream;
+
   String get currentLyrics => _lyricsSubject.value;
 
   String get playListTitle => _playListTitleSubject.value;
@@ -51,6 +54,8 @@ class SongBloc {
   List<Song> get nonPlayListSongsValue => _nonPlayListSongs.value;
 
   bool get canSaveValue => _canSaveSubject.value;
+
+  double get fontSizeValue => _fontSize.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -139,6 +144,9 @@ class SongBloc {
 
     await _nonPlayListSongs.drain();
     _nonPlayListSongs.close();
+
+    await _fontSize.drain();
+    _fontSize.close();
   }
 
 
@@ -293,6 +301,18 @@ class SongBloc {
     playlist.songs = playListIds;
     int result = await repository.updatePlaylist(playlist);
     print('Update playlist result - $result');
+  }
+
+  onFontSizeChanged(double value) {
+    _fontSize.sink.add(value);
+  }
+
+  saveSettingsPressed() async {
+    await repository.setPreferredFontSize(fontSizeValue);
+  }
+
+  void resetFont() async {
+    _fontSize.sink.add(await repository.getPreferredFontSize());
   }
 }
 

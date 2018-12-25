@@ -160,7 +160,7 @@ class ConfirmState extends State<Confirm> {
               child: Text(
                 '${snapshot.data}',
                 style: TextStyle(
-                    color: Colors.white, fontSize: 24.0, fontFamily: 'roboto'),
+                    color: Colors.white, fontSize: bloc.fontSizeValue, fontFamily: 'roboto'),
                 textAlign: TextAlign.center,
               ),
             );

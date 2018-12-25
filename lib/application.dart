@@ -4,6 +4,7 @@ import 'package:lyrics_pal/screens/add_playlist.dart';
 import 'package:lyrics_pal/screens/lyrics_options.dart';
 import 'package:lyrics_pal/screens/search.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
+import 'package:lyrics_pal/screens/settings.dart';
 import 'screens/home.dart';
 import 'blocs/song_bloc_provider.dart';
 
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
         '/add_playlist': (context) => AddPlaylist(),
         '/lyrics_options': (context) => LyricsOptions(),
         '/custom_lyrics': (context) => AddCustomLyrics(),
+        '/settings': (context) => SettingsScreen(),
       },
     ));
   }
