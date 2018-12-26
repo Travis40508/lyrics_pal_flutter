@@ -17,7 +17,6 @@ class Confirm extends StatefulWidget {
 }
 
 class ConfirmState extends State<Confirm> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -25,7 +24,8 @@ class ConfirmState extends State<Confirm> {
     super.initState();
     bloc.checkIfAdded(widget.song.getArtist(), widget.song.getSongTitle());
     bloc.fetchLyrics(widget.song);
-    bloc.fetchYoutubeVideoId(widget.song.getArtist(), widget.song.getSongTitle());
+    bloc.fetchYoutubeVideoId(
+        widget.song.getArtist(), widget.song.getSongTitle());
   }
 
   @override
@@ -35,10 +35,8 @@ class ConfirmState extends State<Confirm> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: buildAppBar(context),
@@ -56,63 +54,102 @@ class ConfirmState extends State<Confirm> {
       ),
       centerTitle: true,
       actions: <Widget>[
-        buildActionButton(context),
+        buildActionButton(),
+        buildEditWidget(),
       ],
     );
   }
 
-  Widget buildActionButton(context) {
+  Widget buildActionButton() {
     return StreamBuilder(
       initialData: false,
       stream: bloc.canSaveStream,
       builder: (context, AsyncSnapshot<bool> snapshot) {
-        return RaisedButton.icon(
-            color: Colors.transparent,
-            onPressed: () => snapshot.data ? onSaveClicked(context) : onDeleteClicked(context),
-            icon: Icon(
-              snapshot.data ? Icons.save : Icons.delete,
-              color: Colors.white,
-            ),
-            label: Text(
-              snapshot.data ? 'Save' : 'Delete',
-              style: TextStyle(color: Colors.white),
-            ));
+        return Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+              onTap: () => snapshot.data
+                  ? onSaveClicked(context)
+                  : onDeleteClicked(context),
+              child: Center(
+                child: Text(
+                  snapshot.data ? 'Save' : 'Delete',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),),
+        );
       },
     );
+  }
 
+  Widget buildEditWidget() {
+    return StreamBuilder(
+      initialData: false,
+      stream: bloc.canSaveStream,
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.data) {
+          return Container();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+              onTap: () => null,
+              child: Center(
+                child: Text(
+                'Edit',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              ),
+        ),
+        );
+      }
+    );
   }
 
   void onSaveClicked(context) async {
     var alert = AlertDialog(
       title: Text('Save?'),
-      content: Text('Are you sure you wish to save this song from your library?'),
+      content:
+          Text('Are you sure you wish to save this song from your library?'),
       actions: <Widget>[
         FlatButton(
           onPressed: onSaveConfirmed,
-          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+          child: Text(
+            'Ok',
+            style: TextStyle(color: Colors.black87),
+          ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.black87),
+          ),
         )
       ],
     );
     showDialog(context: context, child: alert, barrierDismissible: true);
-
   }
 
   void onDeleteClicked(context) async {
     var alert = AlertDialog(
       title: Text('Delete?'),
-      content: Text('Are you sure you wish to delete this song from your library?'),
+      content:
+          Text('Are you sure you wish to delete this song from your library?'),
       actions: <Widget>[
         FlatButton(
           onPressed: onDeleteConfirmed,
-          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+          child: Text(
+            'Ok',
+            style: TextStyle(color: Colors.black87),
+          ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.black87),
+          ),
         )
       ],
     );
@@ -142,29 +179,36 @@ class ConfirmState extends State<Confirm> {
             ),
           ),
           Center(
-          child: StreamBuilder(
-            stream: bloc.youtubeVideoId,
-            builder: (context, AsyncSnapshot<String> snapshot) {
-              return InkWell(
-                onTap: snapshot.hasData ? () => launchYoutubeScreen(snapshot.data) : null,
+            child: StreamBuilder(
+              stream: bloc.youtubeVideoId,
+              builder: (context, AsyncSnapshot<String> snapshot) {
+                return InkWell(
+                  onTap: snapshot.hasData
+                      ? () => launchYoutubeScreen(snapshot.data)
+                      : null,
                   child: Column(
                     children: <Widget>[
                       Icon(
-                        Icons.ondemand_video, color: snapshot.hasData ? Colors.redAccent : Colors.grey,
+                        Icons.ondemand_video,
+                        color:
+                            snapshot.hasData ? Colors.redAccent : Colors.grey,
                       ),
                       Text(
-                        snapshot.hasData ? 'Practice Song (beta)' : 'Video not Available',
+                        snapshot.hasData
+                            ? 'Practice Song (beta)'
+                            : 'Video not Available',
                         style: TextStyle(
-                          fontSize: 16.0,
-                          color: snapshot.hasData ? Colors.redAccent : Colors.grey,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 16.0,
+                            color: snapshot.hasData
+                                ? Colors.redAccent
+                                : Colors.grey,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-              );
-            },
-          ),
+                );
+              },
+            ),
           )
         ],
       ),
@@ -193,7 +237,10 @@ class ConfirmState extends State<Confirm> {
                   child: Text(
                     '${snapshot.data}',
                     style: TextStyle(
-                        color: Colors.white, fontSize: fontSnapshot.hasData ? fontSnapshot.data : 24.0, fontFamily: 'roboto'),
+                        color: Colors.white,
+                        fontSize:
+                            fontSnapshot.hasData ? fontSnapshot.data : 24.0,
+                        fontFamily: 'roboto'),
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -205,18 +252,26 @@ class ConfirmState extends State<Confirm> {
 
   void onDeleteConfirmed() {
     Navigator.pop(context);
-    bloc.deleteSongFromDatabaseFromConfirmScreen(widget.song.getArtist(), widget.song.getSongTitle());
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been deleted!')));
+    bloc.deleteSongFromDatabaseFromConfirmScreen(
+        widget.song.getArtist(), widget.song.getSongTitle());
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('${widget.song.getSongTitle()} has been deleted!')));
   }
 
   void onSaveConfirmed() async {
-    bool success = await bloc.saveSongToLibrary(Track(artist: widget.song.getArtist(), name: widget.song.getSongTitle()), widget.song.getSongImage(), bloc.currentLyrics);
+    bool success = await bloc.saveSongToLibrary(
+        Track(
+            artist: widget.song.getArtist(), name: widget.song.getSongTitle()),
+        widget.song.getSongImage(),
+        bloc.currentLyrics);
 
     if (success) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been saved!')));
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${widget.song.getSongTitle()} has been saved!')));
       Navigator.pop(context);
     } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Error - Please try again.')));
+      _scaffoldKey.currentState
+          .showSnackBar(SnackBar(content: Text('Error - Please try again.')));
     }
   }
 
@@ -226,6 +281,6 @@ class ConfirmState extends State<Confirm> {
         videoId: youtubeId,
         autoPlay: true, //default falase
         fullScreen: false //default false
-    );
+        );
   }
 }
