@@ -14,7 +14,7 @@ class YoutubeApi implements YoutubeSource {
 
   @override
   Future<YoutubeResponse> getYoutubeResponse(String artist, String title) async {
-    final url = '$_baseUrl$_apiKey&q=$artist $title';
+    final url = '$_baseUrl$_apiKey&q=$artist $title karaoke&videoEmbeddable=true&type=video';
     print('Attempting to request $url');
     final response = await client.get(url);
     final jsonResponse = json.decode(response.body);

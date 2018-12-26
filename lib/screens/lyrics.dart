@@ -35,14 +35,19 @@ class LyricsScreen extends StatelessWidget {
   }
 
   Widget getLyricsBody() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: Text(
-        song.getSongLyrics(),
-        style: TextStyle(
-            color: Colors.white, fontSize: bloc.fontSizeValue),
-        textAlign: TextAlign.center,
-      ),
+    return StreamBuilder(
+      stream: bloc.fontSize,
+      builder: (context, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+          child: Text(
+            song.getSongLyrics(),
+            style: TextStyle(
+                color: Colors.white, fontSize: snapshot.hasData ? snapshot.data : 24.0),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
     );
   }
 

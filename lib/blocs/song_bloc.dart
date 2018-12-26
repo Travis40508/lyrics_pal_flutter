@@ -99,13 +99,16 @@ class SongBloc {
 
   Future<bool> saveSongToLibrary(
       Track track, String imageUrl, String lyrics) async {
-    Song song = Song(track.artist, track.name, imageUrl, lyrics);
+    int response;
+    if (lyrics != null && lyrics.length != 0) {
+      Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
-    int response = await repository.saveTrackToLibrary(song);
+     response = await repository.saveTrackToLibrary(song);
+    }
+    print('Save response - $response');
 
     if (response != 0) {
       _canSaveSubject.sink.add(!canSaveValue);
-
       return true;
     } else {
       return false;
@@ -319,7 +322,7 @@ class SongBloc {
   }
 
   saveSettingsPressed() async {
-    await repository.setPreferredFontSize(fontSizeValue);
+    repository.setPreferredFontSize(fontSizeValue);
   }
 
   void resetFont() async {
@@ -331,6 +334,15 @@ class SongBloc {
         .map((response) => response.items[0].id.videoId)
         .listen((id) => _youtubeId.sink.add(id),
             onError: (error) => print(error));
+  }
+
+  void fetchFontSize() async {
+    double fontSize = await repository.getPreferredFontSize();
+    _fontSize.sink.add(fontSize);
+  }
+
+  void resetYoutubeId() {
+    _youtubeId.sink.add(null);
   }
 }
 

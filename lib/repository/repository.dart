@@ -97,17 +97,16 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
   Future<double> getPreferredFontSize() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     double size = prefs.getDouble('fontSize');
-    if (size == null || size == 0) {
-      await prefs.setDouble('fontSize', 24.0);
-      size = prefs.getDouble('fontSize');
-    }
     return size;
   }
 
   @override
   setPreferredFontSize(double value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setDouble('fontSize', value);
+    double currentFontSize = await getPreferredFontSize();
+    if(value != currentFontSize) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setDouble('fontSize', value);
+    }
   }
 
   @override

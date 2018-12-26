@@ -8,6 +8,11 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
 
+  @override
+  void initState() {
+    super.initState();
+    bloc.fetchFontSize();
+  }
 
   @override
   void dispose() {
@@ -60,15 +65,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               flex: 1,
               child: StreamBuilder(
                   stream: bloc.fontSize,
-                  initialData: 24.0,
+                  initialData: bloc.fontSizeValue != null ? bloc.fontSizeValue : 24.0,
                   builder: (context, AsyncSnapshot<double> snapshot) {
                     return Column(
                       children: [
                         Text(
-                          'Font Size - ${snapshot.data.floor()}',
+                          'Lyrics - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: snapshot.data
+                            fontSize: snapshot.hasData ? snapshot.data : 24.0,
                           ),
                         ),
                         Slider(
@@ -76,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         min: 11.0,
                         max: 72.0,
                         onChanged: bloc.onFontSizeChanged,
-                        value: snapshot.data,
+                        value: snapshot.hasData ? snapshot.data : 24.0,
                       ),
                       ]
                     );

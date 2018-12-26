@@ -3,7 +3,15 @@ import 'package:lyrics_pal/screens/playlists.dart';
 import 'library.dart';
 import 'package:flutter/cupertino.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+
+  @override
+  HomeState createState() {
+    return new HomeState();
+  }
+}
+
+class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {

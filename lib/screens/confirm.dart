@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
-import 'package:lyrics_pal/screens/youtube_screen.dart';
 import '../blocs/song_bloc.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
 
 class Confirm extends StatefulWidget {
   final AbstractSong song;
@@ -30,6 +30,7 @@ class ConfirmState extends State<Confirm> {
 
   @override
   void dispose() {
+    bloc.resetYoutubeId();
     bloc.dispose();
     super.dispose();
   }
@@ -146,8 +147,20 @@ class ConfirmState extends State<Confirm> {
             builder: (context, AsyncSnapshot<String> snapshot) {
               return InkWell(
                 onTap: snapshot.hasData ? () => launchYoutubeScreen(snapshot.data) : null,
-                  child: Icon(
-                    Icons.ondemand_video, color: snapshot.hasData ? Colors.redAccent : Colors.grey,
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.ondemand_video, color: snapshot.hasData ? Colors.redAccent : Colors.grey,
+                      ),
+                      Text(
+                        snapshot.hasData ? 'Practice Song (beta)' : 'Video not Available',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: snapshot.hasData ? Colors.redAccent : Colors.grey,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
                   ),
               );
             },
@@ -172,14 +185,19 @@ class ConfirmState extends State<Confirm> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Text(
-                '${snapshot.data}',
-                style: TextStyle(
-                    color: Colors.white, fontSize: bloc.fontSizeValue, fontFamily: 'roboto'),
-                textAlign: TextAlign.center,
-              ),
+            return StreamBuilder(
+              stream: bloc.fontSize,
+              builder: (context, fontSnapshot) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Text(
+                    '${snapshot.data}',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: fontSnapshot.hasData ? fontSnapshot.data : 24.0, fontFamily: 'roboto'),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              },
             );
           }
         });
@@ -192,18 +210,22 @@ class ConfirmState extends State<Confirm> {
   }
 
   void onSaveConfirmed() async {
-    Navigator.pop(context);
     bool success = await bloc.saveSongToLibrary(Track(artist: widget.song.getArtist(), name: widget.song.getSongTitle()), widget.song.getSongImage(), bloc.currentLyrics);
 
     if (success) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been saved!')));
+      Navigator.pop(context);
+    } else {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Error - Please try again.')));
     }
   }
 
   launchYoutubeScreen(String youtubeId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => YoutubeScreen(title: widget.song.getSongTitle(), youtubeId: youtubeId))
+    FlutterYoutube.playYoutubeVideoById(
+        apiKey: "AIzaSyCbS_9gcgFNop0nSaV9bBddviOXUUQShAc",
+        videoId: youtubeId,
+        autoPlay: true, //default falase
+        fullScreen: false //default false
     );
   }
 }
