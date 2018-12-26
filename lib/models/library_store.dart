@@ -6,4 +6,5 @@ abstract class LibraryStore {
   Future<Song> fetchSongById(int id);
   Future<Song> fetchSongByArtistAndTitle(String artist, String title);
   Future<int> deleteSongById(int id);
+  Future<int> updateSongById(Song song);
 }

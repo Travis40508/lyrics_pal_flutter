@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
+import 'package:lyrics_pal/screens/edit_lyrics.dart';
 import '../blocs/song_bloc.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
 
@@ -23,7 +24,6 @@ class ConfirmState extends State<Confirm> {
   void initState() {
     super.initState();
     bloc.checkIfAdded(widget.song.getArtist(), widget.song.getSongTitle());
-    bloc.fetchLyrics(widget.song);
     bloc.fetchYoutubeVideoId(
         widget.song.getArtist(), widget.song.getSongTitle());
   }
@@ -37,6 +37,9 @@ class ConfirmState extends State<Confirm> {
 
   @override
   Widget build(BuildContext context) {
+
+    bloc.fetchLyrics(widget.song);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: buildAppBar(context),
@@ -94,7 +97,7 @@ class ConfirmState extends State<Confirm> {
         return Padding(
           padding: const EdgeInsets.only(right: 18.0),
           child: InkWell(
-              onTap: () => null,
+              onTap: () => onEditTapped(),
               child: Center(
                 child: Text(
                 'Edit',
@@ -104,6 +107,12 @@ class ConfirmState extends State<Confirm> {
         );
       }
     );
+  }
+
+  void onEditTapped() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditLyrics(song: widget.song)));
   }
 
   void onSaveClicked(context) async {

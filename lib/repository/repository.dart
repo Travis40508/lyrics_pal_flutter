@@ -114,4 +114,11 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
     YoutubeResponse youtubeResponse = await youtubeApi.getYoutubeResponse(artist, title);
     return youtubeResponse;
   }
+
+  @override
+  Future<int> updateSongById(Song song) async {
+    int result = await libraryDb.updateSongById(song);
+    print('Update result - $result');
+    return result;
+  }
 }

@@ -16,7 +16,7 @@ class LibraryDbProvider implements LibraryStore {
 
     db = await openDatabase(path, version: 1,
         onCreate: (Database newDb, int version) {
-          newDb.execute("""
+      newDb.execute("""
           CREATE TABLE $table
           (
             id INTEGER PRIMARY KEY,
@@ -26,7 +26,7 @@ class LibraryDbProvider implements LibraryStore {
             lyrics TEXT
           )
         """);
-        });
+    });
   }
 
   @override
@@ -55,7 +55,8 @@ class LibraryDbProvider implements LibraryStore {
 
   @override
   Future<Song> fetchSongByArtistAndTitle(String artist, String title) async {
-  var result = await db.query(table, where: 'artist = ? AND song = ?', whereArgs: [artist, title]);
+    var result = await db.query(table,
+        where: 'artist = ? AND song = ?', whereArgs: [artist, title]);
 
     if (result.length > 0) {
       return Song.fromJson(result.first);
@@ -70,6 +71,12 @@ class LibraryDbProvider implements LibraryStore {
     return result;
   }
 
+  @override
+  Future<int> updateSongById(Song song) async {
+    var result = await db
+        .update(table, song.toMap(), where: 'id = ?', whereArgs: [song.id]);
+    return result;
+  }
 }
 
 final libraryDb = LibraryDbProvider();

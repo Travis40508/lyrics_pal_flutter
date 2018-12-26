@@ -5,7 +5,7 @@ class Song implements AbstractSong {
   final String artist;
   final String songTitle;
   final String imageUrl;
-  final String lyrics;
+  String lyrics;
 
 
   Song(this.artist, this.songTitle, this.imageUrl, this.lyrics);
@@ -49,5 +49,9 @@ class Song implements AbstractSong {
   @override
   int getSongId() {
     return id;
+  }
+
+  void setNewLyrics(String newLyrics) {
+    lyrics = newLyrics;
   }
 }

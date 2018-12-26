@@ -1,4 +1,5 @@
 import 'package:lyrics_pal/models/abstract_song.dart';
+import 'package:lyrics_pal/models/lyrics_response.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/repository/repository.dart';
@@ -69,8 +70,9 @@ class SongBloc {
             onError: (error) => print(error));
   }
 
-  void fetchLyrics(AbstractSong song) {
+  void fetchLyrics(AbstractSong song) async {
     if (song.getSongLyrics() != null) {
+      song = await repository.fetchSongById(song.getSongId());
       _lyricsSubject.sink.add(song.getSongLyrics());
       _canSaveSubject.sink.add(false);
     } else {
@@ -343,6 +345,16 @@ class SongBloc {
 
   void resetYoutubeId() {
     _youtubeId.sink.add(null);
+  }
+
+  onSaveEditLyricsTapped(Song song, String newLyrics) async {
+    song.setNewLyrics(newLyrics);
+    await repository.updateSongById(song);
+  }
+
+  Future<String> fetchOriginalLyrics(String artist, String songTitle) async {
+    LyricsResponse originalLyrics = await repository.fetchLyrics(artist, songTitle);
+    return originalLyrics.lyrics;
   }
 }
 

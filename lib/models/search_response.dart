@@ -70,6 +70,7 @@ class Track implements AbstractSong {
   int getSongId() {
     return null;
   }
+
 }
 
 class ArtistImage {
