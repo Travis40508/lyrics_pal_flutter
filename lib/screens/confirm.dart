@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
 import 'package:lyrics_pal/models/search_response.dart';
+import 'package:lyrics_pal/screens/youtube_screen.dart';
 import '../blocs/song_bloc.dart';
 
 class Confirm extends StatefulWidget {
@@ -144,7 +145,7 @@ class ConfirmState extends State<Confirm> {
             stream: bloc.youtubeVideoId,
             builder: (context, AsyncSnapshot<String> snapshot) {
               return InkWell(
-                onTap: snapshot.hasData ? () => print(snapshot.data) : null,
+                onTap: snapshot.hasData ? () => launchYoutubeScreen(snapshot.data) : null,
                   child: Icon(
                     Icons.ondemand_video, color: snapshot.hasData ? Colors.redAccent : Colors.grey,
                   ),
@@ -197,5 +198,12 @@ class ConfirmState extends State<Confirm> {
     if (success) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${widget.song.getSongTitle()} has been saved!')));
     }
+  }
+
+  launchYoutubeScreen(String youtubeId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => YoutubeScreen(title: widget.song.getSongTitle(), youtubeId: youtubeId))
+    );
   }
 }
