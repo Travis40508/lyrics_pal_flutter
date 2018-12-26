@@ -6,7 +6,10 @@ import 'package:lyrics_pal/models/playlist_store.dart';
 import 'package:lyrics_pal/models/preferences_store.dart';
 import 'package:lyrics_pal/models/search_source.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/models/youtube_response.dart';
+import 'package:lyrics_pal/models/youtube_source.dart';
 import 'package:lyrics_pal/repository/lyrics_api.dart';
+import 'package:lyrics_pal/repository/youtube_api.dart';
 import 'library_db_provider.dart';
 import 'playlists_db_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,10 +17,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'search_api.dart';
 import '../models/search_response.dart';
 
-class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistStore, PreferencesStore {
+class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistStore, PreferencesStore, YoutubeSource {
 
   final searchApi = SearchApi();
   final lyricsApi = LyricsApi();
+  final youtubeApi = YoutubeApi();
 
   Repository() {
     libraryDb.init();
@@ -104,5 +108,11 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
   setPreferredFontSize(double value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setDouble('fontSize', value);
+  }
+
+  @override
+  Future<YoutubeResponse> getYoutubeResponse(String artist, String title) async {
+    YoutubeResponse youtubeResponse = await youtubeApi.getYoutubeResponse(artist, title);
+    return youtubeResponse;
   }
 }

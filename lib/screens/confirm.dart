@@ -24,6 +24,7 @@ class ConfirmState extends State<Confirm> {
     super.initState();
     bloc.checkIfAdded(widget.song.getArtist(), widget.song.getSongTitle());
     bloc.fetchLyrics(widget.song);
+    bloc.fetchYoutubeVideoId(widget.song.getArtist(), widget.song.getSongTitle());
   }
 
   @override
@@ -128,15 +129,30 @@ class ConfirmState extends State<Confirm> {
   Widget getHeader() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Hero(
-          tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
-          child: Image(
+      child: Column(
+        children: <Widget>[
+          Hero(
+            tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
+            child: Image(
               width: 250.0,
               height: 250.0,
               image: CachedNetworkImageProvider(widget.song.getSongImage()),
+            ),
           ),
-        ),
+          Center(
+          child: StreamBuilder(
+            stream: bloc.youtubeVideoId,
+            builder: (context, AsyncSnapshot<String> snapshot) {
+              return InkWell(
+                onTap: snapshot.hasData ? () => print(snapshot.data) : null,
+                  child: Icon(
+                    Icons.ondemand_video, color: snapshot.hasData ? Colors.redAccent : Colors.grey,
+                  ),
+              );
+            },
+          ),
+          )
+        ],
       ),
     );
   }

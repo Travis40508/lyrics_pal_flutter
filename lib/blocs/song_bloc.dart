@@ -17,7 +17,9 @@ class SongBloc {
   final _playListSongs = BehaviorSubject<List<Song>>();
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
   final _fontSize = BehaviorSubject<double>();
-  final String defaultImage = 'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
+  final _youtubeId = BehaviorSubject<String>();
+  final String defaultImage =
+      'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
   Observable<List<Track>> get searchStream => _searchSubject.stream;
 
@@ -38,6 +40,8 @@ class SongBloc {
   Observable<List<Song>> get nonPlayListSongs => _nonPlayListSongs.stream;
 
   Observable<double> get fontSize => _fontSize.stream;
+
+  Observable<String> get youtubeVideoId => _youtubeId.stream;
 
   String get currentLyrics => _lyricsSubject.value;
 
@@ -108,8 +112,10 @@ class SongBloc {
     }
   }
 
-  saveCustomSongToLibrary(String title, String artist, String imageUrl, String lyrics) async {
-    imageUrl = imageUrl != null && imageUrl.length != 0 ? imageUrl : defaultImage;
+  saveCustomSongToLibrary(
+      String title, String artist, String imageUrl, String lyrics) async {
+    imageUrl =
+        imageUrl != null && imageUrl.length != 0 ? imageUrl : defaultImage;
     Song song = Song(artist, title, imageUrl, lyrics);
 
     int result = await repository.saveTrackToLibrary(song);
@@ -147,8 +153,10 @@ class SongBloc {
 
     await _fontSize.drain();
     _fontSize.close();
-  }
 
+    await _youtubeId.drain();
+    _youtubeId.close();
+  }
 
   void savePlaylistToDatabase(List<Song> songs) async {
     List<int> ids = List();
@@ -188,24 +196,26 @@ class SongBloc {
     }
   }
 
-  deleteSongFromDatabaseFromConfirmScreen(String artist, String songTitle) async {
+  deleteSongFromDatabaseFromConfirmScreen(
+      String artist, String songTitle) async {
     Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
 
     if (song != null) {
       final result = await repository.deleteSongById(song.getSongId());
-      print ('Delete song from data base result - $result');
+      print('Delete song from data base result - $result');
       _canSaveSubject.sink.add(!canSaveValue);
       fetchAllSongs();
       deleteSongFromPlaylists(song);
     }
   }
 
-  deleteSongFromDatabaseFromLibraryScreen(String artist, String songTitle) async {
+  deleteSongFromDatabaseFromLibraryScreen(
+      String artist, String songTitle) async {
     Song song = await repository.fetchSongByArtistAndTitle(artist, songTitle);
 
     if (song != null) {
       final result = await repository.deleteSongById(song.getSongId());
-      print ('Delete song from data base result - $result');
+      print('Delete song from data base result - $result');
       fetchAllSongs();
       deleteSongFromPlaylists(song);
     }
@@ -248,7 +258,8 @@ class SongBloc {
     for (int songId in playlist.songs) {
       Song song = await repository.fetchSongById(songId);
       allSongs.remove(song);
-      allSongs.removeWhere((currentSong) => currentSong.getSongId() == song.getSongId());
+      allSongs.removeWhere(
+          (currentSong) => currentSong.getSongId() == song.getSongId());
       playListSongs.add(song);
     }
     _playListSongs.sink.add(playListSongs);
@@ -258,7 +269,7 @@ class SongBloc {
   void librarySongPressedInPlaylistCreation(Song song) {
     List<Song> currentSongList = currentSongs;
     List<Song> playListSongs =
-    addedPlaylistSongs == null ? List() : addedPlaylistSongs;
+        addedPlaylistSongs == null ? List() : addedPlaylistSongs;
     currentSongList.remove(song);
     playListSongs.add(song);
     _allSongsSubject.sink.add(currentSongList);
@@ -295,7 +306,7 @@ class SongBloc {
   savePressedOnEditingScreen(Playlist playlist, String title) async {
     playlist.title = title;
     List<int> playListIds = List();
-    for(Song song in playListSongs) {
+    for (Song song in playListSongs) {
       playListIds.add(song.id);
     }
     playlist.songs = playListIds;
@@ -313,6 +324,13 @@ class SongBloc {
 
   void resetFont() async {
     _fontSize.sink.add(await repository.getPreferredFontSize());
+  }
+
+  fetchYoutubeVideoId(String artist, String title) async {
+    Observable.fromFuture(repository.getYoutubeResponse(artist, title))
+        .map((response) => response.items[0].id.videoId)
+        .listen((id) => _youtubeId.sink.add(id),
+            onError: (error) => print(error));
   }
 }
 
