@@ -13,7 +13,7 @@ class LyricsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: buildLyricsBody(),
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 
@@ -43,7 +43,7 @@ class LyricsScreen extends StatelessWidget {
           child: Text(
             song.getSongLyrics(),
             style: TextStyle(
-                color: Colors.white, fontSize: snapshot.hasData ? snapshot.data : 24.0),
+                color: Theme.of(context).accentColor, fontSize: snapshot.hasData ? snapshot.data : 24.0),
             textAlign: TextAlign.center,
           ),
         );
