@@ -13,9 +13,12 @@ class LyricsOptionTile extends StatelessWidget {
       onTap: onPressed,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: double.infinity,
+        child: Card(
           color: Theme.of(context).primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0)
+          ),
+          elevation: 10.0,
           child: Center(
             child: Text(
               text,
