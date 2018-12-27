@@ -31,7 +31,7 @@ class SearchState extends State<Search> {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildScreenBody(context),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 
@@ -46,10 +46,11 @@ class SearchState extends State<Search> {
 
   buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
         "Search",
-        style: TextStyle(color: Colors.white),
+        style: Theme.of(context).textTheme.title,
       ),
       centerTitle: true,
     );
@@ -59,17 +60,17 @@ class SearchState extends State<Search> {
     return TextField(
       controller: _controller,
       onChanged: bloc.searchTextChanged,
-      style: TextStyle(color: Colors.white),
-      cursorColor: Colors.white,
+      style: Theme.of(context).textTheme.title,
+      cursorColor: Theme.of(context).accentColor,
       decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.search,
-          color: Colors.white,
+          color: Theme.of(context).iconTheme.color,
         ),
         labelText: "Song Search",
-        labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        labelStyle: Theme.of(context).textTheme.title,
         hintText: "Ex. 'Another Brick in the Wall'",
-        hintStyle: TextStyle(color: Colors.white54),
+        hintStyle: Theme.of(context).textTheme.title,
       ),
     );
   }
