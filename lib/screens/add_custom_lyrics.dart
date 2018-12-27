@@ -54,6 +54,7 @@ class _AddCustomLyricsState extends State<AddCustomLyrics> {
     bloc.saveCustomSongToLibrary(_titleController.text, _artistController.text,
         _imageController.text, _lyricsController.text);
     _scaffoldKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: Theme.of(context).primaryColor,
       content: Text('${_titleController.text} has been saved!', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),),
       duration: Duration(seconds: 1),
     ));

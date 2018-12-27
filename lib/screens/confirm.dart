@@ -287,7 +287,10 @@ class ConfirmState extends State<Confirm> {
       Navigator.pop(context);
     } else {
       _scaffoldKey.currentState
-          .showSnackBar(SnackBar(content: Text('Error - Please try again.', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
+          .showSnackBar(
+          SnackBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              content: Text('Error - Please try again.', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
     }
   }
 
