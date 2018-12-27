@@ -18,7 +18,7 @@ class SongTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         elevation: 8.0,
-        color: Colors.black87,
+        color: Theme.of(context).primaryColor,
         child: ListTile(
           onTap: onPressed,
           onLongPress: onLongPressed,
@@ -36,11 +36,11 @@ class SongTile extends StatelessWidget {
               ))),
           title: Text(
             '${song.getSongTitle()}',
-            style: TextStyle(color: Colors.white, fontSize: 24.0),
+            style: Theme.of(context).textTheme.body1,
           ),
           subtitle: Text(
             '${song.getArtist()}',
-            style: TextStyle(color: Colors.white),
+            style: Theme.of(context).textTheme.button,
           ),
         ),
       ),
