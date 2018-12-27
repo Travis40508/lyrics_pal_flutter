@@ -28,19 +28,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildSettingsBody(),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 
   Widget buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
       title: Text(
         'Settings',
-        style: TextStyle(
-          color: Colors.white,
-        ),
+        style: Theme.of(context).textTheme.title,
       ),
       actions: <Widget>[
         InkWell(
@@ -49,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Text(
               'Save',
               style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  Theme.of(context).textTheme.title,
             ),
           ),
         )
@@ -73,13 +72,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     return Column(children: [
                       Text(
                         'Lyrics - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: snapshot.hasData ? snapshot.data : 24.0,
+                        style: TextStyle(color: Theme.of(context).accentColor, fontSize: snapshot.hasData ? snapshot.data : 24.0,
                         ),
                       ),
                       Slider(
-                        activeColor: Colors.white,
+                        activeColor: Theme.of(context).accentColor,
                         min: 11.0,
                         max: 72.0,
                         onChanged: bloc.onFontSizeChanged,
@@ -93,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Divider(
-            color: Colors.white,
+            color: Theme.of(context).accentColor,
             height: 1.0,
           ),
         ),
@@ -104,9 +101,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             return SwitchListTile(
               value: snapshot.hasData ? snapshot.data : false,
               onChanged: (v) => bloc.themeValueChanged(v),
-              title: Text('Theme', style: TextStyle(color: Colors.white)),
-              inactiveTrackColor: snapshot.hasData && snapshot.data ? Colors.white : Colors.grey[900],
-              activeTrackColor: snapshot.hasData && snapshot.data ? Colors.white : Colors.grey[900],
+              title: Text('Theme', style: Theme.of(context).textTheme.title),
+              inactiveTrackColor: Theme.of(context).accentColor,
+              activeTrackColor: Theme.of(context).accentColor,
             );
           },
         )
