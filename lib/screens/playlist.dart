@@ -51,7 +51,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
           length: snapshot.data.length,
           child: Scaffold(
             appBar: buildAppBar(tabs),
-            backgroundColor: Colors.black87,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: buildTabs(snapshot.data),
           ),
         );
@@ -61,10 +61,11 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
   Widget buildAppBar(List<Widget> tabs) {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
         widget.playlist.title,
-        style: TextStyle(color: Colors.white),
+        style: Theme.of(context).textTheme.title
       ),
       centerTitle: true,
       actions: <Widget>[
@@ -74,10 +75,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
             child: Center(
               child: Text(
                 'Edit',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
-                ),
+                style: Theme.of(context).textTheme.title
               ),
             ),
             onTap: () => onEditTapped(),
