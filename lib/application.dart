@@ -48,8 +48,12 @@ class App extends StatelessWidget {
   TextTheme getTextTheme(bool isLightTheme) {
     return TextTheme(
       headline: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+      //Default Lyrics
+      body1: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold, fontSize: 24.0),
+      //Default Text
       title: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
       button: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+      //No bold
       subtitle: TextStyle(color: isLightTheme ? Colors.black : Colors.white),
     );
   }

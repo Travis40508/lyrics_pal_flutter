@@ -25,17 +25,18 @@ class _EditLyricsState extends State<EditLyrics> {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildEditLyricsBody(),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor
     );
   }
 
   Widget buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
       title: Text(
           '${widget.song.getSongTitle()}',
-        style: TextStyle(color: Colors.white),
+        style: Theme.of(context).textTheme.title,
       ),
       actions: <Widget>[
         InkWell(
@@ -45,10 +46,7 @@ class _EditLyricsState extends State<EditLyrics> {
               padding: const EdgeInsets.only(right: 18.0),
               child: Text(
                 'Save',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-                ),
+                style: Theme.of(context).textTheme.title
               ),
             ),
           ),
@@ -60,10 +58,7 @@ class _EditLyricsState extends State<EditLyrics> {
               padding: const EdgeInsets.only(right: 18.0),
               child: Text(
                 'Original',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
-                ),
+                style: Theme.of(context).textTheme.title
               ),
             ),
           ),
@@ -85,16 +80,16 @@ class _EditLyricsState extends State<EditLyrics> {
     return TextField(
       controller: _lyricsController,
       maxLines: 200,
-      style: TextStyle(color: Colors.white, fontSize: 24.0),
-      cursorColor: Colors.white,
+      style: Theme.of(context).textTheme.body1,
+      cursorColor: Theme.of(context).accentColor,
       decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.queue_music,
-          color: Colors.white,
+          color: Theme.of(context).iconTheme.color,
         ),
 
         hintText: "Ex. 'Hey, Teacher! Leave them kids alone!'",
-        hintStyle: TextStyle(color: Colors.white54),
+        hintStyle: Theme.of(context).textTheme.title,
       ),
     );
   }
