@@ -42,13 +42,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         style: Theme.of(context).textTheme.title,
       ),
       actions: <Widget>[
-        InkWell(
-          onTap: () => onSavePressed(),
-          child: Center(
-            child: Text(
-              'Save',
-              style:
-                  Theme.of(context).textTheme.title,
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+            onTap: () => onSavePressed(),
+            child: Center(
+              child: Text(
+                'Save',
+                style:
+                    Theme.of(context).textTheme.title,
+              ),
             ),
           ),
         )
@@ -59,33 +62,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget buildSettingsBody() {
     return ListView(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: StreamBuilder(
-                  stream: bloc.fontSize,
-                  initialData:
-                      bloc.fontSizeValue != null ? bloc.fontSizeValue : 24.0,
-                  builder: (context, AsyncSnapshot<double> snapshot) {
-                    return Column(children: [
-                      Text(
-                        'Lyrics - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
-                        style: TextStyle(color: Theme.of(context).accentColor, fontSize: snapshot.hasData ? snapshot.data : 24.0,
+        Padding(
+          padding: const EdgeInsets.only(top: 18.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: StreamBuilder(
+                    stream: bloc.fontSize,
+                    initialData:
+                        bloc.fontSizeValue != null ? bloc.fontSizeValue : 24.0,
+                    builder: (context, AsyncSnapshot<double> snapshot) {
+                      return Column(children: [
+                        Text(
+                          'Size - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
+                          style: TextStyle(color: Theme.of(context).accentColor, fontSize: snapshot.hasData ? snapshot.data : 24.0,
+                          ),
                         ),
-                      ),
-                      Slider(
-                        activeColor: Theme.of(context).accentColor,
-                        min: 11.0,
-                        max: 72.0,
-                        onChanged: bloc.onFontSizeChanged,
-                        value: snapshot.hasData ? snapshot.data : 24.0,
-                      ),
-                    ]);
-                  }),
-            )
-          ],
+                        Slider(
+                          activeColor: Theme.of(context).accentColor,
+                          min: 11.0,
+                          max: 72.0,
+                          onChanged: bloc.onFontSizeChanged,
+                          value: snapshot.hasData ? snapshot.data : 24.0,
+                        ),
+                      ]);
+                    }),
+              )
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

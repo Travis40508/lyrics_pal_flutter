@@ -34,15 +34,23 @@ class LyricsOptionsState extends State<LyricsOptions> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: LyricsOptionTile(
-            text: 'Search Lyrics',
-            onPressed: () => Navigator.pushNamed(context, '/search'),
+          child: Card(
+            color: Theme.of(context).accentColor,
+            elevation: 10.0,
+            child: LyricsOptionTile(
+              text: 'Search Lyrics',
+              onPressed: () => Navigator.pushNamed(context, '/search'),
+            ),
           ),
         ),
         Expanded(
-          child: LyricsOptionTile(
-            text: 'Custom Lyrics',
-            onPressed: () => Navigator.pushNamed(context, '/custom_lyrics'),
+          child: Card(
+            color: Theme.of(context).accentColor,
+            elevation: 10.0,
+            child: LyricsOptionTile(
+              text: 'Custom Lyrics',
+              onPressed: () => Navigator.pushNamed(context, '/custom_lyrics'),
+            ),
           ),
         )
       ],

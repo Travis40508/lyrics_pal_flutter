@@ -15,11 +15,11 @@ class LyricsOptionTile extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           width: double.infinity,
-          color: Colors.black,
+          color: Theme.of(context).primaryColor,
           child: Center(
             child: Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 32.0),
+              style: TextStyle(color: Theme.of(context).accentColor, fontSize: 32.0),
             ),
           ),
         ),
