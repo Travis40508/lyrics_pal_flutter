@@ -31,7 +31,7 @@ class AddPlaylistState extends State<AddPlaylist> {
    return Scaffold(
       appBar: buildAppBar(context),
       body: buildScreenBody(),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).primaryColor
     );
   }
 
@@ -45,7 +45,8 @@ class AddPlaylistState extends State<AddPlaylist> {
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
           label: Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-          onPressed: () => onSavePressed(context),
+          onPressed: () => bloc.changeTheme(),
+//          onPressed: () => onSavePressed(context),
         )
       ],
     );

@@ -19,6 +19,7 @@ class SongBloc {
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
   final _fontSize = BehaviorSubject<double>();
   final _youtubeId = BehaviorSubject<String>();
+  final _theme = PublishSubject<String>();
   final String defaultImage =
       'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
@@ -43,6 +44,8 @@ class SongBloc {
   Observable<double> get fontSize => _fontSize.stream;
 
   Observable<String> get youtubeVideoId => _youtubeId.stream;
+
+  Observable<String> get theme => _theme.stream;
 
   String get currentLyrics => _lyricsSubject.value;
 
@@ -162,6 +165,9 @@ class SongBloc {
 
     await _youtubeId.drain();
     _youtubeId.close();
+
+    await _theme.drain();
+    _theme.close();
   }
 
   void savePlaylistToDatabase(List<Song> songs) async {
@@ -356,6 +362,14 @@ class SongBloc {
   Future<String> fetchOriginalLyrics(String artist, String songTitle) async {
     LyricsResponse originalLyrics = await repository.fetchLyrics(artist, songTitle);
     return originalLyrics.lyrics;
+  }
+
+  void fetchTheme() {
+
+  }
+
+  changeTheme() {
+    _theme.sink.add('Light');
   }
 }
 
