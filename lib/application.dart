@@ -19,11 +19,13 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         return MaterialApp(
           theme: ThemeData(
-            primaryColor: snapshot.hasData && snapshot.data == 'Light' ? Colors.white : Colors.grey[900],
-            accentColor: snapshot.hasData && snapshot.data == 'Light' ? Colors.black : Colors.white,
+            primaryColor: snapshot.hasData && snapshot.data == true ? Colors.black : Colors.white,
+            backgroundColor: snapshot.hasData && snapshot.data == true ? Colors.white : Colors.black,
+            scaffoldBackgroundColor: snapshot.hasData && snapshot.data == true ? Colors.grey[100] : Colors.grey[900],
+            accentColor: snapshot.hasData && snapshot.data == true ? Colors.black : Colors.white,
+            iconTheme: IconThemeData(color: snapshot.hasData && snapshot.data == true ? Colors.black : Colors.white,),
             fontFamily: 'OpenSans',
-            iconTheme: IconThemeData(color: snapshot.hasData && snapshot.data == 'Light' ? Colors.black : Colors.white,),
-            textTheme: getTextTheme(context),
+            textTheme: getTextTheme(snapshot.hasData && snapshot.data == true),
           ),
           debugShowCheckedModeBanner: false,
           title: "Lyrics Pal",
@@ -43,12 +45,12 @@ class App extends StatelessWidget {
 
   }
 
-  TextTheme getTextTheme(context) {
+  TextTheme getTextTheme(bool isLightTheme) {
     return TextTheme(
-      headline: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
-      title: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
-      subtitle: TextStyle(color: Theme.of(context).accentColor),
-      body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+      headline: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+      title: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+      button: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+      subtitle: TextStyle(color: isLightTheme ? Colors.black : Colors.white)
     );
   }
 }

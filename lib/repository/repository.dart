@@ -121,4 +121,20 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
     print('Update result - $result');
     return result;
   }
+
+  @override
+  Future<bool> getPreferredTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLightTheme = prefs.getBool('theme');
+    return isLightTheme;
+  }
+
+  @override
+  setPreferredTheme(bool value) async {
+    bool currentTheme = await getPreferredTheme();
+    if (value != currentTheme) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('theme', value);
+    }
+  }
 }

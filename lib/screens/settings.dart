@@ -7,7 +7,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -23,6 +22,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bloc.fetchTheme();
+
     return Scaffold(
       appBar: buildAppBar(),
       body: buildSettingsBody(),
@@ -65,30 +67,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
               flex: 1,
               child: StreamBuilder(
                   stream: bloc.fontSize,
-                  initialData: bloc.fontSizeValue != null ? bloc.fontSizeValue : 24.0,
+                  initialData:
+                      bloc.fontSizeValue != null ? bloc.fontSizeValue : 24.0,
                   builder: (context, AsyncSnapshot<double> snapshot) {
-                    return Column(
-                      children: [
-                        Text(
-                          'Lyrics - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: snapshot.hasData ? snapshot.data : 24.0,
-                          ),
+                    return Column(children: [
+                      Text(
+                        'Lyrics - ${snapshot.hasData ? snapshot.data.floor() : 24.0}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: snapshot.hasData ? snapshot.data : 24.0,
                         ),
-                        Slider(
+                      ),
+                      Slider(
                         activeColor: Colors.white,
                         min: 11.0,
                         max: 72.0,
                         onChanged: bloc.onFontSizeChanged,
                         value: snapshot.hasData ? snapshot.data : 24.0,
                       ),
-                      ]
-                    );
+                    ]);
                   }),
             )
           ],
         ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Divider(
+            color: Colors.white,
+            height: 1.0,
+          ),
+        ),
+        StreamBuilder(
+          stream: bloc.theme,
+          initialData: false,
+          builder: (context, AsyncSnapshot<bool> snapshot) {
+            return SwitchListTile(
+              value: snapshot.hasData ? snapshot.data : false,
+              onChanged: (v) => bloc.themeValueChanged(v),
+              title: Text('Theme', style: TextStyle(color: Colors.white)),
+              inactiveTrackColor: snapshot.hasData && snapshot.data ? Colors.white : Colors.grey[900],
+              activeTrackColor: snapshot.hasData && snapshot.data ? Colors.white : Colors.grey[900],
+            );
+          },
+        )
       ],
     );
   }

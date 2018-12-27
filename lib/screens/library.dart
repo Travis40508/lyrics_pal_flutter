@@ -38,6 +38,7 @@ class LibraryState extends State<Library> {
 
   Widget buildFloatingActionButton(context) {
     return FloatingActionButton(
+      backgroundColor: Colors.white,
       mini: true,
       child: IconButton(icon: Icon(Icons.add, color: Colors.black87,), onPressed: () => Navigator.pushNamed(context, '/lyrics_options')),
     );

@@ -21,28 +21,31 @@ class _AddCustomLyricsState extends State<AddCustomLyrics> {
       key: _scaffoldKey,
       appBar: buildAppBar(),
       body: buildFormBody(),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 
   Widget buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
       title: Text(
         'Add Custom Lyrics',
-        style: TextStyle(color: Colors.white),
+        style: Theme.of(context).textTheme.title,
       ),
       actions: <Widget>[
-        InkWell(
-          onTap: () => onSavePressed(),
-          child: Center(
-            child: Text(
-              'Save',
-              style: TextStyle(color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+            onTap: () => onSavePressed(),
+            child: Center(
+              child: Text(
+                'Save',
+                style: Theme.of(context).textTheme.button),
+              ),
             ),
-          ),
-        )
+        ),
       ],
     );
   }
@@ -67,68 +70,64 @@ class _AddCustomLyricsState extends State<AddCustomLyrics> {
       children: <Widget>[
         TextField(
           controller: _titleController,
-          style: TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
+          style: Theme.of(context).textTheme.title,
+          cursorColor: Theme.of(context).accentColor,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.title,
-              color: Colors.white,
+              color: Theme.of(context).iconTheme.color,
             ),
             labelText: 'Title',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            labelStyle: Theme.of(context).textTheme.title,
             hintText: "Ex. 'Another Brick in the Wall'",
-            hintStyle: TextStyle(color: Colors.white54),
+            hintStyle: Theme.of(context).textTheme.title,
           ),
         ),
         TextField(
           controller: _artistController,
-          style: TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
+          style: Theme.of(context).textTheme.title,
+          cursorColor: Theme.of(context).accentColor,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.person,
-              color: Colors.white,
+              color: Theme.of(context).iconTheme.color,
             ),
             labelText: 'Artist',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            labelStyle: Theme.of(context).textTheme.title,
             hintText: "Ex. 'Pink Floyd'",
-            hintStyle: TextStyle(color: Colors.white54),
+            hintStyle: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
         TextField(
           controller: _imageController,
-          style: TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
+          style: Theme.of(context).textTheme.title,
+          cursorColor: Theme.of(context).accentColor,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.image,
-              color: Colors.white,
+              color: Theme.of(context).iconTheme.color,
             ),
             labelText: 'Image Url',
-            labelStyle:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            labelStyle: Theme.of(context).textTheme.title,
             hintText: "Leave blank for default image",
-            hintStyle: TextStyle(color: Colors.white54),
+            hintStyle: Theme.of(context).textTheme.title,
           ),
         ),
         Expanded(
           child: TextField(
             controller: _lyricsController,
             maxLines: 200,
-            style: TextStyle(color: Colors.white),
-            cursorColor: Colors.white,
+            style: Theme.of(context).textTheme.title,
+            cursorColor: Theme.of(context).accentColor,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.queue_music,
-                color: Colors.white,
+                color: Theme.of(context).iconTheme.color,
               ),
               labelText: 'Lyrics',
-              labelStyle:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              labelStyle: Theme.of(context).textTheme.title,
               hintText: "Ex. 'Hey, Teacher! Leave them kids alone!'",
-              hintStyle: TextStyle(color: Colors.white54),
+              hintStyle: Theme.of(context).textTheme.title,
             ),
           ),
         ),
