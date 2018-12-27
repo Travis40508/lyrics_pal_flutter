@@ -45,12 +45,15 @@ class _EditPlaylistState extends State<EditPlaylist> {
     return AppBar(
       backgroundColor: Colors.black,
       actions: <Widget>[
-        InkWell(
-          onTap: savePressed,
-          child: Center(
-            child: Text(
-              'Save',
-              style: TextStyle(color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+            onTap: savePressed,
+            child: Center(
+              child: Text(
+                'Save',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),

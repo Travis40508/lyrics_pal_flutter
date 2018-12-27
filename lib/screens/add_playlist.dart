@@ -44,7 +44,7 @@ class AddPlaylistState extends State<AddPlaylist> {
         RaisedButton.icon(
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
-          label: Text('Save', style: TextStyle(color: Colors.white),),
+          label: Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           onPressed: () => onSavePressed(context),
         )
       ],

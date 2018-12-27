@@ -68,17 +68,20 @@ class PlaylistScreenState extends State<PlaylistScreen> {
       ),
       centerTitle: true,
       actions: <Widget>[
-        InkWell(
-          child: Center(
-            child: Text(
-              'Edit',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+            child: Center(
+              child: Text(
+                'Edit',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                ),
               ),
             ),
+            onTap: () => onEditTapped(),
           ),
-          onTap: () => onEditTapped(),
         )
       ],
       bottom: TabBar(tabs: tabs),

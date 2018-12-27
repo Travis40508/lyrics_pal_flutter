@@ -63,7 +63,7 @@ class SongBloc {
   double get fontSizeValue => _fontSize.value;
 
   void searchTextChanged(String query) async {
-    
+
     Observable.fromFuture(repository.fetchSongs(query))
         .debounce(const Duration(milliseconds: 600))
         .map((searchResults) => searchResults.results.trackMatches.trackList)
