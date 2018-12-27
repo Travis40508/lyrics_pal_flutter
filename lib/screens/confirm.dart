@@ -118,22 +118,24 @@ class ConfirmState extends State<Confirm> {
 
   void onSaveClicked(context) async {
     var alert = AlertDialog(
-      title: Text('Save?'),
+      title: Text('Save ${widget.song.getSongTitle()}?',
+        style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
       content:
-          Text('Are you sure you wish to save this song from your library?'),
+          Text('Are you sure you wish to save this song to your library?',
+              style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
       actions: <Widget>[
         FlatButton(
           onPressed: onSaveConfirmed,
           child: Text(
             'Ok',
-            style: Theme.of(context).textTheme.title,
+          style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             'Cancel',
-            style: Theme.of(context).textTheme.title,
+            style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         )
       ],
@@ -143,22 +145,24 @@ class ConfirmState extends State<Confirm> {
 
   void onDeleteClicked(context) async {
     var alert = AlertDialog(
-      title: Text('Delete?'),
+      title: Text('Delete ${widget.song.getSongTitle()}?',
+        style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
       content:
-          Text('Are you sure you wish to delete this song from your library?'),
+          Text('Are you sure you wish to delete this song from your library?',
+            style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
       actions: <Widget>[
         FlatButton(
           onPressed: onDeleteConfirmed,
           child: Text(
             'Ok',
-            style: Theme.of(context).textTheme.title,
+            style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             'Cancel',
-            style: Theme.of(context).textTheme.title,
+            style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         )
       ],
@@ -265,7 +269,8 @@ class ConfirmState extends State<Confirm> {
     bloc.deleteSongFromDatabaseFromConfirmScreen(
         widget.song.getArtist(), widget.song.getSongTitle());
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('${widget.song.getSongTitle()} has been deleted!')));
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text('${widget.song.getSongTitle()} has been deleted!', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
   }
 
   void onSaveConfirmed() async {
@@ -277,11 +282,12 @@ class ConfirmState extends State<Confirm> {
 
     if (success) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('${widget.song.getSongTitle()} has been saved!')));
+          backgroundColor: Theme.of(context).primaryColor,
+          content: Text('${widget.song.getSongTitle()} has been saved!', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
       Navigator.pop(context);
     } else {
       _scaffoldKey.currentState
-          .showSnackBar(SnackBar(content: Text('Error - Please try again.')));
+          .showSnackBar(SnackBar(content: Text('Error - Please try again.', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
     }
   }
 

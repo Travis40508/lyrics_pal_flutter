@@ -73,16 +73,18 @@ class LibraryState extends State<Library> {
 
   void showConfirmationDialog(Song song) {
     var alert = AlertDialog(
-      title: Text('Delete?'),
-      content: Text('Are you sure you wish to delete this song from your library?'),
+      title: Text('Delete ${song.getSongTitle()}?',
+        style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
+      content: Text('Are you sure you wish to delete this song from your library?',
+        style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
       actions: <Widget>[
         FlatButton(
           onPressed: () => onDeleteConfirmed(song),
-          child: Text('Ok', style: TextStyle(color: Theme.of(context).primaryColor),),
+          child: Text('Ok', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Theme.of(context).primaryColor),),
+          child: Text('Cancel', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),),
         )
       ],
     );
@@ -92,6 +94,6 @@ class LibraryState extends State<Library> {
   void onDeleteConfirmed(Song song) {
     Navigator.pop(context);
     bloc.deleteSongFromDatabaseFromLibraryScreen(song.getArtist(), song.getSongTitle());
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${song.getSongTitle()} has been deleted!')));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${song.getSongTitle()} has been deleted!', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
   }
 }

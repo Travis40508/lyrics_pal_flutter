@@ -93,6 +93,6 @@ class PlaylistsState extends State<Playlists> {
   void onDeleteConfirmed(Playlist playlist) {
     Navigator.pop(context);
     bloc.deletePlaylist(playlist);
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${playlist.title} has been deleted!')));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('${playlist.title} has been deleted!', style: TextStyle(color: Theme.of(context).accentColor, fontSize: 16.0, fontWeight: FontWeight.bold),)));
   }
 }
