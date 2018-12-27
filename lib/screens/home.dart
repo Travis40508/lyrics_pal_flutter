@@ -18,6 +18,7 @@ class HomeState extends State<Home> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: buildAppBar(context),
         body: buildTabContent(),
       ),
@@ -26,13 +27,14 @@ class HomeState extends State<Home> {
 
   Widget buildAppBar(context) {
     return AppBar(
-      backgroundColor: Colors.black87,
-      title: Text("Home", style: TextStyle(color: Colors.white),),
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
+      title: Text("Home", style: Theme.of(context).textTheme.title),
       centerTitle: true,
       actions: <Widget>[
         IconButton(
           icon: Icon(
-            Icons.settings, color: Colors.white,
+            Icons.settings, color: Theme.of(context).iconTheme.color,
           ),
           onPressed: () => Navigator.pushNamed(context, '/settings'),
         )
