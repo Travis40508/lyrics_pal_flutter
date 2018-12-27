@@ -43,17 +43,18 @@ class ConfirmState extends State<Confirm> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: buildAppBar(context),
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: buildLyricsBody(),
     );
   }
 
   Widget buildAppBar(context) {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
         '${widget.song.getSongTitle()}',
-        style: TextStyle(color: Colors.white),
+        style: Theme.of(context).textTheme.title,
       ),
       centerTitle: true,
       actions: <Widget>[
@@ -77,7 +78,7 @@ class ConfirmState extends State<Confirm> {
               child: Center(
                 child: Text(
                   snapshot.data ? 'Save' : 'Delete',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.title,
                 ),
               ),),
         );
@@ -101,7 +102,7 @@ class ConfirmState extends State<Confirm> {
               child: Center(
                 child: Text(
                 'Edit',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        style: Theme.of(context).textTheme.title),
               ),
         ),
         );
@@ -125,14 +126,14 @@ class ConfirmState extends State<Confirm> {
           onPressed: onSaveConfirmed,
           child: Text(
             'Ok',
-            style: TextStyle(color: Colors.black87),
+            style: Theme.of(context).textTheme.title,
           ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             'Cancel',
-            style: TextStyle(color: Colors.black87),
+            style: Theme.of(context).textTheme.title,
           ),
         )
       ],
@@ -150,14 +151,14 @@ class ConfirmState extends State<Confirm> {
           onPressed: onDeleteConfirmed,
           child: Text(
             'Ok',
-            style: TextStyle(color: Colors.black87),
+            style: Theme.of(context).textTheme.title,
           ),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
             'Cancel',
-            style: TextStyle(color: Colors.black87),
+            style: Theme.of(context).textTheme.title,
           ),
         )
       ],
@@ -231,7 +232,7 @@ class ConfirmState extends State<Confirm> {
           if (snapshot.hasError) {
             return Text(
               "Error fetching lyrics. Please try again",
-              style: TextStyle(color: Colors.white),
+              style: Theme.of(context).textTheme.title,
             );
           } else if (!snapshot.hasData) {
             return Center(
@@ -246,10 +247,10 @@ class ConfirmState extends State<Confirm> {
                   child: Text(
                     '${snapshot.data}',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                            fontSnapshot.hasData ? fontSnapshot.data : 24.0,
-                        fontFamily: 'roboto'),
+                        color: Theme.of(context).accentColor,
+                        fontSize: fontSnapshot.hasData ? fontSnapshot.data : 24.0,
+                        fontWeight: FontWeight.bold
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -288,7 +289,7 @@ class ConfirmState extends State<Confirm> {
     FlutterYoutube.playYoutubeVideoById(
         apiKey: "AIzaSyCbS_9gcgFNop0nSaV9bBddviOXUUQShAc",
         videoId: youtubeId,
-        autoPlay: true, //default falase
+        autoPlay: true, //default false
         fullScreen: false //default false
         );
   }
