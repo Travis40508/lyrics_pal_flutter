@@ -37,13 +37,19 @@ class _EditPlaylistState extends State<EditPlaylist> {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildBody(),
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor
     );
   }
 
   Widget buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
+      centerTitle: true,
+      title: Text(
+          'Edit Playlist',
+        style: Theme.of(context).textTheme.title,
+      ),
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 18.0),
@@ -52,7 +58,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
             child: Center(
               child: Text(
                 'Save',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.title,
               ),
             ),
           ),
@@ -73,26 +79,26 @@ class _EditPlaylistState extends State<EditPlaylist> {
           padding: const EdgeInsets.only(bottom: 50.0),
           child: TextField(
             controller: _controller,
-            style: TextStyle(color: Colors.white),
-            cursorColor: Colors.white,
+            style: Theme.of(context).textTheme.title,
+            cursorColor: Theme.of(context).accentColor,
             onChanged: (text) => bloc.onPlaylistTitleChanged(text),
             decoration: InputDecoration(
-                prefixIcon: Icon(Icons.title, color: Colors.white,),
+                prefixIcon: Icon(Icons.title, color: Theme.of(context).accentColor,),
                 hintText: "Ex. 'My Playlist'",
-                hintStyle: TextStyle(color: Colors.white54),
+                hintStyle: Theme.of(context).textTheme.title,
                 labelText: 'Title',
-                labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+                labelStyle: Theme.of(context).textTheme.title
 
             ),
           ),
         ),
-        Text('Playlist Songs', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
+        Text('Playlist Songs', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline),
         showPlayListSongs(),
         Padding(
           padding: const EdgeInsets.only(top: 80.0, bottom: 50.0),
-          child: Divider(color: Colors.white, height: 1.0,),
+          child: Divider(color: Theme.of(context).accentColor, height: 1.0,),
         ),
-        Text('Library', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16.0),),
+        Text('Library', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline),
         showNonPlayListSongs()
       ],
     );
