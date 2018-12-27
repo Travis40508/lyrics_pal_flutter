@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         return MaterialApp(
           theme: ThemeData(
-            primaryColor: snapshot.hasData && snapshot.data == true ? Colors.black : Colors.white,
+            primaryColor: snapshot.hasData && snapshot.data == true ? Colors.white : Colors.black,
             backgroundColor: snapshot.hasData && snapshot.data == true ? Colors.white : Colors.black,
             scaffoldBackgroundColor: snapshot.hasData && snapshot.data == true ? Colors.grey[100] : Colors.grey[900],
             accentColor: snapshot.hasData && snapshot.data == true ? Colors.black : Colors.white,
@@ -47,10 +47,10 @@ class App extends StatelessWidget {
 
   TextTheme getTextTheme(bool isLightTheme) {
     return TextTheme(
-      headline: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
+      headline: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
       title: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
       button: TextStyle(color: isLightTheme ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
-      subtitle: TextStyle(color: isLightTheme ? Colors.black : Colors.white)
+      subtitle: TextStyle(color: isLightTheme ? Colors.black : Colors.white),
     );
   }
 }
