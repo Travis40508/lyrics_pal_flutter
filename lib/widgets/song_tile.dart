@@ -14,6 +14,9 @@ class SongTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         elevation: 8.0,
         color: Colors.black87,
         child: ListTile(
