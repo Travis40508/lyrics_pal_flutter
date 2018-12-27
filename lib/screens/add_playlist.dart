@@ -45,8 +45,7 @@ class AddPlaylistState extends State<AddPlaylist> {
           icon: Icon(Icons.save, color: Colors.white,),
           color: Colors.transparent,
           label: Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-          onPressed: () => bloc.changeTheme(),
-//          onPressed: () => onSavePressed(context),
+          onPressed: () => onSavePressed(context),
         )
       ],
     );
