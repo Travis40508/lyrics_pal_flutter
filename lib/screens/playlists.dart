@@ -30,7 +30,7 @@ class PlaylistsState extends State<Playlists> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: showPlayLists(),
       floatingActionButton: buildFloatingActionButton(context),
     );
@@ -38,7 +38,8 @@ class PlaylistsState extends State<Playlists> {
 
   Widget buildFloatingActionButton(context) {
     return FloatingActionButton(
-      child: Icon(Icons.add, color: Colors.black87,),
+      backgroundColor: Theme.of(context).iconTheme.color,
+      child: Icon(Icons.add, color: Theme.of(context).primaryColor,),
       mini: true,
       onPressed: () => Navigator.pushNamed(context, '/add_playlist'),
     );
@@ -78,11 +79,11 @@ class PlaylistsState extends State<Playlists> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => onDeleteConfirmed(playlist),
-          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+          child: Text('Ok', style: Theme.of(context).textTheme.title,),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+          child: Text('Cancel', style: Theme.of(context).textTheme.title,),
         )
       ],
     );
