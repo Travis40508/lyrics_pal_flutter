@@ -30,7 +30,7 @@ class LibraryState extends State<Library> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       floatingActionButton: buildFloatingActionButton(context),
       body: buildLibrary(),
     );
@@ -38,9 +38,9 @@ class LibraryState extends State<Library> {
 
   Widget buildFloatingActionButton(context) {
     return FloatingActionButton(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).iconTheme.color,
       mini: true,
-      child: IconButton(icon: Icon(Icons.add, color: Colors.black87,), onPressed: () => Navigator.pushNamed(context, '/lyrics_options')),
+      child: IconButton(icon: Icon(Icons.add, color: Theme.of(context).primaryColor,), onPressed: () => Navigator.pushNamed(context, '/lyrics_options')),
     );
   }
 
@@ -78,11 +78,11 @@ class LibraryState extends State<Library> {
       actions: <Widget>[
         FlatButton(
           onPressed: () => onDeleteConfirmed(song),
-          child: Text('Ok', style: TextStyle(color: Colors.black87),),
+          child: Text('Ok', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.black87),),
+          child: Text('Cancel', style: TextStyle(color: Theme.of(context).primaryColor),),
         )
       ],
     );
