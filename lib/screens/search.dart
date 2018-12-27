@@ -101,6 +101,8 @@ class SearchState extends State<Search> {
               ],
             ),
           );
+        } else if (_controller.text.length > 0) {
+          return Expanded(child: Center(child: CircularProgressIndicator(),));
         } else {
           return Container();
         }
