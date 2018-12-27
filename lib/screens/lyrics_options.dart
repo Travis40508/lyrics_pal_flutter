@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/widgets/lyrics_option_tile.dart';
 
-class LyricsOptions extends StatelessWidget {
+class LyricsOptions extends StatefulWidget {
+  @override
+  LyricsOptionsState createState() {
+    return new LyricsOptionsState();
+  }
+}
+
+class LyricsOptionsState extends State<LyricsOptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xDD212121),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: buildAppBar(),
       body: buildOptions(context),
     );
@@ -13,13 +20,12 @@ class LyricsOptions extends StatelessWidget {
 
   Widget buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.black87,
+      iconTheme: Theme.of(context).iconTheme,
+      backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
       title: Text(
           'Lyrics Options',
-        style: TextStyle(
-          color: Colors.white
-        ),
+        style: Theme.of(context).textTheme.title
       ),
     );
   }
