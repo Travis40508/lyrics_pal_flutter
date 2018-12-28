@@ -20,7 +20,6 @@ class PlaylistScreenState extends State<PlaylistScreen> {
   @override
   void initState() {
     super.initState();
-    bloc.fetchAllPlaylistSongs(widget.playlist);
   }
 
   @override
@@ -31,6 +30,9 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bloc.fetchAllPlaylistSongs(widget.playlist);
+
     return StreamBuilder(
       stream: bloc.currentPlayListSongs,
       builder: (context, AsyncSnapshot<List<Song>> snapshot) {

@@ -28,6 +28,7 @@ dependencies:
   image: ^2.0.5
   shared_preferences: ^0.4.3
   flutter_youtube: ^1.1.4
+  flutter_reorderable_list: ^0.1.1
 
 dev_dependencies:
   flutter_test:

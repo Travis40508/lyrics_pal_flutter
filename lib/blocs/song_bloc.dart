@@ -377,6 +377,10 @@ class SongBloc {
     await repository.setPreferredTheme(theme);
     fetchTheme();
   }
+
+  void setPlayListValue(List<Song> playListSongs) {
+    _playListSongs.sink.add(playListSongs);
+  }
 }
 
 final SongBloc bloc = SongBloc();

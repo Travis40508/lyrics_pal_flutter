@@ -7,7 +7,7 @@ class SongTile extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onLongPressed;
 
-  SongTile({this.song, this.onPressed, this.onLongPressed});
+  SongTile({this.song, this.onPressed, this.onLongPressed, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

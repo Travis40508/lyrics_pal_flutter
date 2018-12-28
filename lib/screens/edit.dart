@@ -102,6 +102,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
         showNonPlayListSongs()
       ],
     );
+
   }
 
   Widget showPlayListSongs() {
@@ -112,19 +113,25 @@ class _EditPlaylistState extends State<EditPlaylist> {
           return Container();
         }
 
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, index) {
-            return SongTile(
-              song: snapshot.data[index],
-              onPressed: () => bloc.playListSongPressedInPlaylistEditing(snapshot.data[index]),
-            );
-          },
+        return Scrollbar(
+          child: ReorderableListView(
+              scrollDirection: Axis.vertical,
+              children: snapshot.data.map((song) => SongTile(song: song, onPressed: () => bloc.librarySongPressedInPlaylistEditing(song), key: Key('${snapshot.data.indexOf(song)} ${song.getSongTitle()} ${song.getArtist()}'))).toList(),
+              onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, snapshot.data),
+        )
         );
       },
     );
+  }
+
+  void _onReorder(oldIndex, newIndex, List<Song> songs) {
+    List<Song> playListSongs = songs;
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final Song item = playListSongs.removeAt(oldIndex);
+    playListSongs.insert(newIndex, item);
+    bloc.setPlayListValue(playListSongs);
   }
 
   Widget showNonPlayListSongs() {
@@ -135,6 +142,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
           return Container();
         }
 
+
         return ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
@@ -143,6 +151,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
             return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistEditing(snapshot.data[index]),);
           },
         );
+
       },
     );
   }
