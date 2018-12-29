@@ -118,7 +118,7 @@ class _EditPlaylistState extends State<EditPlaylist> {
               scrollDirection: Axis.vertical,
               children: snapshot.data.map((song) => SongTile(song: song, onPressed: () => bloc.librarySongPressedInPlaylistEditing(song), key: Key('${snapshot.data.indexOf(song)} ${song.getSongTitle()} ${song.getArtist()}'))).toList(),
               onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, snapshot.data),
-        )
+          ),
         );
       },
     );
@@ -143,13 +143,15 @@ class _EditPlaylistState extends State<EditPlaylist> {
         }
 
 
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, index) {
-            return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistEditing(snapshot.data[index]),);
-          },
+        return Container(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistEditing(snapshot.data[index]),);
+            },
+          ),
         );
 
       },
