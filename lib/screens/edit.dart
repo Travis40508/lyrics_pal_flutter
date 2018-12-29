@@ -143,15 +143,13 @@ class _EditPlaylistState extends State<EditPlaylist> {
         }
 
 
-        return Container(
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistEditing(snapshot.data[index]),);
-            },
-          ),
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistEditing(snapshot.data[index]),);
+          },
         );
 
       },
