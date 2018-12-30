@@ -66,7 +66,6 @@ class SongBloc {
   double get fontSizeValue => _fontSize.value;
 
   void searchTextChanged(String query) async {
-
     Observable.fromFuture(repository.fetchSongs(query))
         .debounce(const Duration(milliseconds: 600))
         .map((searchResults) => searchResults.results.trackMatches.trackList)
@@ -109,7 +108,7 @@ class SongBloc {
     if (lyrics != null && lyrics.length != 0) {
       Song song = Song(track.artist, track.name, imageUrl, lyrics);
 
-     response = await repository.saveTrackToLibrary(song);
+      response = await repository.saveTrackToLibrary(song);
     }
     print('Save response - $response');
 
@@ -326,6 +325,13 @@ class SongBloc {
     print('Update playlist result - $result');
   }
 
+  savePressedOnReorderScreen(List<Song> playlistSongs, String title, int playListId) async {
+    Playlist playlist = Playlist(title, playListSongs.map((song) => song.id).toList());
+    playlist.id = playListId;
+    int result = await repository.updatePlaylist(playlist);
+    print('Update playlist reuslt - $result');
+  }
+
   onFontSizeChanged(double value) {
     _fontSize.sink.add(value);
   }
@@ -360,13 +366,15 @@ class SongBloc {
   }
 
   Future<String> fetchOriginalLyrics(String artist, String songTitle) async {
-    LyricsResponse originalLyrics = await repository.fetchLyrics(artist, songTitle);
+    LyricsResponse originalLyrics =
+        await repository.fetchLyrics(artist, songTitle);
     return originalLyrics.lyrics;
   }
 
   void fetchTheme() async {
-    Observable.fromFuture(repository.getPreferredTheme())
-        .listen((isLightTheme) => _theme.sink.add(isLightTheme), onError: (error) => print(error));
+    Observable.fromFuture(repository.getPreferredTheme()).listen(
+        (isLightTheme) => _theme.sink.add(isLightTheme),
+        onError: (error) => print(error));
   }
 
   changeTheme() {

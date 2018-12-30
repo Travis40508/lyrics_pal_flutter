@@ -60,6 +60,7 @@ class PlaylistsState extends State<Playlists> {
               title: snapshot.data[index].title,
               index: index,
               onPressed: () => Navigator.push(context, MaterialPageRoute(
+                  settings: RouteSettings(name: '/playlist'),
                   builder: (context) => PlaylistScreen(playlist: snapshot.data[index],
                   )
               )

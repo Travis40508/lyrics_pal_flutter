@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
-import 'package:lyrics_pal/screens/edit.dart';
+import 'package:lyrics_pal/screens/edit_and_remove.dart';
 import 'package:lyrics_pal/screens/lyrics.dart';
 import '../blocs/song_bloc.dart';
 
@@ -20,6 +20,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
   @override
   void initState() {
     super.initState();
+    bloc.fetchAllPlaylistSongs(widget.playlist);
   }
 
   @override
@@ -31,7 +32,6 @@ class PlaylistScreenState extends State<PlaylistScreen> {
   @override
   Widget build(BuildContext context) {
 
-    bloc.fetchAllPlaylistSongs(widget.playlist);
 
     return StreamBuilder(
       stream: bloc.currentPlayListSongs,
@@ -102,7 +102,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
   void onEditTapped() {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => EditPlaylist(playlist: widget.playlist,)
+        builder: (context) => EditAndRemoveFromPlaylist(playlist: widget.playlist,)
     )
   );
   }

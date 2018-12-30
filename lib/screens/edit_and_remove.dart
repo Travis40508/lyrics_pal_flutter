@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/reorder_screen.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc.dart';
 
-class EditPlaylist extends StatefulWidget {
+class EditAndRemoveFromPlaylist extends StatefulWidget {
 
   final Playlist playlist;
 
-  EditPlaylist({this.playlist});
+  EditAndRemoveFromPlaylist({this.playlist});
 
   @override
-  _EditPlaylistState createState() => _EditPlaylistState();
+  _EditAndRemoveFromPlaylistState createState() => _EditAndRemoveFromPlaylistState();
 
 }
 
-class _EditPlaylistState extends State<EditPlaylist> {
+class _EditAndRemoveFromPlaylistState extends State<EditAndRemoveFromPlaylist> {
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -47,17 +48,17 @@ class _EditPlaylistState extends State<EditPlaylist> {
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
       title: Text(
-          'Edit Playlist',
+          'Add/Remove Songs',
         style: Theme.of(context).textTheme.title,
       ),
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 18.0),
           child: InkWell(
-            onTap: savePressed,
+            onTap: () => nextPressed(),
             child: Center(
               child: Text(
-                'Save',
+                'Next',
                 style: Theme.of(context).textTheme.title,
               ),
             ),
@@ -67,9 +68,9 @@ class _EditPlaylistState extends State<EditPlaylist> {
     );
   }
 
-  void savePressed() {
-    bloc.savePressedOnEditingScreen(widget.playlist, _controller.text);
-    Navigator.pop(context);
+  void nextPressed() {
+    Navigator.push(context,
+    MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.playListSongs, playlistTitle: _controller.text, playListId: widget.playlist.id,)));
   }
 
   Widget buildBody() {
@@ -113,26 +114,18 @@ class _EditPlaylistState extends State<EditPlaylist> {
           return Container();
         }
 
-        return Scrollbar(
-          child: ReorderableListView(
-              scrollDirection: Axis.vertical,
-              children: snapshot.data.map((song) => SongTile(song: song, onPressed: () => bloc.librarySongPressedInPlaylistEditing(song), key: Key('${snapshot.data.indexOf(song)} ${song.getSongTitle()} ${song.getArtist()}'))).toList(),
-              onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, snapshot.data),
-          ),
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            return SongTile(song: snapshot.data[index], onPressed: () => bloc.playListSongPressedInPlaylistEditing(snapshot.data[index]),);
+          },
         );
       },
     );
   }
 
-  void _onReorder(oldIndex, newIndex, List<Song> songs) {
-    List<Song> playListSongs = songs;
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
-    }
-    final Song item = playListSongs.removeAt(oldIndex);
-    playListSongs.insert(newIndex, item);
-    bloc.setPlayListValue(playListSongs);
-  }
 
   Widget showNonPlayListSongs() {
     return StreamBuilder(
