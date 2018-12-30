@@ -89,6 +89,6 @@ class _ReorderScreenState extends State<ReorderScreen> {
 
   void savePressed() {
     bloc.savePressedOnReorderScreen(widget.playlist, widget.playlistTitle, widget.playListId);
-    Navigator.popUntil(context, ModalRoute.withName('/playlist'));
+    Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 }

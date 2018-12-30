@@ -32,7 +32,6 @@ class PlaylistScreenState extends State<PlaylistScreen> {
   @override
   Widget build(BuildContext context) {
 
-
     return StreamBuilder(
       stream: bloc.currentPlayListSongs,
       builder: (context, AsyncSnapshot<List<Song>> snapshot) {
