@@ -5,18 +5,18 @@ import 'package:lyrics_pal/screens/reorder_screen.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc.dart';
 
-class EditAndRemoveFromPlaylist extends StatefulWidget {
+class EditAddAndRemoveFromPlaylist extends StatefulWidget {
 
   final Playlist playlist;
 
-  EditAndRemoveFromPlaylist({this.playlist});
+  EditAddAndRemoveFromPlaylist({this.playlist});
 
   @override
-  _EditAndRemoveFromPlaylistState createState() => _EditAndRemoveFromPlaylistState();
+  _EditAddAndRemoveFromPlaylistState createState() => _EditAddAndRemoveFromPlaylistState();
 
 }
 
-class _EditAndRemoveFromPlaylistState extends State<EditAndRemoveFromPlaylist> {
+class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlaylist> {
 
   final TextEditingController _controller = new TextEditingController();
 

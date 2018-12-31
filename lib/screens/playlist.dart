@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
-import 'package:lyrics_pal/screens/edit_and_remove.dart';
+import 'package:lyrics_pal/screens/edit_add_and_remove.dart';
 import 'package:lyrics_pal/screens/lyrics.dart';
 import '../blocs/song_bloc.dart';
 
@@ -101,7 +101,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
   void onEditTapped() {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => EditAndRemoveFromPlaylist(playlist: widget.playlist,)
+        builder: (context) => EditAddAndRemoveFromPlaylist(playlist: widget.playlist,)
     )
   );
   }

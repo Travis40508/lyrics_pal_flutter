@@ -75,16 +75,16 @@ class PlaylistsState extends State<Playlists> {
 
   showDeleteDialog(Playlist playlist) {
     var alert = AlertDialog(
-      title: Text('Delete?'),
-      content: Text('Are you sure you wish to delete ${playlist.title}?'),
+      title: Text('Delete?', style: TextStyle(color: Theme.of(context).primaryColor),),
+      content: Text('Are you sure you wish to delete ${playlist.title}?', style: TextStyle(color: Theme.of(context).primaryColor)),
       actions: <Widget>[
         FlatButton(
           onPressed: () => onDeleteConfirmed(playlist),
-          child: Text('Ok', style: Theme.of(context).textTheme.title,),
+          child: Text('Ok', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
         FlatButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: Theme.of(context).textTheme.title,),
+          child: Text('Cancel', style: TextStyle(color: Theme.of(context).primaryColor)),
         )
       ],
     );

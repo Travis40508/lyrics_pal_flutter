@@ -43,7 +43,9 @@ class HomeState extends State<Home> {
         tabs: <Widget>[
           Tab(icon: Icon(Icons.queue_music), text: "Playlists",),
           Tab(icon: Icon(Icons.library_music), text: "Library",),
-          Tab(icon: Icon(Icons.calendar_today), text: "Shows",)
+
+//          To be added in a future release
+//          Tab(icon: Icon(Icons.calendar_today), text: "Shows",)
         ],
       ),
     );
