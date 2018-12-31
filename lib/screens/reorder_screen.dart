@@ -8,8 +8,9 @@ class ReorderScreen extends StatefulWidget {
   final List<Song> playlist;
   final String playlistTitle;
   final int playListId;
+  final VoidCallback onSavePressed;
 
-  ReorderScreen({@required this.playlist, this.playlistTitle, this.playListId});
+  ReorderScreen({@required this.playlist, this.playlistTitle, this.playListId, this.onSavePressed});
 
   @override
   _ReorderScreenState createState() => _ReorderScreenState();
@@ -88,7 +89,7 @@ class _ReorderScreenState extends State<ReorderScreen> {
   }
 
   void savePressed() {
-    bloc.savePressedOnReorderScreen(widget.playlist, widget.playlistTitle, widget.playListId);
+    widget.onSavePressed();
     Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 }

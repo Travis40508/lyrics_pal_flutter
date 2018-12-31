@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/blocs/song_bloc_provider.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/reorder_screen.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 
 class AddPlaylist extends StatefulWidget {
@@ -11,6 +12,8 @@ class AddPlaylist extends StatefulWidget {
 }
 
 class AddPlaylistState extends State<AddPlaylist> {
+
+  final TextEditingController _controller = new TextEditingController();
 
  @override
   void initState() {
@@ -45,12 +48,22 @@ class AddPlaylistState extends State<AddPlaylist> {
         RaisedButton.icon(
           icon: Icon(Icons.save, color: Theme.of(context).iconTheme.color,),
           color: Theme.of(context).primaryColor,
-          label: Text('Save', style: Theme.of(context).textTheme.title,),
-          onPressed: () => onSavePressed(context),
+          label: Text('Next', style: Theme.of(context).textTheme.title,),
+          onPressed: () => _nextPressed(),
         )
       ],
     );
   }
+
+ void _nextPressed() {
+   Navigator.push(context,
+       MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.addedPlaylistSongs, playlistTitle: _controller.text,  onSavePressed: () => _onSavePressed(),)));
+ }
+
+ void _onSavePressed() {
+   bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
+   Navigator.popUntil(context, ModalRoute.withName('/'));
+ }
 
   Widget buildScreenBody() {
     return ListView(
@@ -58,6 +71,7 @@ class AddPlaylistState extends State<AddPlaylist> {
         Padding(
           padding: const EdgeInsets.only(bottom: 50.0),
           child: TextField(
+            controller: _controller,
             style: Theme.of(context).textTheme.title,
             cursorColor: Theme.of(context).accentColor,
             onChanged: (text) => bloc.onPlaylistTitleChanged(text),
