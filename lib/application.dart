@@ -6,6 +6,7 @@ import 'package:lyrics_pal/screens/playlist.dart';
 import 'package:lyrics_pal/screens/search.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
 import 'package:lyrics_pal/screens/settings.dart';
+import 'package:lyrics_pal/screens/splash_screen.dart';
 import 'screens/home.dart';
 import 'blocs/song_bloc.dart';
 
@@ -30,9 +31,10 @@ class App extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           title: "Lyrics Pal",
-          home: Home(),
+          home: SplashScreen(),
           initialRoute: '/',
           routes: {
+            '/home': (context) => Home(),
             '/search': (context) => Search(),
             '/confirm': (context) => Confirm(),
             '/add_playlist': (context) => AddPlaylist(),
