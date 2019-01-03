@@ -14,9 +14,11 @@ class YoutubeResponse {
 class Items {
 
   final Id id;
+  final Snippet snippet;
 
   Items.fromJson(Map<String, dynamic> parsedJson)
-  : id = Id.fromJson(parsedJson['id']);
+  : id = Id.fromJson(parsedJson['id']),
+    snippet = Snippet.fromJson(parsedJson['snippet']);
 }
 
 class Id {
@@ -25,4 +27,12 @@ class Id {
 
   Id.fromJson(Map<String, dynamic> parsedJson)
   : videoId = parsedJson['videoId'];
+}
+
+class Snippet {
+
+  final String title;
+
+  Snippet.fromJson(Map<String, dynamic> parsedJson)
+  : title = parsedJson['title'];
 }

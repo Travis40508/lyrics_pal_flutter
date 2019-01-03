@@ -352,6 +352,8 @@ class SongBloc {
 
   fetchYoutubeVideoId(String artist, String title) async {
     Observable.fromFuture(repository.getYoutubeResponse(artist, title))
+        .where((response) => response.items[0].snippet.title.toLowerCase().contains(artist.toLowerCase()) && response.items[0].snippet.title.toLowerCase().contains(title.toLowerCase()) &&
+        response.items[0].snippet.title.toLowerCase().contains('karaoke'.toLowerCase()))
         .map((response) => response.items[0].id.videoId)
         .listen((id) => _youtubeId.sink.add(id),
             onError: (error) => print(error));
