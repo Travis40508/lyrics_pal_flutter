@@ -62,7 +62,7 @@ class AddPlaylistState extends State<AddPlaylist> {
 
  void _onSavePressed() {
    bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
-   Navigator.popUntil(context, ModalRoute.withName('/'));
+   Navigator.popUntil(context, ModalRoute.withName('/home'));
  }
 
   Widget buildScreenBody() {
@@ -142,6 +142,6 @@ class AddPlaylistState extends State<AddPlaylist> {
 
   onSavePressed(context) {
     bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
-    Navigator.pop(context);
+    Navigator.popUntil(context, ModalRoute.withName('/home'));
   }
 }

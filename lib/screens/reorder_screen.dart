@@ -90,6 +90,5 @@ class _ReorderScreenState extends State<ReorderScreen> {
 
   void savePressed() {
     widget.onSavePressed();
-    Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 }
