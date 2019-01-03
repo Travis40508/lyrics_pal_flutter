@@ -20,6 +20,7 @@ class SongBloc {
   final _fontSize = BehaviorSubject<double>();
   final _youtubeId = BehaviorSubject<String>();
   final _theme = PublishSubject<bool>();
+  final _isFirstLaunch = BehaviorSubject<bool>();
   final String defaultImage =
       'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
@@ -64,6 +65,8 @@ class SongBloc {
   bool get canSaveValue => _canSaveSubject.value;
 
   double get fontSizeValue => _fontSize.value;
+
+  bool get isFirstLaunchValue => _isFirstLaunch.value;
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -167,6 +170,9 @@ class SongBloc {
 
     await _theme.drain();
     _theme.close();
+
+    await _isFirstLaunch.drain();
+    _isFirstLaunch.close();
   }
 
   void savePlaylistToDatabase(List<Song> songs) async {
@@ -388,6 +394,11 @@ class SongBloc {
 
   void setPlayListValue(List<Song> playListSongs) {
     _playListSongs.sink.add(playListSongs);
+  }
+
+  void checkIfFirstLaunch() async {
+    bool isFirstLaunch = await repository.isFirstLaunch();
+    _isFirstLaunch.sink.add(isFirstLaunch);
   }
 }
 

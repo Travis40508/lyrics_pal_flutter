@@ -24,6 +24,7 @@ class AppState extends State<App> {
     super.initState();
     bloc.fetchTheme();
     bloc.fetchFontSize();
+    bloc.checkIfFirstLaunch();
   }
 
   @override
@@ -44,7 +45,7 @@ class AppState extends State<App> {
           ),
           debugShowCheckedModeBanner: false,
           title: "Lyrics Pal",
-          home: SplashScreen(),
+          home: bloc.isFirstLaunchValue == null || bloc.isFirstLaunchValue ? SplashScreen() : Home(),
           initialRoute: '/',
           routes: {
             '/home': (context) => Home(),

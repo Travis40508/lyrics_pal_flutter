@@ -137,4 +137,21 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
       prefs.setBool('theme', value);
     }
   }
+
+  @override
+  Future<bool> isFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('firstLaunch');
+    if (isFirstLaunch == null) {
+      isFirstLaunch = true;
+    }
+    setIsFirstLaunch();
+    return isFirstLaunch;
+  }
+
+  @override
+  setIsFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('firstLaunch', false);
+  }
 }

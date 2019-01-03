@@ -4,4 +4,6 @@ abstract class PreferencesStore {
   setPreferredFontSize(double value);
   Future<bool> getPreferredTheme();
   setPreferredTheme(bool value);
+  Future<bool> isFirstLaunch();
+  setIsFirstLaunch();
 }
