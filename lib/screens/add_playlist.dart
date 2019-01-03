@@ -60,7 +60,7 @@ class AddPlaylistState extends State<AddPlaylist> {
        MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.addedPlaylistSongs, playlistTitle: _controller.text,  onSavePressed: () => _onSavePressed(),)));
  }
 
- void _onSavePressed() {
+ void _onSavePressed()  {
    bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
    Navigator.popUntil(context, ModalRoute.withName('/home'));
  }

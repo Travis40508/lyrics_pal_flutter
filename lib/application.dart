@@ -22,9 +22,9 @@ class AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    bloc.checkIfFirstLaunch();
     bloc.fetchTheme();
     bloc.fetchFontSize();
-    bloc.checkIfFirstLaunch();
   }
 
   @override
@@ -45,9 +45,10 @@ class AppState extends State<App> {
           ),
           debugShowCheckedModeBanner: false,
           title: "Lyrics Pal",
-          home: bloc.isFirstLaunchValue == null || bloc.isFirstLaunchValue ? SplashScreen() : Home(),
+          home: SplashScreen(),
           initialRoute: '/',
           routes: {
+            '/splash': (context) => SplashScreen(),
             '/home': (context) => Home(),
             '/search': (context) => Search(),
             '/confirm': (context) => Confirm(),

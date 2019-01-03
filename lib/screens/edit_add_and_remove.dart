@@ -73,7 +73,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
     MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.playListSongs, playlistTitle: _controller.text, playListId: widget.playlist.id, onSavePressed: () => _onSavePressed(),)));
   }
 
-  void _onSavePressed() {
+  void _onSavePressed()  {
     bloc.savePressedOnReorderScreen(bloc.playListSongs, _controller.text, widget.playlist.id);
     Navigator.popUntil(context, ModalRoute.withName('/home'));
   }

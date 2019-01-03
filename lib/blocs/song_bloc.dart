@@ -175,7 +175,7 @@ class SongBloc {
     _isFirstLaunch.close();
   }
 
-  void savePlaylistToDatabase(List<Song> songs) async {
+  savePlaylistToDatabase(List<Song> songs) async {
     List<int> ids = List();
     for (Song song in songs) {
       ids.add(song.getSongId());
