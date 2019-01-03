@@ -10,11 +10,24 @@ import 'package:lyrics_pal/screens/splash_screen.dart';
 import 'screens/home.dart';
 import 'blocs/song_bloc.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  AppState createState() {
+    return new AppState();
+  }
+}
+
+class AppState extends State<App> {
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.fetchTheme();
+    bloc.fetchFontSize();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    bloc.fetchTheme();
 
     return StreamBuilder(
       stream: bloc.theme,
