@@ -52,9 +52,12 @@ class ConfirmState extends State<Confirm> {
     return AppBar(
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
-      title: Text(
-        '${widget.song.getSongTitle()}',
-        style: Theme.of(context).textTheme.title,
+      title: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          '${widget.song.getSongTitle()}',
+          style: Theme.of(context).textTheme.title,
+        ),
       ),
       centerTitle: true,
       actions: <Widget>[
@@ -78,7 +81,7 @@ class ConfirmState extends State<Confirm> {
               child: Center(
                 child: Text(
                   snapshot.data ? 'Save' : 'Delete',
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.button,
                 ),
               ),),
         );
@@ -102,7 +105,7 @@ class ConfirmState extends State<Confirm> {
               child: Center(
                 child: Text(
                 'Edit',
-        style: Theme.of(context).textTheme.title),
+        style: Theme.of(context).textTheme.button),
               ),
         ),
         );

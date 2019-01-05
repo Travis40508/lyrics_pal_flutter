@@ -43,7 +43,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
         for (Song song in snapshot.data) {
           if (song != null) {
             tabs.add(Tab(
-              text: song.songTitle,
+              text: song.songTitle.length < 20 ? song.songTitle : song.songTitle.substring(0, 20),
             ));
           }
         }
