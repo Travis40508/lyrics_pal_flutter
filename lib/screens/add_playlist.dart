@@ -51,11 +51,12 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
       centerTitle: true,
       title: Text('Create Playlist', style: Theme.of(context).textTheme.title,),
       actions: <Widget>[
-        RaisedButton.icon(
-          icon: Icon(Icons.save, color: Theme.of(context).iconTheme.color,),
-          color: Theme.of(context).primaryColor,
-          label: Text('Next', style: Theme.of(context).textTheme.button,),
-          onPressed: () => _nextPressed(),
+        InkWell(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 18.0),
+            child: Center(child: Text('Next', style: Theme.of(context).textTheme.button,)),
+          ),
+          onTap: () => _nextPressed(),
         )
       ],
     );

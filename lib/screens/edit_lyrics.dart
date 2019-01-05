@@ -49,7 +49,7 @@ class _EditLyricsState extends State<EditLyrics> {
               padding: const EdgeInsets.only(right: 18.0),
               child: Text(
                 'Save',
-                style: Theme.of(context).textTheme.title
+                style: Theme.of(context).textTheme.button
               ),
             ),
           ),
@@ -61,7 +61,7 @@ class _EditLyricsState extends State<EditLyrics> {
               padding: const EdgeInsets.only(right: 18.0),
               child: Text(
                 'Original',
-                style: Theme.of(context).textTheme.title
+                style: Theme.of(context).textTheme.button
               ),
             ),
           ),

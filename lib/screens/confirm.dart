@@ -208,7 +208,8 @@ class ConfirmState extends State<Confirm> {
             ),
           ),
           Center(
-            child: StreamBuilder(
+            child: Platform.isIOS ? Container() :
+            StreamBuilder(
               stream: bloc.youtubeVideoId,
               builder: (context, AsyncSnapshot<String> snapshot) {
                 return InkWell(
