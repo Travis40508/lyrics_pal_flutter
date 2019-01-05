@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../blocs/song_bloc.dart';
 
@@ -34,6 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget buildAppBar() {
     return AppBar(
+      leading: getBackButton() ,
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
@@ -50,13 +53,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'Save',
                 style:
-                    Theme.of(context).textTheme.title,
+                    Theme.of(context).textTheme.button,
               ),
             ),
           ),
         )
       ],
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+        child: Icon(Icons.home, size: 35.0,),
+        onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
   Widget buildSettingsBody() {

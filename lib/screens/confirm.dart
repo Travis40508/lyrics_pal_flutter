@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/abstract_song.dart';
@@ -50,6 +52,7 @@ class ConfirmState extends State<Confirm> {
 
   Widget buildAppBar(context) {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       title: Padding(
@@ -67,6 +70,14 @@ class ConfirmState extends State<Confirm> {
     );
   }
 
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
+  }
+
   Widget buildActionButton() {
     return StreamBuilder(
       initialData: false,
@@ -79,8 +90,9 @@ class ConfirmState extends State<Confirm> {
                   ? onSaveClicked(context)
                   : onDeleteClicked(context),
               child: Center(
-                child: Text(
-                  snapshot.data ? 'Save' : 'Delete',
+                child: !snapshot.data ?
+                    Icon(Icons.delete) :
+                Text('Save',
                   style: Theme.of(context).textTheme.button,
                 ),
               ),),

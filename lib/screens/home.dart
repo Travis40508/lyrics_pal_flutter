@@ -4,7 +4,6 @@ import 'library.dart';
 import 'package:flutter/cupertino.dart';
 
 class Home extends StatefulWidget {
-
   @override
   HomeState createState() {
     return new HomeState();
@@ -12,7 +11,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -32,17 +30,26 @@ class HomeState extends State<Home> {
       title: Text("Home", style: Theme.of(context).textTheme.title),
       centerTitle: true,
       actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.settings, color: Theme.of(context).iconTheme.color,
+        Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: InkWell(
+            child: Center(
+              child: Text('Settings', style: Theme.of(context).textTheme.button),
+            ),
+            onTap: () => Navigator.pushNamed(context, '/settings'),
           ),
-          onPressed: () => Navigator.pushNamed(context, '/settings'),
-        )
+        ),
       ],
       bottom: TabBar(
         tabs: <Widget>[
-          Tab(icon: Icon(Icons.queue_music), text: "Playlists",),
-          Tab(icon: Icon(Icons.library_music), text: "Library",),
+          Tab(
+            icon: Icon(Icons.queue_music),
+            text: "Playlists",
+          ),
+          Tab(
+            icon: Icon(Icons.library_music),
+            text: "Library",
+          ),
 
 //          To be added in a future release
 //          Tab(icon: Icon(Icons.calendar_today), text: "Shows",)
@@ -60,4 +67,3 @@ class HomeState extends State<Home> {
     );
   }
 }
-

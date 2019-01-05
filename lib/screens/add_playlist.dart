@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/blocs/song_bloc_provider.dart';
 import 'package:lyrics_pal/models/song.dart';
@@ -43,6 +45,7 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
 
   Widget buildAppBar(context) {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
@@ -51,11 +54,19 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
         RaisedButton.icon(
           icon: Icon(Icons.save, color: Theme.of(context).iconTheme.color,),
           color: Theme.of(context).primaryColor,
-          label: Text('Next', style: Theme.of(context).textTheme.title,),
+          label: Text('Next', style: Theme.of(context).textTheme.button,),
           onPressed: () => _nextPressed(),
         )
       ],
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
  void _nextPressed() {

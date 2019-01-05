@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/song.dart';
 import '../blocs/song_bloc.dart';
@@ -31,6 +33,7 @@ class _EditLyricsState extends State<EditLyrics> {
 
   Widget buildAppBar() {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
@@ -65,6 +68,14 @@ class _EditLyricsState extends State<EditLyrics> {
         ),
       ],
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
   void onRetrieveOriginalLyricsTapped() async {

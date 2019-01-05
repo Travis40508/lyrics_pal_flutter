@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
@@ -62,6 +64,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
 
   Widget buildAppBar(List<Widget> tabs) {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
@@ -76,7 +79,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
             child: Center(
               child: Text(
                 'Edit',
-                style: Theme.of(context).textTheme.title
+                style: Theme.of(context).textTheme.button
               ),
             ),
             onTap: () => onEditTapped(),
@@ -85,6 +88,14 @@ class PlaylistScreenState extends State<PlaylistScreen> {
       ],
       bottom: TabBar(isScrollable: true, tabs: tabs),
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
   Widget buildTabs(List<Song> songs) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
@@ -45,6 +47,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
 
   Widget buildAppBar() {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
@@ -60,13 +63,21 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
             child: Center(
               child: Text(
                 'Next',
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.button,
               ),
             ),
           ),
         ),
       ],
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
   void nextPressed() {

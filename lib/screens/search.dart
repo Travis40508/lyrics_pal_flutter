@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/search_response.dart';
 import 'package:lyrics_pal/screens/confirm.dart';
@@ -46,6 +48,7 @@ class SearchState extends State<Search> {
 
   buildAppBar() {
     return AppBar(
+      leading: getBackButton(),
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
@@ -54,6 +57,14 @@ class SearchState extends State<Search> {
       ),
       centerTitle: true,
     );
+  }
+
+  Widget getBackButton() {
+    if (Platform.isAndroid) {
+      return InkWell(
+          child: Icon(Icons.home, size: 35.0,),
+          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+    }
   }
 
   Widget buildSearchBar() {
