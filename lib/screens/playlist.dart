@@ -83,7 +83,7 @@ class PlaylistScreenState extends State<PlaylistScreen> {
           ),
         )
       ],
-      bottom: TabBar(tabs: tabs),
+      bottom: TabBar(isScrollable: true, tabs: tabs),
     );
   }
 
