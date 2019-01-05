@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/blocs/song_bloc_provider.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/playlist.dart';
 import 'package:lyrics_pal/screens/reorder_screen.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 
@@ -9,9 +10,10 @@ class AddPlaylist extends StatefulWidget {
   AddPlaylistState createState() {
     return new AddPlaylistState();
   }
+
 }
 
-class AddPlaylistState extends State<AddPlaylist> {
+class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin {
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -20,6 +22,7 @@ class AddPlaylistState extends State<AddPlaylist> {
     super.initState();
     bloc.resetLists();
     bloc.fetchAllSongs();
+
   }
 
   @override
@@ -60,9 +63,8 @@ class AddPlaylistState extends State<AddPlaylist> {
        MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.addedPlaylistSongs, playlistTitle: _controller.text,  onSavePressed: () => _onSavePressed(),)));
  }
 
- void _onSavePressed()  {
-   bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
-   Navigator.popUntil(context, ModalRoute.withName('/home'));
+ void _onSavePressed() {
+   bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs, this);
  }
 
   Widget buildScreenBody() {
@@ -140,8 +142,15 @@ class AddPlaylistState extends State<AddPlaylist> {
     );
   }
 
-  onSavePressed(context) {
-    bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
-    Navigator.popUntil(context, ModalRoute.withName('/home'));
+  @override
+  onPlaylistSaved() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: bloc.allPlayListsValue[bloc.allPlayListsValue.length - 1],)),
+        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/'));
   }
+}
+
+abstract class AddPlaylistCallbackMixin {
+  onPlaylistSaved();
 }

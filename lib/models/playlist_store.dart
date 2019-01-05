@@ -5,4 +5,5 @@ abstract class PlaylistStore {
   Future<List<Playlist>> fetchAllPlaylists();
   Future<int> updatePlaylist(Playlist playlist);
   Future<int> deletePlaylist(int playListId);
+  Future<Playlist> fetchPlaylistById(int id);
 }

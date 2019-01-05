@@ -72,6 +72,17 @@ class PlaylistsDbProvider implements PlaylistStore {
     return result;
   }
 
+  @override
+  Future<Playlist> fetchPlaylistById(int id) async {
+    var dbClient = await db;
+
+    var result = await dbClient.query(table, where: 'id = ?', whereArgs: [id]);
+
+    if (result.length > 0) {
+      return Playlist.fromJson(result.first);
+    }
+  }
+
 
 }
 

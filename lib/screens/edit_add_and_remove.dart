@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/screens/playlist.dart';
 import 'package:lyrics_pal/screens/reorder_screen.dart';
 import 'package:lyrics_pal/widgets/song_tile.dart';
 import '../blocs/song_bloc.dart';
@@ -16,7 +17,7 @@ class EditAddAndRemoveFromPlaylist extends StatefulWidget {
 
 }
 
-class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlaylist> {
+class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlaylist> with UpdatePlaylistCallbackMixin {
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -74,8 +75,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
   }
 
   void _onSavePressed()  {
-    bloc.savePressedOnReorderScreen(bloc.playListSongs, _controller.text, widget.playlist.id);
-    Navigator.popUntil(context, ModalRoute.withName('/home'));
+    bloc.savePressedOnReorderScreen(bloc.playListSongs, _controller.text, widget.playlist.id, this);
   }
 
   Widget buildBody() {
@@ -153,4 +153,16 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
       },
     );
   }
+
+  @override
+  void onPlayListUpdated(Playlist playlist) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist,)),
+        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/'));
+  }
+}
+
+abstract class UpdatePlaylistCallbackMixin {
+  void onPlayListUpdated(Playlist playlist);
 }

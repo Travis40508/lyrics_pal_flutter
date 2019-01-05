@@ -3,6 +3,8 @@ import 'package:lyrics_pal/models/lyrics_response.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/repository/repository.dart';
+import 'package:lyrics_pal/screens/add_playlist.dart';
+import 'package:lyrics_pal/screens/edit_add_and_remove.dart';
 import 'package:rxdart/rxdart.dart';
 import '../models/search_response.dart';
 
@@ -14,7 +16,7 @@ class SongBloc {
   final _allSongsSubject = BehaviorSubject<List<Song>>();
   final _addedSongsSubject = BehaviorSubject<List<Song>>();
   final _canSaveSubject = BehaviorSubject<bool>();
-  final _allPlaylists = PublishSubject<List<Playlist>>();
+  final _allPlaylists = BehaviorSubject<List<Playlist>>();
   final _playListSongs = BehaviorSubject<List<Song>>();
   final _nonPlayListSongs = BehaviorSubject<List<Song>>();
   final _fontSize = BehaviorSubject<double>();
@@ -65,6 +67,8 @@ class SongBloc {
   bool get canSaveValue => _canSaveSubject.value;
 
   double get fontSizeValue => _fontSize.value;
+
+  List<Playlist> get allPlayListsValue => _allPlaylists.value;
 
   bool get isFirstLaunchValue => _isFirstLaunch.value;
 
@@ -173,9 +177,10 @@ class SongBloc {
 
     await _isFirstLaunch.drain();
     _isFirstLaunch.close();
+
   }
 
-  savePlaylistToDatabase(List<Song> songs) async {
+  savePlaylistToDatabase(List<Song> songs, AddPlaylistCallbackMixin callback) async {
     List<int> ids = List();
     for (Song song in songs) {
       ids.add(song.getSongId());
@@ -183,6 +188,10 @@ class SongBloc {
     Playlist playlist = Playlist(playListTitle, ids);
     int response = await repository.savePlaylist(playlist);
 
+    if (response != 0) {
+      _allPlaylists.sink.add(await repository.fetchAllPlaylists());
+      callback.onPlaylistSaved();
+    }
     print(response);
   }
 
@@ -331,10 +340,11 @@ class SongBloc {
     print('Update playlist result - $result');
   }
 
-  savePressedOnReorderScreen(List<Song> playlistSongs, String title, int playListId) async {
+  savePressedOnReorderScreen(List<Song> playlistSongs, String title, int playListId, UpdatePlaylistCallbackMixin callback) async {
     Playlist playlist = Playlist(title, playListSongs.map((song) => song.id).toList());
     playlist.id = playListId;
     int result = await repository.updatePlaylist(playlist);
+    callback.onPlayListUpdated(await repository.fetchPlaylistById(playListId));
     print('Update playlist reuslt - $result');
   }
 

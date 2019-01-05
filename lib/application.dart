@@ -45,7 +45,7 @@ class AppState extends State<App> {
           ),
           debugShowCheckedModeBanner: false,
           title: "Lyrics Pal",
-          home: SplashScreen(),
+          home: bloc.isFirstLaunchValue == null || bloc.isFirstLaunchValue ? SplashScreen() : Home(),
           initialRoute: '/',
           routes: {
             '/splash': (context) => SplashScreen(),

@@ -24,9 +24,9 @@ class PlayListTile extends StatelessWidget {
           onLongPress: onLongPressed,
           leading: CircleAvatar(
             backgroundColor: Theme.of(context).accentColor,
-            child: Text('${index + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor, fontSize: 18.0),),
+            child: Text('${index + 1}' ?? '', style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor, fontSize: 18.0),),
           ),
-          title: Text(title, style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold, fontSize: 16.0),),
+          title: Text(title ?? '', style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold, fontSize: 16.0),),
         ),
       ),
     );

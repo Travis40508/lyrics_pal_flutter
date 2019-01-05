@@ -154,4 +154,10 @@ class Repository implements SearchSource, LyricsSource, LibraryStore, PlaylistSt
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('firstLaunch', false);
   }
+
+  @override
+  Future<Playlist> fetchPlaylistById(int id) async {
+    Playlist playlist = await playlistDb.fetchPlaylistById(id);
+    return playlist;
+  }
 }
