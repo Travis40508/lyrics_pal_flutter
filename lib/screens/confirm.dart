@@ -112,14 +112,14 @@ class ConfirmState extends State<Confirm> {
 
         return Padding(
           padding: const EdgeInsets.only(right: 18.0),
-          child: InkWell(
+          child: widget.song.getSongLyrics() != null ? InkWell(
               onTap: () => onEditTapped(),
               child: Center(
                 child: Text(
                 'Edit',
         style: Theme.of(context).textTheme.button),
               ),
-        ),
+        ) : Container(),
         );
       }
     );

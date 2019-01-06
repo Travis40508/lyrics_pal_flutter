@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:lyrics_pal/models/song.dart';
+import 'package:lyrics_pal/models/abstract_song.dart';
 import '../blocs/song_bloc.dart';
 
 class EditLyrics extends StatefulWidget {
-  final Song song;
+  final AbstractSong song;
 
   EditLyrics({this.song});
 
@@ -19,7 +19,7 @@ class _EditLyricsState extends State<EditLyrics> {
   @override
   void initState() {
     super.initState();
-    _lyricsController.text = widget.song.lyrics;
+    _lyricsController.text = widget.song.getSongLyrics();
   }
 
   @override
