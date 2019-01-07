@@ -40,7 +40,8 @@ class PlaylistsDbProvider implements PlaylistStore {
 
   @override
   Future<int> savePlaylist(Playlist playlist) async {
-    int res = await _db.insert(table, playlist.toMap());
+    var dbClient = await db;
+    int res = await dbClient.insert(table, playlist.toMap());
 
     return res;
   }

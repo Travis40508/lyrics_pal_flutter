@@ -41,19 +41,11 @@ class PlaylistScreenState extends State<PlaylistScreen> {
           return Container();
         }
 
-        List<Widget> tabs = List();
-        for (Song song in snapshot.data) {
-          if (song != null) {
-            tabs.add(Tab(
-              text: song.songTitle.length < 20 ? song.songTitle : song.songTitle.substring(0, 20),
-            ));
-          }
-        }
 
         return DefaultTabController(
           length: snapshot.data.length,
           child: Scaffold(
-            appBar: buildAppBar(tabs),
+            appBar: buildAppBar(snapshot.data.map((song) => Tab(text: song.songTitle.length < 20 ? song.songTitle : song.songTitle.substring(0, 20))).toList()),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: buildTabs(snapshot.data),
           ),

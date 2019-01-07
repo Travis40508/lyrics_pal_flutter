@@ -3,8 +3,7 @@ import 'package:lyrics_pal/models/lyrics_response.dart';
 import 'package:lyrics_pal/models/playlist.dart';
 import 'package:lyrics_pal/models/song.dart';
 import 'package:lyrics_pal/repository/repository.dart';
-import 'package:lyrics_pal/screens/add_playlist.dart';
-import 'package:lyrics_pal/screens/edit_add_and_remove.dart';
+
 import 'package:rxdart/rxdart.dart';
 import '../models/search_response.dart';
 
@@ -23,6 +22,8 @@ class SongBloc {
   final _youtubeId = BehaviorSubject<String>();
   final _theme = PublishSubject<bool>();
   final _isFirstLaunch = BehaviorSubject<bool>();
+  final _onPlayListSaved = PublishSubject<bool>();
+  final _onPlayListUpdated = PublishSubject<Playlist>();
   final String defaultImage =
       'https://cdn.pixabay.com/photo/2015/12/09/22/09/music-1085655_640.png';
 
@@ -48,6 +49,10 @@ class SongBloc {
 
   Observable<String> get youtubeVideoId => _youtubeId.stream;
 
+  Observable<bool> get onPlayListSavedStream => _onPlayListSaved.stream;
+
+  Observable<Playlist> get onPlayListUpdatedStream => _onPlayListUpdated.stream;
+
   Observable<bool> get theme => _theme.stream;
 
   String get currentLyrics => _lyricsSubject.value;
@@ -71,6 +76,53 @@ class SongBloc {
   List<Playlist> get allPlayListsValue => _allPlaylists.value;
 
   bool get isFirstLaunchValue => _isFirstLaunch.value;
+
+  void dispose() async {
+    await _searchSubject.drain();
+    _searchSubject.close();
+
+    await _lyricsSubject.drain();
+    _lyricsSubject.close();
+
+    await _allSongsSubject.drain();
+    _allSongsSubject.close();
+
+    await _canSaveSubject.drain();
+    _canSaveSubject.close();
+
+    await _addedSongsSubject.drain();
+    _addedSongsSubject.close();
+
+    await _playListTitleSubject.drain();
+    _playListTitleSubject.close();
+
+    await _allPlaylists.drain();
+    _allPlaylists.close();
+
+    await _playListSongs.drain();
+    _playListSongs.close();
+
+    await _nonPlayListSongs.drain();
+    _nonPlayListSongs.close();
+
+    await _fontSize.drain();
+    _fontSize.close();
+
+    await _youtubeId.drain();
+    _youtubeId.close();
+
+    await _theme.drain();
+    _theme.close();
+
+    await _isFirstLaunch.drain();
+    _isFirstLaunch.close();
+
+    await _onPlayListSaved.drain();
+    _onPlayListSaved.close();
+
+    await _onPlayListUpdated.drain();
+    _onPlayListUpdated.close();
+  }
 
   void searchTextChanged(String query) async {
     Observable.fromFuture(repository.fetchSongs(query))
@@ -138,49 +190,8 @@ class SongBloc {
     print('Save result - $result');
   }
 
-  void dispose() async {
-    await _searchSubject.drain();
-    _searchSubject.close();
 
-    await _lyricsSubject.drain();
-    _lyricsSubject.close();
-
-    await _allSongsSubject.drain();
-    _allSongsSubject.close();
-
-    await _canSaveSubject.drain();
-    _canSaveSubject.close();
-
-    await _addedSongsSubject.drain();
-    _addedSongsSubject.close();
-
-    await _playListTitleSubject.drain();
-    _playListTitleSubject.close();
-
-    await _allPlaylists.drain();
-    _allPlaylists.close();
-
-    await _playListSongs.drain();
-    _playListSongs.close();
-
-    await _nonPlayListSongs.drain();
-    _nonPlayListSongs.close();
-
-    await _fontSize.drain();
-    _fontSize.close();
-
-    await _youtubeId.drain();
-    _youtubeId.close();
-
-    await _theme.drain();
-    _theme.close();
-
-    await _isFirstLaunch.drain();
-    _isFirstLaunch.close();
-
-  }
-
-  savePlaylistToDatabase(List<Song> songs, AddPlaylistCallbackMixin callback) async {
+  savePlaylistToDatabase(List<Song> songs) async {
     List<int> ids = List();
     for (Song song in songs) {
       ids.add(song.getSongId());
@@ -190,7 +201,7 @@ class SongBloc {
 
     if (response != 0) {
       _allPlaylists.sink.add(await repository.fetchAllPlaylists());
-      callback.onPlaylistSaved();
+      _onPlayListSaved.sink.add(true);
     }
     print(response);
   }
@@ -340,11 +351,11 @@ class SongBloc {
     print('Update playlist result - $result');
   }
 
-  savePressedOnReorderScreen(List<Song> playlistSongs, String title, int playListId, UpdatePlaylistCallbackMixin callback) async {
+  savePressedOnReorderScreen(List<Song> playlistSongs, String title, int playListId) async {
     Playlist playlist = Playlist(title, playListSongs.map((song) => song.id).toList());
     playlist.id = playListId;
     int result = await repository.updatePlaylist(playlist);
-    callback.onPlayListUpdated(await repository.fetchPlaylistById(playListId));
+    _onPlayListUpdated.sink.add(await repository.fetchPlaylistById(playListId));
     print('Update playlist reuslt - $result');
   }
 

@@ -7,13 +7,22 @@ import 'dart:async';
 import '../models/song.dart';
 
 class LibraryDbProvider implements LibraryStore {
-  Database db;
+  Database _db;
   final String table = "Library";
 
-  void init() async {
+  Future<Database> get db async {
+    if (_db == null) {
+      _db = await init();
+    }
+
+    return _db;
+  }
+
+  Future<Database> init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'library.db');
 
+    var db;
     db = await openDatabase(path, version: 1,
         onCreate: (Database newDb, int version) {
       newDb.execute("""
@@ -27,18 +36,22 @@ class LibraryDbProvider implements LibraryStore {
           )
         """);
     });
+
+    return db;
   }
 
   @override
   Future<int> saveTrackToLibrary(Song song) async {
-    int res = await db.insert(table, song.toMap());
+    var dbClient = await db;
+    int res = await dbClient.insert(table, song.toMap());
 
     return res;
   }
 
   @override
   Future<List<Song>> fetchAllSongs() async {
-    var result = await db.rawQuery("SELECT * FROM $table");
+    var dbClient = await db;
+    var result = await dbClient.rawQuery("SELECT * FROM $table");
     List<Song> songList = result.map((song) => Song.fromJson(song)).toList();
 
     return songList;
@@ -46,7 +59,8 @@ class LibraryDbProvider implements LibraryStore {
 
   @override
   Future<Song> fetchSongById(int id) async {
-    var result = await db.query(table, where: 'id = ?', whereArgs: [id]);
+    var dbClient = await db;
+    var result = await dbClient.query(table, where: 'id = ?', whereArgs: [id]);
 
     if (result.length > 0) {
       return Song.fromJson(result.first);
@@ -55,7 +69,8 @@ class LibraryDbProvider implements LibraryStore {
 
   @override
   Future<Song> fetchSongByArtistAndTitle(String artist, String title) async {
-    var result = await db.query(table,
+    var dbClient = await db;
+    var result = await dbClient.query(table,
         where: 'artist = ? AND song = ?', whereArgs: [artist, title]);
 
     if (result.length > 0) {
@@ -67,13 +82,15 @@ class LibraryDbProvider implements LibraryStore {
 
   @override
   Future<int> deleteSongById(int id) async {
-    var result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
+    var dbClient = await db;
+    var result = await dbClient.delete(table, where: 'id = ?', whereArgs: [id]);
     return result;
   }
 
   @override
   Future<int> updateSongById(Song song) async {
-    var result = await db
+    var dbClient = await db;
+    var result = await dbClient
         .update(table, song.toMap(), where: 'id = ?', whereArgs: [song.id]);
     return result;
   }

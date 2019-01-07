@@ -19,7 +19,7 @@ class EditAddAndRemoveFromPlaylist extends StatefulWidget {
 
 }
 
-class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlaylist> with UpdatePlaylistCallbackMixin {
+class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlaylist>  {
 
   final TextEditingController _controller = new TextEditingController();
 
@@ -28,6 +28,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
     super.initState();
     _controller.text = widget.playlist.title;
     bloc.fetchNonPlayListSongs(widget.playlist);
+    _listenForEvents();
   }
 
   @override
@@ -86,7 +87,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
   }
 
   void _onSavePressed()  {
-    bloc.savePressedOnReorderScreen(bloc.playListSongs, _controller.text, widget.playlist.id, this);
+    bloc.savePressedOnReorderScreen(bloc.playListSongs, _controller.text, widget.playlist.id);
   }
 
   Widget buildBody() {
@@ -165,15 +166,13 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
     );
   }
 
-  @override
-  void onPlayListUpdated(Playlist playlist) {
-    Navigator.pushAndRemoveUntil(
+  void _listenForEvents() {
+    bloc.onPlayListUpdatedStream.listen((playlist) => {
+        Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist,)),
-        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/'));
+        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')) : print('Error updating song')
+    });
   }
-}
 
-abstract class UpdatePlaylistCallbackMixin {
-  void onPlayListUpdated(Playlist playlist);
 }

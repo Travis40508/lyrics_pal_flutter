@@ -12,19 +12,18 @@ class AddPlaylist extends StatefulWidget {
   AddPlaylistState createState() {
     return new AddPlaylistState();
   }
-
 }
 
-class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin {
-
+class AddPlaylistState extends State<AddPlaylist> {
   final TextEditingController _controller = new TextEditingController();
 
- @override
+  @override
   void initState() {
     super.initState();
     bloc.resetLists();
     bloc.fetchAllSongs();
 
+    _subscribeToEvents();
   }
 
   @override
@@ -35,12 +34,10 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
 
   @override
   Widget build(BuildContext context) {
-
-   return Scaffold(
-      appBar: buildAppBar(context),
-      body: buildScreenBody(),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor
-    );
+    return Scaffold(
+        appBar: buildAppBar(context),
+        body: buildScreenBody(),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor);
   }
 
   Widget buildAppBar(context) {
@@ -49,12 +46,19 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
       iconTheme: Theme.of(context).iconTheme,
       backgroundColor: Theme.of(context).backgroundColor,
       centerTitle: true,
-      title: Text('Create Playlist', style: Theme.of(context).textTheme.title,),
+      title: Text(
+        'Create Playlist',
+        style: Theme.of(context).textTheme.title,
+      ),
       actions: <Widget>[
         InkWell(
           child: Padding(
             padding: const EdgeInsets.only(right: 18.0),
-            child: Center(child: Text('Next', style: Theme.of(context).textTheme.button,)),
+            child: Center(
+                child: Text(
+              'Next',
+              style: Theme.of(context).textTheme.button,
+            )),
           ),
           onTap: () => _nextPressed(),
         )
@@ -65,19 +69,29 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
   Widget getBackButton() {
     if (Platform.isAndroid) {
       return InkWell(
-          child: Icon(Icons.home, size: 35.0,),
-          onTap: () => Navigator.popUntil(context, ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
+          child: Icon(
+            Icons.home,
+            size: 35.0,
+          ),
+          onTap: () => Navigator.popUntil(context,
+              ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')));
     }
   }
 
- void _nextPressed() {
-   Navigator.push(context,
-       MaterialPageRoute(builder: (context) => ReorderScreen(playlist: bloc.addedPlaylistSongs, playlistTitle: _controller.text,  onSavePressed: () => _onSavePressed(),)));
- }
+  void _nextPressed() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ReorderScreen(
+                  playlist: bloc.addedPlaylistSongs,
+                  playlistTitle: _controller.text,
+                  onSavePressed: () => _onSavePressed(),
+                )));
+  }
 
- void _onSavePressed() {
-   bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs, this);
- }
+  void _onSavePressed() {
+    bloc.savePlaylistToDatabase(bloc.addedPlaylistSongs);
+  }
 
   Widget buildScreenBody() {
     return ListView(
@@ -90,22 +104,32 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
             cursorColor: Theme.of(context).accentColor,
             onChanged: (text) => bloc.onPlaylistTitleChanged(text),
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.title, color: Theme.of(context).iconTheme.color,),
-              hintText: "Ex. 'My Playlist'",
-              hintStyle: Theme.of(context).textTheme.title,
-              labelText: 'Title',
-              labelStyle: Theme.of(context).textTheme.title
-
-            ),
+                prefixIcon: Icon(
+                  Icons.title,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                hintText: "Ex. 'My Playlist'",
+                hintStyle: Theme.of(context).textTheme.title,
+                labelText: 'Title',
+                labelStyle: Theme.of(context).textTheme.title),
           ),
         ),
-        Text('Added Songs', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline),
+        Text('Added Songs',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline),
         showAddedSongs(),
         Padding(
           padding: const EdgeInsets.only(top: 80.0, bottom: 50.0),
-          child: Divider(color: Theme.of(context).accentColor, height: 1.0,),
+          child: Divider(
+            color: Theme.of(context).accentColor,
+            height: 1.0,
+          ),
         ),
-        Text('Library', textAlign: TextAlign.center, style: Theme.of(context).textTheme.title,),
+        Text(
+          'Library',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.title,
+        ),
         showLibrary()
       ],
     );
@@ -126,7 +150,8 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
           itemBuilder: (context, index) {
             return SongTile(
               song: snapshot.data[index],
-              onPressed: () => bloc.playListSongPressedInPlaylistCreation(snapshot.data[index]),
+              onPressed: () => bloc
+                  .playListSongPressedInPlaylistCreation(snapshot.data[index]),
             );
           },
         );
@@ -147,22 +172,28 @@ class AddPlaylistState extends State<AddPlaylist>  with AddPlaylistCallbackMixin
           physics: ClampingScrollPhysics(),
           itemCount: snapshot.data.length,
           itemBuilder: (context, index) {
-            return SongTile(song: snapshot.data[index], onPressed: () => bloc.librarySongPressedInPlaylistCreation(snapshot.data[index]),);
+            return SongTile(
+              song: snapshot.data[index],
+              onPressed: () => bloc
+                  .librarySongPressedInPlaylistCreation(snapshot.data[index]),
+            );
           },
         );
       },
     );
   }
 
-  @override
-  onPlaylistSaved() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: bloc.allPlayListsValue[bloc.allPlayListsValue.length - 1],)),
-        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/'));
+  void _subscribeToEvents() async {
+    bloc.onPlayListSavedStream.listen((saveSuccessful) => {
+          Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PlaylistScreen(
+                            playlist: bloc.allPlayListsValue[
+                                bloc.allPlayListsValue.length - 1],
+                          )),
+                  ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')):
+              print('Error saving song')
+        });
   }
-}
-
-abstract class AddPlaylistCallbackMixin {
-  onPlaylistSaved();
 }
