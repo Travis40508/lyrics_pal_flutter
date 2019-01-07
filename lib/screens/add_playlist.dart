@@ -193,7 +193,7 @@ class AddPlaylistState extends State<AddPlaylist> {
                                 bloc.allPlayListsValue.length - 1],
                           )),
                   ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')):
-              print('Error saving song')
+              print('Error saving playlist')
         });
   }
 }

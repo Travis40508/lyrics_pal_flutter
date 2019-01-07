@@ -171,7 +171,7 @@ class _EditAddAndRemoveFromPlaylistState extends State<EditAddAndRemoveFromPlayl
         Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => PlaylistScreen(playlist: playlist,)),
-        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')) : print('Error updating song')
+        ModalRoute.withName(bloc.isFirstLaunchValue ? '/home' : '/')) : print('Error updating playlist')
     });
   }
 

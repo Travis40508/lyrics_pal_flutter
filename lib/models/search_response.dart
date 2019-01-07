@@ -19,13 +19,8 @@ class TrackMatches {
 
   TrackMatches({this.trackList});
 
-  factory TrackMatches.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['track'] as List;
-    List<Track> trackList = list.map((i) => Track.fromJson(i)).toList();
-    return TrackMatches (
-      trackList: trackList
-    );
-  }
+  TrackMatches.fromJson(Map<String, dynamic> parsedJson)
+    :trackList = (parsedJson['track'] as List).map((track) => Track.fromJson(track)).toList();
 }
 
 class Track implements AbstractSong {
@@ -36,15 +31,10 @@ class Track implements AbstractSong {
 
   Track({this.name, this.artist, this.images});
 
-  factory Track.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['image'] as List;
-    List<ArtistImage> imageList = list.map((i) => ArtistImage.fromJson(i)).toList();
-    return Track(
-        name: parsedJson['name'],
-        artist: parsedJson['artist'],
-        images: imageList
-    );
-  }
+  Track.fromJson(Map<String, dynamic> parsedJson)
+    :images = (parsedJson['image'] as List).map((images) => ArtistImage.fromJson(images)).toList(),
+    name = parsedJson['name'],
+    artist = parsedJson['artist'];
 
   @override
   String getArtist() {

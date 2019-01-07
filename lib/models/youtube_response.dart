@@ -4,11 +4,8 @@ class YoutubeResponse {
 
   YoutubeResponse({this.items});
 
-  factory YoutubeResponse.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['items'] as List;
-    List<Items> items = list.map((item) => Items.fromJson(item)).toList();
-    return YoutubeResponse(items: items);
-  }
+  YoutubeResponse.fromJson(Map<String, dynamic> parsedJson)
+    : items = (parsedJson['items'] as List).map((items) => Items.fromJson(items)).toList();
 }
 
 class Items {
