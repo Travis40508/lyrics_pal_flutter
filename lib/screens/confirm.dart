@@ -199,12 +199,15 @@ class ConfirmState extends State<Confirm> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
-          Hero(
-            tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
-            child: Image(
-              width: 250.0,
-              height: 250.0,
-              image: CachedNetworkImageProvider(widget.song.getSongImage()),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18.0),
+            child: Hero(
+              tag: '${widget.song.getSongTitle()} - ${widget.song.getArtist()}',
+              child: Image(
+                width: 250.0,
+                height: 200.0,
+                image: CachedNetworkImageProvider(widget.song.getSongImage()),
+              ),
             ),
           ),
           Center(
@@ -220,6 +223,7 @@ class ConfirmState extends State<Confirm> {
                     children: <Widget>[
                       Icon(
                         Icons.ondemand_video,
+                        size: 40.0,
                         color:
                             snapshot.hasData ? Colors.redAccent : Colors.grey,
                       ),
