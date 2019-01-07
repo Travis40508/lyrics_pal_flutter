@@ -12,6 +12,13 @@ class LyricsOptions extends StatefulWidget {
 }
 
 class LyricsOptionsState extends State<LyricsOptions> {
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

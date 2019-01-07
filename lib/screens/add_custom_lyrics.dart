@@ -17,6 +17,12 @@ class _AddCustomLyricsState extends State<AddCustomLyrics> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,

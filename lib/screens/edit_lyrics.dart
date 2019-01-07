@@ -23,6 +23,12 @@ class _EditLyricsState extends State<EditLyrics> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
